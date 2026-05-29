@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --maroon: #7d2b2b;
+  --maroon-deep: #5a2424;
+  --gold: #b8860b;
+  --gold-light: #d4a72c;
+  --cream: #fdfaf4;
+  --ink: #1a1410;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background: var(--maroon);
+  color: var(--cream);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f3ead4; }
+::-webkit-scrollbar-thumb { background: #7d2b2b; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #5a2424; }
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+  }
+
+  .section-y {
+    @apply py-16 md:py-24;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cream-50 focus:ring-maroon-400;
+  }
+  .btn-primary {
+    @apply btn bg-maroon-800 text-cream-50 hover:bg-maroon-900 shadow-soft hover:shadow-warm;
+  }
+  .btn-gold {
+    @apply btn bg-gold text-cream-50 hover:bg-gold-dark shadow-warm;
+  }
+  .btn-outline {
+    @apply btn border border-maroon-800 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50;
+  }
+  .btn-ghost {
+    @apply btn text-ink hover:text-maroon-800;
+  }
+
+  /* Typography */
+  .display {
+    font-family: var(--font-display), Georgia, serif;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-widest-x text-maroon-800 font-semibold;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-8 bg-gold;
+  }
+  .eyebrow-center {
+    @apply text-[11px] uppercase tracking-widest-x text-maroon-800 font-semibold;
+  }
+
+  /* Decorative */
+  .gold-divider {
+    @apply relative h-px bg-gradient-to-r from-transparent via-gold to-transparent;
+  }
+  .weave-bg {
+    @apply bg-weave-light;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-2xl bg-white border border-cream-200 shadow-soft;
+  }
+
+  /* Form */
+  .field {
+    @apply w-full rounded-xl border border-cream-300 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10 transition;
+  }
+  .label {
+    @apply block text-xs uppercase tracking-wider-x text-ink-soft font-semibold mb-2;
+  }
+}
+
+/* Marquee duplicate gap */
+.marquee-track > * {
+  @apply shrink-0;
+}
+
+/* Hide scrollbar but keep scrollable */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Loading shimmer */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #f3ead4 0%,
+    #faf5ea 50%,
+    #f3ead4 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
