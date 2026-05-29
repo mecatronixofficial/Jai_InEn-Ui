@@ -38,6 +38,7 @@ export default function AdminLoginPage() {
   // forgot / otp / reset shared state
   const [fpEmail, setFpEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [resetToken, setResetToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -84,7 +85,8 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
     try {
-      await api.verifyOtp(fpEmail, code);
+      const res = await api.verifyOtp(fpEmail, code);
+      setResetToken(res.resetToken ?? "");
       setNewPassword("");
       setConfirmPassword("");
       setStep("reset");
@@ -103,7 +105,7 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
     try {
-      await api.resetPassword(fpEmail, otp.join(""), newPassword);
+      await api.resetPassword(resetToken, newPassword);
       setSuccess("Password reset successfully! You can now sign in.");
       setStep("done");
     } catch (err) {
