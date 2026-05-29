@@ -96,10 +96,10 @@ export const api = {
       auth: false,
     }),
 
-  resetPassword: (email: string, otp: string, newPassword: string) =>
+  resetPassword: (resetToken: string, newPassword: string) =>
     request<{ message: string }>("/auth/reset-password", {
       method: "POST",
-      body: { email, otp, newPassword },
+      body: { resetToken, newPassword },
       auth: false,
     }),
 
