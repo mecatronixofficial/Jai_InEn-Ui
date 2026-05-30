@@ -56,7 +56,7 @@ export default function AdminOffersPage() {
     setForm({
       title: o.title, description: o.description, code: o.code || "",
       discountPercent: o.discountPercent,
-      expiresAt: new Date(o.expiresAt).toISOString().slice(0, 16),
+      expiresAt: new Date(o.expiresAt).toISOString().slice(0, 10),
       ctaLabel: o.ctaLabel || "", ctaHref: o.ctaHref || "",
       order: o.order, active: o.active,
     });
@@ -64,17 +64,16 @@ export default function AdminOffersPage() {
   }
 
   async function handleSave() {
-    if (!form.title || !form.description || !form.expiresAt) {
-      toast("Title, description and expiry are required.", "error");
-      return;
-    }
+    if (!form.title.trim()) { toast("Title is required.", "error"); return; }
+    if (!form.description.trim()) { toast("Description is required.", "error"); return; }
+    if (!form.expiresAt) { toast("Expiry date is required.", "error"); return; }
     setSaving(true);
     try {
       const body: any = {
         title: form.title,
         description: form.description,
         discountPercent: Number(form.discountPercent),
-        expiresAt: new Date(form.expiresAt).toISOString(),
+        expiresAt: new Date(form.expiresAt + "T23:59:59").toISOString(),
         order: Number(form.order),
         active: form.active,
       };
@@ -194,7 +193,7 @@ export default function AdminOffersPage() {
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Expires At" required>
-              <Input type="datetime-local" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
+              <Input type="date" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
             </Field>
             <Field label="Display Order">
               <Input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: Number(e.target.value) })} />

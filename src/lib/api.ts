@@ -70,6 +70,16 @@ async function request<T = any>(path: string, opts: RequestOpts = {}): Promise<T
   return payload as T;
 }
 
+export interface SubmitReviewInput {
+  name: string;
+  role: string;
+  company?: string;
+  location: string;
+  rating: number;
+  review: string;
+  productPurchased?: string;
+}
+
 // Auth
 export const api = {
   // --- Auth
@@ -117,6 +127,12 @@ export const api = {
     request<BlogApi>(`/blogs/${slug}`, { auth: false }),
   publicTestimonials: () =>
     request<TestimonialApi[]>("/testimonials", { auth: false }),
+  submitReview: (data: SubmitReviewInput) =>
+    request<{ message: string }>("/testimonials/submit", {
+      method: "POST",
+      body: data,
+      auth: false,
+    }),
   publicOffers: () => request<OfferApi[]>("/offers", { auth: false }),
   publicHeroBanners: () => request<BannerApi[]>("/banners/hero", { auth: false }),
   publicOpeningCard: () =>
@@ -319,7 +335,8 @@ export interface OfferApi {
 }
 
 export interface TestimonialApi {
-  id: string;
+  _id: string;
+  id?: string;
   name: string;
   role: string;
   company?: string;

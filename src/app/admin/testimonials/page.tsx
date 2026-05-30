@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { FaPlus, FaEdit, FaTrash, FaSpinner, FaStar, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaSpinner, FaStar, FaCheckCircle, FaTimesCircle, FaHome } from "react-icons/fa";
 
 import { api, TestimonialApi } from "@/lib/api";
 import {
@@ -82,7 +82,7 @@ export default function AdminTestimonialsPage() {
       if (form.productPurchased) body.productPurchased = form.productPurchased;
 
       if (editing) {
-        await api.updateTestimonial(editing.id, body);
+        await api.updateTestimonial(editing._id, body);
         toast("Review updated");
       } else {
         await api.createTestimonial(body);
@@ -99,7 +99,7 @@ export default function AdminTestimonialsPage() {
 
   async function quickToggle(t: TestimonialApi, field: "approved" | "featured") {
     try {
-      await api.updateTestimonial(t.id, { [field]: !t[field] });
+      await api.updateTestimonial(t._id, { [field]: !t[field] });
       toast(`${field} ${!t[field] ? "enabled" : "disabled"}`);
       await load();
     } catch (e) {
@@ -110,7 +110,7 @@ export default function AdminTestimonialsPage() {
   function handleDelete(t: TestimonialApi) {
     confirm(`Delete review from ${t.name}?`, "This cannot be undone.", async () => {
       try {
-        await api.deleteTestimonial(t.id);
+        await api.deleteTestimonial(t._id);
         toast("Review deleted");
         await load();
       } catch (e) {
@@ -136,7 +136,7 @@ export default function AdminTestimonialsPage() {
       ) : (
         <div className="grid md:grid-cols-2 gap-5">
           {list.map((t) => (
-            <AdminCard key={t.id} className="p-6">
+            <AdminCard key={t._id} className="p-6">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-1 text-gold">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -144,11 +144,18 @@ export default function AdminTestimonialsPage() {
                   ))}
                 </div>
                 <div className="flex items-center gap-2">
-                  {t.featured && (
-                    <span className="rounded-full bg-gold text-cream-50 px-2 py-0.5 text-[9px] uppercase tracking-widest-x font-bold">
-                      Featured
-                    </span>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => quickToggle(t, "featured")}
+                    title={t.featured ? "Remove from Home Page" : "Show on Home Page"}
+                    className={cn(
+                      "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] uppercase tracking-widest-x font-bold transition",
+                      t.featured ? "bg-gold text-maroon-950 hover:bg-gold/80" : "bg-cream-100 text-ink-muted hover:bg-cream-200",
+                    )}
+                  >
+                    <FaHome className="h-2.5 w-2.5" />
+                    {t.featured ? "On Home" : "Off Home"}
+                  </button>
                   <button
                     type="button"
                     onClick={() => quickToggle(t, "approved")}
@@ -224,7 +231,7 @@ export default function AdminTestimonialsPage() {
           </Field>
           <div className="flex gap-6 pt-2 border-t border-cream-200">
             <Toggle checked={form.approved} onChange={(v) => setForm({ ...form, approved: v })} label="Approved (visible publicly)" />
-            <Toggle checked={form.featured} onChange={(v) => setForm({ ...form, featured: v })} label="Featured" />
+            <Toggle checked={form.featured} onChange={(v) => setForm({ ...form, featured: v })} label="Show on Home Page" />
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-cream-200">
             <AdminButton variant="ghost" onClick={() => setOpen(false)}>Cancel</AdminButton>

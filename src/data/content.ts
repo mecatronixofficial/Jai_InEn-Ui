@@ -25,7 +25,7 @@ export const heroSlides: HeroSlide[] = [
     image:
       "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=1920&auto=format&fit=crop&q=80",
     ctaLabel: "Shop Handloom",
-    ctaHref: "/collections/handloom",
+    ctaHref: "/categories/handloom",
     secondaryLabel: "View Products",
     secondaryHref: "/products",
   },
@@ -289,7 +289,7 @@ export const openingCard: OpeningCardData = {
   image:
     "https://images.unsplash.com/photo-1622043720586-04b9eba47b8d?w=900&auto=format&fit=crop&q=80",
   ctaLabel: "Browse Festival Range",
-  ctaHref: "/collections/festival",
+  ctaHref: "/categories/festival",
   expiresAt: "2026-06-30T23:59:59Z",
   badge: "Limited Time",
 };

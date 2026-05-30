@@ -7,17 +7,19 @@ import { FaArrowRight, FaTag } from "react-icons/fa";
 import type { Offer } from "@/types";
 
 function useCountdown(target: string) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
+    setNow(Date.now());
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
+  if (now === null) return { days: 0, hours: 0, minutes: 0, seconds: 0, done: false, ready: false };
   const diff = Math.max(0, new Date(target).getTime() - now);
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff / 3600000) % 24);
   const minutes = Math.floor((diff / 60000) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
-  return { days, hours, minutes, seconds, done: diff <= 0 };
+  return { days, hours, minutes, seconds, done: diff <= 0, ready: true };
 }
 
 export default function OfferBanner({ offer }: { offer: Offer }) {
@@ -54,7 +56,7 @@ export default function OfferBanner({ offer }: { offer: Offer }) {
         </div>
 
         <div className="flex flex-col items-start md:items-end gap-4">
-          {!cd.done ? (
+          {cd.ready && !cd.done ? (
             <div className="grid grid-cols-4 gap-2">
               {[
                 ["Days", cd.days],
