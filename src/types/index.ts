@@ -68,6 +68,7 @@ export interface Testimonial {
   review: string;
   image?: string;
   productPurchased?: string;
+  featured?: boolean;
 }
 
 export interface Offer {

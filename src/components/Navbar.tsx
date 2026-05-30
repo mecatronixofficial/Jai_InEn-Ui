@@ -14,8 +14,8 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 
-import { categories } from "@/data/categories";
 import { siteConfig } from "@/data/site";
+import { api, type CategoryApi } from "@/lib/api";
 import { cn } from "@/utils";
 import { useWishlist } from "@/store";
 
@@ -23,7 +23,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/products", label: "Products" },
-  { href: "/collections", label: "Collections" },
+  { href: "/categories", label: "Categories" },
   { href: "/blog", label: "Blog" },
   { href: "/testimonials", label: "Reviews" },
   { href: "/contact", label: "Contact" },
@@ -34,7 +34,12 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [categories, setCategories] = useState<CategoryApi[]>([]);
   const wishlistCount = useWishlist((s) => s.items.length);
+
+  useEffect(() => {
+    api.publicCategories().then(setCategories).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);

@@ -4,6 +4,7 @@ import { FaStar, FaQuoteLeft } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import SectionTitle from "@/components/SectionTitle";
+import WriteReviewForm from "@/components/WriteReviewForm";
 import { loadTestimonials } from "@/lib/data";
 import { cn } from "@/utils";
 
@@ -100,6 +101,35 @@ export default async function TestimonialsPage() {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+      {/* Write a Review */}
+      <section className="section-y bg-cream-50 weave-bg">
+        <div className="container-x grid lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-4">
+            <SectionTitle
+              eyebrow="Your Turn"
+              title="Leave us a review"
+              description="Bought from us? Share your experience — honest feedback helps other customers and helps us improve."
+            />
+            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
+              <li className="flex items-start gap-2">
+                <span className="text-gold mt-0.5">★</span>
+                Reviews are verified by our team before publishing.
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold mt-0.5">★</span>
+                Usually approved within 1–2 business days.
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-gold mt-0.5">★</span>
+                No account needed — just fill in the form.
+              </li>
+            </ul>
+          </div>
+          <div className="lg:col-span-8">
+            <WriteReviewForm />
           </div>
         </div>
       </section>

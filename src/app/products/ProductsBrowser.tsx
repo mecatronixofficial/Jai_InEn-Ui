@@ -7,8 +7,7 @@ import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
 
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
-import { categories } from "@/data/categories";
+import { api, type ProductApi, type CategoryApi } from "@/lib/api";
 import { cn } from "@/utils";
 
 type SortKey = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
@@ -25,11 +24,22 @@ export default function ProductsPage() {
   const params = useSearchParams();
   const initialCategory = params.get("category") || "all";
 
+  const [products, setProducts] = useState<ProductApi[]>([]);
+  const [categories, setCategories] = useState<CategoryApi[]>([]);
   const [category, setCategory] = useState(initialCategory);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
   const [showFilters, setShowFilters] = useState(false);
   const [maxPrice, setMaxPrice] = useState(2000);
+
+  useEffect(() => {
+    api.publicProducts().then((r) => {
+      setProducts(r.data);
+      const top = Math.max(...r.data.map((p) => p.offerPrice), 2000);
+      setMaxPrice(top);
+    }).catch(() => {});
+    api.publicCategories().then(setCategories).catch(() => {});
+  }, []);
 
   useEffect(() => {
     setCategory(params.get("category") || "all");
@@ -66,7 +76,7 @@ export default function ProductsPage() {
         list.sort((a, b) => Number(b.featured) - Number(a.featured));
     }
     return list;
-  }, [category, search, sort, maxPrice]);
+  }, [products, category, search, sort, maxPrice]);
 
   return (
     <>

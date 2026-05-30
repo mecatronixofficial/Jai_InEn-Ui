@@ -4,20 +4,28 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaWhatsapp, FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { heroSlides } from "@/data/content";
+import { api, type BannerApi } from "@/lib/api";
 import { cn } from "@/utils";
 
 export default function HeroSlider() {
+  const [slides, setSlides] = useState<BannerApi[]>([]);
   const [idx, setIdx] = useState(0);
-  const slide = heroSlides[idx];
+  const slide = slides[idx];
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % heroSlides.length), 7000);
-    return () => clearInterval(t);
+    api.publicHeroBanners().then(setSlides).catch(() => {});
   }, []);
 
-  const prev = () => setIdx((i) => (i - 1 + heroSlides.length) % heroSlides.length);
-  const next = () => setIdx((i) => (i + 1) % heroSlides.length);
+  useEffect(() => {
+    if (slides.length < 2) return;
+    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 7000);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  const prev = () => setIdx((i) => (i - 1 + slides.length) % slides.length);
+  const next = () => setIdx((i) => (i + 1) % slides.length);
+
+  if (!slide) return <section className="relative h-[88vh] min-h-[640px] max-h-[820px] bg-maroon-950" />;
 
   return (
     <section className="relative h-[88vh] min-h-[640px] max-h-[820px] overflow-hidden bg-maroon-950">
@@ -108,7 +116,7 @@ export default function HeroSlider() {
         <div className="container-x flex items-center justify-between">
           {/* Dots */}
           <div className="flex items-center gap-2">
-            {heroSlides.map((s, i) => (
+            {slides.map((s: BannerApi, i: number) => (
               <button
                 key={s.id}
                 type="button"
