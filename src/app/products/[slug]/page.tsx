@@ -84,7 +84,7 @@ export default async function ProductDetailPage({
                 )}
               </div>
 
-              <h1 className="display text-4xl md:text-5xl font-semibold text-maroon-950 leading-tight">
+              <h1 className="display text-4xl md:text-5xl font-semibold text-gray-950 leading-tight">
                 {product.name}
               </h1>
 
@@ -103,7 +103,7 @@ export default async function ProductDetailPage({
 
               {/* Price */}
               <div className="mt-6 flex items-end gap-4">
-                <div className="display text-4xl font-semibold text-maroon-900">
+                <div className="display text-4xl font-semibold text-gray-900">
                   {formatINR(product.offerPrice)}
                 </div>
                 {product.originalPrice > product.offerPrice && (
@@ -151,7 +151,7 @@ export default async function ProductDetailPage({
                   { Icon: FaCheck, label: "GST invoice", sub: "Wholesale ready" },
                 ].map(({ Icon, label, sub }) => (
                   <div key={label} className="flex items-start gap-3">
-                    <div className="grid h-9 w-9 place-items-center rounded-full bg-cream-100 text-maroon-800">
+                    <div className="grid h-9 w-9 place-items-center rounded-full bg-cream-100 text-gray-800">
                       <Icon className="h-3.5 w-3.5" />
                     </div>
                     <div>
@@ -220,7 +220,7 @@ export default async function ProductDetailPage({
               />
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-gold-dark"
+                className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark"
               >
                 View All <FaArrowRight className="h-3 w-3" />
               </Link>

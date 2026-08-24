@@ -137,6 +137,8 @@ export const api = {
   publicHeroBanners: () => request<BannerApi[]>("/banners/hero", { auth: false }),
   publicOpeningCard: () =>
     request<BannerApi[]>("/banners/opening-card", { auth: false }),
+  publicCertificates: () =>
+    request<CertificateApi[]>("/certificates", { auth: false }),
 
   submitOrder: (data: SubmitOrderInput) =>
     request<OrderApi>("/orders", { method: "POST", body: data, auth: false }),
@@ -187,6 +189,15 @@ export const api = {
     request<BannerApi>(`/admin/banners/${id}`, { method: "PATCH", body }),
   deleteBanner: (id: string) =>
     request<{ deleted: boolean }>(`/admin/banners/${id}`, { method: "DELETE" }),
+
+  // --- Admin: certificates
+  adminCertificates: () => request<CertificateApi[]>("/admin/certificates"),
+  createCertificate: (body: any) =>
+    request<CertificateApi>("/admin/certificates", { method: "POST", body }),
+  updateCertificate: (id: string, body: any) =>
+    request<CertificateApi>(`/admin/certificates/${id}`, { method: "PATCH", body }),
+  deleteCertificate: (id: string) =>
+    request<{ deleted: boolean }>(`/admin/certificates/${id}`, { method: "DELETE" }),
 
   // --- Admin: offers
   adminOffers: () => request<OfferApi[]>("/admin/offers"),
@@ -318,6 +329,19 @@ export interface BannerApi {
   expiresAt?: string;
   order: number;
   active: boolean;
+}
+
+export interface CertificateApi {
+  id: string;
+  title: string;
+  image: string;
+  description?: string;
+  issuer?: string;
+  issuedAt?: string;
+  order: number;
+  active: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface OfferApi {

@@ -28,7 +28,7 @@ export default function ScrollToTop() {
             window.scrollTo({ top: 0, behavior: "smooth" })
           }
           aria-label="Scroll to top"
-          className="fixed bottom-24 right-5 z-40 grid h-10 w-10 place-items-center rounded-full bg-maroon-800 text-cream-50 shadow-warm hover:bg-maroon-900 transition"
+          className="fixed bottom-24 right-5 z-40 grid h-10 w-10 place-items-center rounded-full bg-gray-800 text-cream-50 shadow-warm hover:bg-gray-900 transition"
         >
           <FaArrowUp className="h-3.5 w-3.5" />
         </motion.button>

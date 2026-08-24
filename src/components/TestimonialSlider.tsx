@@ -43,12 +43,12 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             ))}
           </div>
 
-          <blockquote className="display text-2xl md:text-3xl text-maroon-950 leading-snug font-medium italic">
+          <blockquote className="display text-2xl md:text-3xl text-gray-950 leading-snug font-medium italic">
             &ldquo;{t.review}&rdquo;
           </blockquote>
 
           <div className="mt-8 flex items-center gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-full bg-maroon-800 text-cream-50 display text-xl font-semibold">
+            <div className="grid h-14 w-14 place-items-center rounded-full bg-gray-800 text-cream-50 display text-xl font-semibold">
               {t.name.charAt(0)}
             </div>
             <div>
@@ -73,7 +73,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
               aria-label={`Review ${i + 1}`}
               className={cn(
                 "h-1 rounded-full transition-all",
-                i === idx ? "w-8 bg-maroon-800" : "w-4 bg-cream-300 hover:bg-cream-400"
+                i === idx ? "w-8 bg-gray-800" : "w-4 bg-cream-300 hover:bg-cream-400"
               )}
             />
           ))}
@@ -83,7 +83,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             type="button"
             onClick={prev}
             aria-label="Previous"
-            className="grid h-10 w-10 place-items-center rounded-full border border-maroon-800/30 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50 transition"
+            className="grid h-10 w-10 place-items-center rounded-full border border-gray-800/30 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
           >
             <FaChevronLeft className="h-3 w-3" />
           </button>
@@ -91,7 +91,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             type="button"
             onClick={next}
             aria-label="Next"
-            className="grid h-10 w-10 place-items-center rounded-full border border-maroon-800/30 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50 transition"
+            className="grid h-10 w-10 place-items-center rounded-full border border-gray-800/30 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
           >
             <FaChevronRight className="h-3 w-3" />
           </button>

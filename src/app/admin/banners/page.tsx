@@ -139,7 +139,7 @@ export default function AdminBannersPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : list.length === 0 ? (
         <EmptyState
@@ -154,7 +154,7 @@ export default function AdminBannersPage() {
             { title: "Opening Card (Popup)", items: openings },
           ].map(({ title, items }) => (
             <div key={title}>
-              <div className="display text-2xl font-semibold text-maroon-950 mb-4">{title}</div>
+              <div className="display text-2xl font-semibold text-gray-950 mb-4">{title}</div>
               {items.length === 0 ? (
                 <p className="text-sm text-ink-muted">None yet.</p>
               ) : (
@@ -164,7 +164,7 @@ export default function AdminBannersPage() {
                       <div className="relative aspect-[16/9]">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={b.image} alt={b.title} className="absolute inset-0 h-full w-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/80 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 to-transparent" />
                         <div className="absolute bottom-3 left-3 right-3 text-cream-50">
                           {b.eyebrow && (
                             <div className="text-[9px] uppercase tracking-widest-x text-gold-light font-semibold">
@@ -186,7 +186,7 @@ export default function AdminBannersPage() {
                           Order #{b.order} · → {b.ctaHref}
                         </div>
                         <div className="flex gap-1">
-                          <button onClick={() => openEdit(b)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-maroon-800" aria-label="Edit">
+                          <button onClick={() => openEdit(b)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-gray-800" aria-label="Edit">
                             <FaEdit className="h-3.5 w-3.5" />
                           </button>
                           <button onClick={() => handleDelete(b)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-red-50 hover:text-red-600" aria-label="Delete">

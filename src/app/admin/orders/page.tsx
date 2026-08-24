@@ -72,7 +72,7 @@ export default function AdminOrdersPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : !list || list.data.length === 0 ? (
         <EmptyState

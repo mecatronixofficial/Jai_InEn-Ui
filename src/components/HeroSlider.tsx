@@ -25,10 +25,10 @@ export default function HeroSlider() {
   const prev = () => setIdx((i) => (i - 1 + slides.length) % slides.length);
   const next = () => setIdx((i) => (i + 1) % slides.length);
 
-  if (!slide) return <section className="relative h-[88vh] min-h-[640px] max-h-[820px] bg-maroon-950" />;
+  if (!slide) return <section className="relative h-[88vh] min-h-[640px] max-h-[820px] bg-gray-950" />;
 
   return (
-    <section className="relative h-[88vh] min-h-[640px] max-h-[820px] overflow-hidden bg-maroon-950">
+    <section className="relative h-[88vh] min-h-[640px] max-h-[820px] overflow-hidden bg-gray-950">
       {/* Background slides */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -45,7 +45,7 @@ export default function HeroSlider() {
             alt={slide.title}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-maroon-950/80 via-maroon-950/55 to-maroon-950/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 via-gray-950/55 to-gray-950/20" />
           <div className="absolute inset-0 bg-weave-dark opacity-40" />
         </motion.div>
       </AnimatePresence>
@@ -100,7 +100,7 @@ export default function HeroSlider() {
                 {slide.secondaryHref && (
                   <Link
                     href={slide.secondaryHref}
-                    className="btn-outline !border-cream-50/40 !text-cream-50 hover:!bg-cream-50 hover:!text-maroon-900"
+                    className="btn-outline !border-cream-50/40 !text-cream-50 hover:!bg-cream-50 hover:!text-gray-900"
                   >
                     {slide.secondaryLabel}
                   </Link>
@@ -136,7 +136,7 @@ export default function HeroSlider() {
               type="button"
               onClick={prev}
               aria-label="Previous"
-              className="grid h-11 w-11 place-items-center rounded-full border border-cream-50/30 text-cream-50 hover:bg-cream-50 hover:text-maroon-900 transition"
+              className="grid h-11 w-11 place-items-center rounded-full border border-cream-50/30 text-cream-50 hover:bg-cream-50 hover:text-gray-900 transition"
             >
               <FaChevronLeft className="h-3.5 w-3.5" />
             </button>
@@ -144,7 +144,7 @@ export default function HeroSlider() {
               type="button"
               onClick={next}
               aria-label="Next"
-              className="grid h-11 w-11 place-items-center rounded-full border border-cream-50/30 text-cream-50 hover:bg-cream-50 hover:text-maroon-900 transition"
+              className="grid h-11 w-11 place-items-center rounded-full border border-cream-50/30 text-cream-50 hover:bg-cream-50 hover:text-gray-900 transition"
             >
               <FaChevronRight className="h-3.5 w-3.5" />
             </button>

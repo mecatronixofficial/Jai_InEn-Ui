@@ -31,14 +31,14 @@ export default function OfferBanner({ offer }: { offer: Offer }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden rounded-2xl bg-maroon-900 text-cream-50 p-7 md:p-10"
+      className="relative overflow-hidden rounded-2xl bg-gray-900 text-cream-50 p-7 md:p-10"
     >
       <div className="absolute inset-0 bg-weave-dark opacity-40 pointer-events-none" />
       <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-gold/15 blur-2xl" />
 
       <div className="relative grid md:grid-cols-2 gap-6 items-center">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-gold text-maroon-950 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gold text-gray-950 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold">
             <FaTag className="h-2.5 w-2.5" /> Limited Time
           </div>
           <h3 className="display text-3xl md:text-4xl font-semibold mt-4 leading-tight">

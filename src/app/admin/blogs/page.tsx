@@ -120,7 +120,7 @@ export default function AdminBlogsPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : !list || list.data.length === 0 ? (
         <EmptyState
@@ -152,7 +152,7 @@ export default function AdminBlogsPage() {
                 <div className="text-[10px] uppercase tracking-widest-x text-gold-dark font-semibold">
                   {b.category} · {b.readTime} min read
                 </div>
-                <h3 className="display text-lg font-semibold text-maroon-950 mt-2 leading-tight line-clamp-2">
+                <h3 className="display text-lg font-semibold text-gray-950 mt-2 leading-tight line-clamp-2">
                   {b.title}
                 </h3>
                 <p className="text-sm text-ink-soft mt-2 line-clamp-2 flex-1">{b.excerpt}</p>

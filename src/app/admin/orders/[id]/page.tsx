@@ -84,7 +84,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   if (loading) {
     return (
       <AdminCard className="p-16 grid place-items-center">
-        <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+        <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
       </AdminCard>
     );
   }
@@ -93,7 +93,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     return (
       <AdminCard className="p-12 text-center">
         <h3 className="display text-xl">Order not found</h3>
-        <Link href="/admin/orders" className="text-maroon-800 underline mt-3 inline-block">
+        <Link href="/admin/orders" className="text-gray-800 underline mt-3 inline-block">
           ← Back to orders
         </Link>
       </AdminCard>
@@ -108,7 +108,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     <div className="max-w-5xl space-y-6">
       <Link
         href="/admin/orders"
-        className="inline-flex items-center gap-2 text-xs uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-gold-dark"
+        className="inline-flex items-center gap-2 text-xs uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark"
       >
         <FaArrowLeft className="h-3 w-3" /> Back to orders
       </Link>
@@ -122,7 +122,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 <div className="text-[10px] uppercase tracking-widest-x text-ink-muted font-semibold">
                   Order from {moment(order.createdAt).format("MMM D, YYYY · h:mm A")}
                 </div>
-                <h2 className="display text-2xl font-semibold text-maroon-950 mt-1">
+                <h2 className="display text-2xl font-semibold text-gray-950 mt-1">
                   {order.customerName}
                 </h2>
               </div>
@@ -136,12 +136,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
             <div className="grid sm:grid-cols-2 gap-4 mb-5">
               <a href={`tel:${order.phone}`} className="flex items-center gap-3 rounded-lg bg-cream-100 p-3 hover:bg-cream-200 transition">
-                <FaPhone className="h-4 w-4 text-maroon-800" />
+                <FaPhone className="h-4 w-4 text-gray-800" />
                 <span className="text-sm font-medium text-ink">{order.phone}</span>
               </a>
               {order.email && (
                 <a href={`mailto:${order.email}`} className="flex items-center gap-3 rounded-lg bg-cream-100 p-3 hover:bg-cream-200 transition">
-                  <FaEnvelope className="h-4 w-4 text-maroon-800" />
+                  <FaEnvelope className="h-4 w-4 text-gray-800" />
                   <span className="text-sm font-medium text-ink truncate">{order.email}</span>
                 </a>
               )}
@@ -153,7 +153,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
           </AdminCard>
 
           <AdminCard className="p-6">
-            <h3 className="display text-xl font-semibold text-maroon-950 mb-4">
+            <h3 className="display text-xl font-semibold text-gray-950 mb-4">
               Message
             </h3>
             <p className="text-ink-soft leading-relaxed whitespace-pre-line">{order.message}</p>
@@ -161,7 +161,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
           {(order.productName || order.color || order.size) && (
             <AdminCard className="p-6">
-              <h3 className="display text-xl font-semibold text-maroon-950 mb-4">
+              <h3 className="display text-xl font-semibold text-gray-950 mb-4">
                 Product Details
               </h3>
               <dl className="grid grid-cols-2 gap-y-3 text-sm">
@@ -170,7 +170,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                     <dt className="text-ink-muted">Product</dt>
                     <dd className="font-medium">
                       {order.productSlug ? (
-                        <Link href={`/products/${order.productSlug}`} target="_blank" className="text-maroon-800 hover:underline">
+                        <Link href={`/products/${order.productSlug}`} target="_blank" className="text-gray-800 hover:underline">
                           {order.productName}
                         </Link>
                       ) : (
@@ -190,7 +190,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         {/* Workflow sidebar */}
         <div className="space-y-6">
           <AdminCard className="p-6">
-            <h3 className="display text-xl font-semibold text-maroon-950 mb-5">
+            <h3 className="display text-xl font-semibold text-gray-950 mb-5">
               Workflow
             </h3>
 

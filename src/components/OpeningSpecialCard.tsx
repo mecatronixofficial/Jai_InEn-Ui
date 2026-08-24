@@ -73,7 +73,7 @@ export default function OpeningSpecialCard() {
                 alt={card.title}
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 via-transparent to-transparent" />
               {card.badge && (
                 <div className="absolute top-5 left-5 inline-flex items-center gap-2 rounded-full bg-gold text-cream-50 px-3 py-1.5 text-[10px] uppercase tracking-widest-x font-bold">
                   {card.badge}
@@ -86,7 +86,7 @@ export default function OpeningSpecialCard() {
               <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold">
                 {card.title}
               </div>
-              <h2 className="display text-4xl md:text-5xl font-semibold text-maroon-900 mt-3 leading-tight">
+              <h2 className="display text-4xl md:text-5xl font-semibold text-gray-900 mt-3 leading-tight">
                 {card.subtitle}
               </h2>
               <p className="mt-4 text-ink-soft leading-relaxed">

@@ -101,7 +101,7 @@ export default function ProductsPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search products..."
-                  className="rounded-full border border-cream-300 bg-white pl-11 pr-5 py-2.5 text-sm w-72 focus:outline-none focus:border-maroon-700 transition"
+                  className="rounded-full border border-cream-300 bg-white pl-11 pr-5 py-2.5 text-sm w-72 focus:outline-none focus:border-gray-700 transition"
                 />
               </div>
 
@@ -122,7 +122,7 @@ export default function ProductsPage() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
-                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm focus:outline-none focus:border-maroon-700"
+                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm focus:outline-none focus:border-gray-700"
               >
                 {sortOptions.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -144,7 +144,7 @@ export default function ProductsPage() {
               )}
             >
               <div className="flex items-center justify-between mb-6 lg:hidden">
-                <h3 className="display text-2xl text-maroon-950">Filters</h3>
+                <h3 className="display text-2xl text-gray-950">Filters</h3>
                 <button onClick={() => setShowFilters(false)} aria-label="Close">
                   <FaTimes className="h-5 w-5" />
                 </button>
@@ -162,7 +162,7 @@ export default function ProductsPage() {
                     className={cn(
                       "w-full flex items-center justify-between rounded-lg px-4 py-2.5 text-sm text-left transition",
                       category === "all"
-                        ? "bg-maroon-800 text-cream-50"
+                        ? "bg-gray-800 text-cream-50"
                         : "text-ink-soft hover:bg-cream-100"
                     )}
                   >
@@ -177,7 +177,7 @@ export default function ProductsPage() {
                       className={cn(
                         "w-full flex items-center justify-between rounded-lg px-4 py-2.5 text-sm text-left transition",
                         category === c.slug
-                          ? "bg-maroon-800 text-cream-50"
+                          ? "bg-gray-800 text-cream-50"
                           : "text-ink-soft hover:bg-cream-100"
                       )}
                     >
@@ -200,11 +200,11 @@ export default function ProductsPage() {
                   step={50}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-maroon-800"
+                  className="w-full accent-gray-800"
                 />
                 <div className="flex items-center justify-between text-xs text-ink-muted mt-2">
                   <span>₹100</span>
-                  <span className="font-semibold text-maroon-800">
+                  <span className="font-semibold text-gray-800">
                     Up to ₹{maxPrice.toLocaleString("en-IN")}
                   </span>
                 </div>
@@ -236,7 +236,7 @@ export default function ProductsPage() {
                     exit={{ opacity: 0 }}
                     className="card p-16 text-center"
                   >
-                    <h3 className="display text-2xl text-maroon-950">
+                    <h3 className="display text-2xl text-gray-950">
                       No products match your filters
                     </h3>
                     <p className="mt-2 text-ink-muted">

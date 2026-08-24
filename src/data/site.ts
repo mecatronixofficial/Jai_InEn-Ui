@@ -45,39 +45,27 @@ export const stats = [
 export const whyChooseUs = [
   {
     icon: "FaIndustry",
-    title: "Karur-based Manufacturing",
+    title: "Manufacturing Strength",
     description:
-      "Every meter is woven and finished in our Karur facility — the heart of Tamil Nadu's textile heritage.",
+      "Equipped with modern sewing machinery, advanced processing facilities and specialized quality-control checks at every stage of production.",
   },
   {
     icon: "FaTshirt",
-    title: "Premium Cotton & Handloom",
+    title: "Diverse Portfolio",
     description:
-      "Sourced directly from trusted spinning mills and skilled handloom weavers across the region.",
+      "Comprehensive production capabilities across Table Linen, Kitchen Linen, Living Linen, Bed Linen and Outdoor Textile.",
   },
   {
     icon: "FaWeight",
-    title: "Consistent GSM & Quality",
+    title: "Quality Assurance",
     description:
-      "Strict GSM standards and multi-stage quality checks ensure every roll meets the same benchmark.",
-  },
-  {
-    icon: "FaHandshake",
-    title: "Wholesale & Retail Ready",
-    description:
-      "From single-piece retail to bulk wholesale orders — we deliver with the same care and timeline.",
+      "An experienced management team and textile experts ensure all shipments comply with international quality benchmarks.",
   },
   {
     icon: "FaShippingFast",
-    title: "Pan-India Despatch",
+    title: "Seamless Logistics",
     description:
-      "Reliable logistics partnerships ensure your order reaches every corner of India on time.",
-  },
-  {
-    icon: "FaLeaf",
-    title: "Honest, Long-Standing Trade",
-    description:
-      "GST-registered since 2017, run by hand, not by hype — a partnership you can build a business on.",
+      "End-to-end supply chain management supported by advanced global freight forwarders guarantees prompt sea and air deliveries.",
   },
 ];
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { DM_Sans, Libre_Baskerville } from "next/font/google";
 import "@/styles/globals.css";
 
 import Navbar from "@/components/Navbar";
@@ -9,9 +9,10 @@ import ScrollToTop from "@/components/ScrollToTop";
 import OpeningSpecialCard from "@/components/OpeningSpecialCard";
 import { siteConfig } from "@/data/site";
 
-const display = Cormorant_Garamond({
+const display = Libre_Baskerville({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });

@@ -58,8 +58,8 @@ export default function ProductActions({ product }: { product: Product }) {
                 className={cn(
                   "rounded-full border px-4 py-2 text-xs transition",
                   c === color
-                    ? "border-maroon-800 bg-maroon-800 text-cream-50"
-                    : "border-cream-300 text-ink-soft hover:border-maroon-800"
+                    ? "border-gray-800 bg-gray-800 text-cream-50"
+                    : "border-cream-300 text-ink-soft hover:border-gray-800"
                 )}
               >
                 {c}
@@ -84,8 +84,8 @@ export default function ProductActions({ product }: { product: Product }) {
                 className={cn(
                   "rounded-full border px-4 py-2 text-xs transition min-w-[60px]",
                   s === size
-                    ? "border-maroon-800 bg-maroon-800 text-cream-50"
-                    : "border-cream-300 text-ink-soft hover:border-maroon-800"
+                    ? "border-gray-800 bg-gray-800 text-cream-50"
+                    : "border-cream-300 text-ink-soft hover:border-gray-800"
                 )}
               >
                 {s}
@@ -104,7 +104,7 @@ export default function ProductActions({ product }: { product: Product }) {
           <button
             type="button"
             onClick={() => setQty(Math.max(1, qty - 1))}
-            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-maroon-800"
+            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-gray-800"
             aria-label="Decrease"
           >
             −
@@ -113,7 +113,7 @@ export default function ProductActions({ product }: { product: Product }) {
           <button
             type="button"
             onClick={() => setQty(qty + 1)}
-            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-maroon-800"
+            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-gray-800"
             aria-label="Increase"
           >
             +

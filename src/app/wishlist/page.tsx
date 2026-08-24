@@ -27,10 +27,10 @@ export default function WishlistPage() {
         <div className="container-x">
           {saved.length === 0 ? (
             <div className="text-center py-16">
-              <div className="grid h-20 w-20 mx-auto place-items-center rounded-full bg-cream-100 text-maroon-800 mb-6">
+              <div className="grid h-20 w-20 mx-auto place-items-center rounded-full bg-cream-100 text-gray-800 mb-6">
                 <FaHeart className="h-7 w-7" />
               </div>
-              <h2 className="display text-3xl font-semibold text-maroon-950">
+              <h2 className="display text-3xl font-semibold text-gray-950">
                 Your wishlist is empty
               </h2>
               <p className="mt-3 text-ink-muted max-w-md mx-auto">
@@ -49,7 +49,7 @@ export default function WishlistPage() {
                 <button
                   type="button"
                   onClick={clear}
-                  className="text-xs uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-maroon-950 flex items-center gap-2"
+                  className="text-xs uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gray-950 flex items-center gap-2"
                 >
                   <FaTrash className="h-3 w-3" /> Clear all
                 </button>

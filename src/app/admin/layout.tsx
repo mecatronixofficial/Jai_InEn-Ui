@@ -14,6 +14,7 @@ import {
   FaInbox,
   FaSignOutAlt,
   FaExternalLinkAlt,
+  FaCertificate,
 } from "react-icons/fa";
 
 import { AdminAuthProvider, useAdminAuth } from "@/context/AdminAuthContext";
@@ -26,6 +27,7 @@ const navItems = [
   { href: "/admin/categories", label: "Categories", Icon: FaTags },
   { href: "/admin/blogs", label: "Blog", Icon: FaBlog },
   { href: "/admin/banners", label: "Banners", Icon: FaImages },
+  { href: "/admin/certifications", label: "Certificates", Icon: FaCertificate },
   { href: "/admin/offers", label: "Offers", Icon: FaPercent },
   { href: "/admin/testimonials", label: "Reviews", Icon: FaStar },
   { href: "/admin/orders", label: "Orders", Icon: FaInbox },
@@ -52,7 +54,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   if (loading || !user) {
     return (
       <div className="min-h-screen grid place-items-center bg-cream-50">
-        <div className="h-10 w-10 rounded-full border-4 border-cream-200 border-t-maroon-800 animate-spin" />
+        <div className="h-10 w-10 rounded-full border-4 border-cream-200 border-t-gray-800 animate-spin" />
       </div>
     );
   }
@@ -60,10 +62,10 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-cream-50 flex">
       {/* Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-maroon-950 text-cream-50 shrink-0">
+      <aside className="hidden lg:flex flex-col w-64 bg-gray-950 text-cream-50 shrink-0">
         <div className="px-6 py-6 border-b border-cream-50/10">
           <Link href="/admin" className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-gold text-maroon-950 font-display text-xl">
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-gold text-gray-950 font-display text-xl">
               T
             </div>
             <div className="leading-tight">
@@ -85,7 +87,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition",
                   active
-                    ? "bg-gold text-maroon-950 font-semibold"
+                    ? "bg-gold text-gray-950 font-semibold"
                     : "text-cream-100/80 hover:bg-cream-50/10 hover:text-cream-50",
                 )}
               >
@@ -122,7 +124,7 @@ function Shell({ children }: { children: React.ReactNode }) {
             <div className="text-[10px] uppercase tracking-widest-x text-gold-dark font-semibold">
               Admin
             </div>
-            <h1 className="display text-xl text-maroon-950 font-semibold">
+            <h1 className="display text-xl text-gray-950 font-semibold">
               {navItems.find((n) =>
                 n.exact ? pathname === n.href : pathname.startsWith(n.href),
               )?.label || "Admin"}
@@ -135,14 +137,14 @@ function Shell({ children }: { children: React.ReactNode }) {
                 {user.role}
               </div>
             </div>
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-maroon-800 text-cream-50 font-semibold">
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-gray-800 text-cream-50 font-semibold">
               {user.name.charAt(0).toUpperCase()}
             </div>
           </div>
         </header>
 
         {/* Mobile nav strip */}
-        <nav className="lg:hidden bg-maroon-950 text-cream-50 overflow-x-auto no-scrollbar">
+        <nav className="lg:hidden bg-gray-950 text-cream-50 overflow-x-auto no-scrollbar">
           <div className="flex gap-1 px-2 py-2">
             {navItems.map(({ href, label, Icon, exact }) => {
               const active = exact ? pathname === href : pathname.startsWith(href);
@@ -153,7 +155,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs whitespace-nowrap transition",
                     active
-                      ? "bg-gold text-maroon-950 font-semibold"
+                      ? "bg-gold text-gray-950 font-semibold"
                       : "text-cream-100/80 hover:bg-cream-50/10",
                   )}
                 >

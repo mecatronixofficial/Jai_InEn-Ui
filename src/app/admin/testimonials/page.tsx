@@ -129,7 +129,7 @@ export default function AdminTestimonialsPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : list.length === 0 ? (
         <EmptyState title="No reviews yet" description="Add customer testimonials to build trust." />
@@ -150,7 +150,7 @@ export default function AdminTestimonialsPage() {
                     title={t.featured ? "Remove from Home Page" : "Show on Home Page"}
                     className={cn(
                       "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] uppercase tracking-widest-x font-bold transition",
-                      t.featured ? "bg-gold text-maroon-950 hover:bg-gold/80" : "bg-cream-100 text-ink-muted hover:bg-cream-200",
+                      t.featured ? "bg-gold text-gray-950 hover:bg-gold/80" : "bg-cream-100 text-ink-muted hover:bg-cream-200",
                     )}
                   >
                     <FaHome className="h-2.5 w-2.5" />
@@ -180,7 +180,7 @@ export default function AdminTestimonialsPage() {
                   </div>
                 </div>
                 <div className="flex gap-1 shrink-0">
-                  <button onClick={() => openEdit(t)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-maroon-800" aria-label="Edit">
+                  <button onClick={() => openEdit(t)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-gray-800" aria-label="Edit">
                     <FaEdit className="h-3.5 w-3.5" />
                   </button>
                   <button onClick={() => handleDelete(t)} className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-red-50 hover:text-red-600" aria-label="Delete">
