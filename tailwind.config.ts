@@ -21,19 +21,19 @@ const config: Config = {
           300: "#e8dab7",
           400: "#d4bf8a",
         },
-        // Deep textile maroon — primary brand
-        maroon: {
-          50: "#fbf4f4",
-          100: "#f5e3e3",
-          200: "#ecc6c6",
-          300: "#dd9999",
-          400: "#c96868",
-          500: "#b14545",
-          600: "#993434",
-          700: "#7d2b2b",
-          800: "#682727",
-          900: "#5a2424",
-          950: "#321010",
+        // Neutral graphite gray — primary brand
+        gray: {
+          50: "#f9fafb",
+          100: "#f3f4f6",
+          200: "#e5e7eb",
+          300: "#d1d5db",
+          400: "#9ca3af",
+          500: "#6b7280",
+          600: "#4b5563",
+          700: "#374151",
+          800: "#1f2937",
+          900: "#111827",
+          950: "#030712",
         },
         // Antique gold accent
         gold: {
@@ -49,17 +49,24 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
+        display: [
+          "var(--font-display)",
+          "Baskerville",
+          "Libre Baskerville",
+          "Baskerville Old Face",
+          "Georgia",
+          "serif",
+        ],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 4px 24px -8px rgba(82, 33, 33, 0.12)",
+        soft: "0 4px 24px -8px rgba(31, 41, 55, 0.12)",
         warm: "0 12px 40px -12px rgba(184, 134, 11, 0.25)",
         crisp: "0 1px 0 0 rgba(26, 20, 16, 0.08)",
       },
       backgroundImage: {
         "weave-light":
-          "repeating-linear-gradient(45deg, rgba(184,134,11,0.04) 0px, rgba(184,134,11,0.04) 1px, transparent 1px, transparent 8px), repeating-linear-gradient(-45deg, rgba(125,43,43,0.03) 0px, rgba(125,43,43,0.03) 1px, transparent 1px, transparent 8px)",
+          "repeating-linear-gradient(45deg, rgba(184,134,11,0.04) 0px, rgba(184,134,11,0.04) 1px, transparent 1px, transparent 8px), repeating-linear-gradient(-45deg, rgba(55,65,81,0.035) 0px, rgba(55,65,81,0.035) 1px, transparent 1px, transparent 8px)",
         "weave-dark":
           "repeating-linear-gradient(45deg, rgba(212,167,44,0.08) 0px, rgba(212,167,44,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, rgba(212,167,44,0.06) 0px, rgba(212,167,44,0.06) 1px, transparent 1px, transparent 10px)",
         noise:

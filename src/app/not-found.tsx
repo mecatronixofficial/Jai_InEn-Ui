@@ -3,7 +3,7 @@ import { FaHome, FaShoppingBag } from "react-icons/fa";
 
 export default function NotFound() {
   return (
-    <main className="relative isolate overflow-hidden bg-maroon-950 text-cream-50 min-h-[80vh] grid place-items-center">
+    <main className="relative isolate overflow-hidden bg-gray-950 text-cream-50 min-h-[80vh] grid place-items-center">
       <div className="absolute inset-0 bg-weave-dark opacity-50" />
 
       <div className="relative container-x text-center py-24">
@@ -24,7 +24,7 @@ export default function NotFound() {
           </Link>
           <Link
             href="/products"
-            className="btn-outline !border-cream-50/30 !text-cream-50 hover:!bg-cream-50 hover:!text-maroon-900"
+            className="btn-outline !border-cream-50/30 !text-cream-50 hover:!bg-cream-50 hover:!text-gray-900"
           >
             <FaShoppingBag className="h-3.5 w-3.5" /> Browse Products
           </Link>

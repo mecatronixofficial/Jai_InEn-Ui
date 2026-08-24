@@ -63,11 +63,11 @@ function StatTile({ item, light }: { item: Stat; light: boolean }) {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      className={`p-7 text-center ${light ? "bg-maroon-900" : "bg-cream-50"}`}
+      className={`p-7 text-center ${light ? "bg-gray-900" : "bg-cream-50"}`}
     >
       <div
         className={`display text-5xl md:text-6xl font-semibold leading-none ${
-          light ? "text-gold-light" : "text-maroon-800"
+          light ? "text-gold-light" : "text-gray-800"
         }`}
       >
         {n.toLocaleString("en-IN")}

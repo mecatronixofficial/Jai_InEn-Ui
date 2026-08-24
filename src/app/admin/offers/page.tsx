@@ -119,7 +119,7 @@ export default function AdminOffersPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : list.length === 0 ? (
         <EmptyState
@@ -143,7 +143,7 @@ export default function AdminOffersPage() {
                   </span>
                   {!o.active && <FaEyeSlash className="h-3.5 w-3.5 text-ink-muted" />}
                 </div>
-                <h3 className="display text-xl font-semibold text-maroon-950">{o.title}</h3>
+                <h3 className="display text-xl font-semibold text-gray-950">{o.title}</h3>
                 <p className="text-sm text-ink-soft mt-2">{o.description}</p>
                 {o.code && (
                   <div className="mt-3 inline-flex items-center gap-2 rounded-lg border border-dashed border-cream-300 px-3 py-1.5 text-xs">

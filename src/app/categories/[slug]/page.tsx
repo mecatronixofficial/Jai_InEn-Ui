@@ -62,7 +62,7 @@ export default async function CategoryDetail({
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-gold-dark"
+              className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark"
             >
               View all products <FaArrowRight className="h-3 w-3" />
             </Link>
@@ -70,7 +70,7 @@ export default async function CategoryDetail({
 
           {list.length === 0 ? (
             <div className="card p-12 text-center">
-              <h3 className="display text-2xl text-maroon-950">Coming soon</h3>
+              <h3 className="display text-2xl text-gray-950">Coming soon</h3>
               <p className="text-ink-muted mt-2">
                 We&apos;re updating this category. Check back shortly.
               </p>

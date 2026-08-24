@@ -23,10 +23,10 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/products", label: "Products" },
-  { href: "/categories", label: "Categories" },
+  { href: "/sustainability", label: "Sustainability" },
+  { href: "/certifications", label: "Certifications" },
   { href: "/blog", label: "Blog" },
-  { href: "/testimonials", label: "Reviews" },
-  { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact" }
 ];
 
 export default function Navbar() {
@@ -38,7 +38,7 @@ export default function Navbar() {
   const wishlistCount = useWishlist((s) => s.items.length);
 
   useEffect(() => {
-    api.publicCategories().then(setCategories).catch(() => {});
+    api.publicCategories().then(setCategories).catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50">
       {/* Top utility strip */}
-      <div className="bg-maroon-900 text-cream-100 text-xs">
+      <div className="bg-gray-900 text-cream-100 text-xs">
         <div className="container-x flex h-9 items-center justify-between">
           <span className="hidden sm:inline tracking-wider-x">
             {siteConfig.address.city} • {siteConfig.address.state} • Manufacturing since {siteConfig.established}
@@ -100,13 +100,13 @@ export default function Navbar() {
                 className="h-11 w-11 object-cover"
               />
             ) : (
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-maroon-950 font-display text-2xl font-bold uppercase">
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-gray-950 font-display text-2xl font-bold uppercase">
                 {siteConfig?.name?.charAt(0) || "T"}
               </div>
             )}
 
             <div className="leading-tight">
-              <div className="display text-xl text-maroon-900 font-semibold tracking-tight">
+              <div className="display text-xl text-gray-900 font-semibold tracking-tight">
                 {siteConfig.name}
               </div>
               <div className="text-[10px] uppercase tracking-widest-x text-gold-dark font-semibold">
@@ -137,8 +137,8 @@ export default function Navbar() {
                       className={cn(
                         "relative px-4 py-2 text-sm font-medium tracking-wide transition flex items-center gap-1.5",
                         active
-                          ? "text-maroon-800"
-                          : "text-ink-soft hover:text-maroon-800",
+                          ? "text-gray-800"
+                          : "text-ink-soft hover:text-gray-800",
                       )}
                     >
                       {link.label}
@@ -184,7 +184,7 @@ export default function Navbar() {
                                     />
                                   </div>
                                   <div>
-                                    <div className="text-sm font-medium text-ink group-hover:text-maroon-800">
+                                    <div className="text-sm font-medium text-ink group-hover:text-gray-800">
                                       {c.name}
                                     </div>
                                     <div className="text-xs text-ink-muted">
@@ -196,7 +196,7 @@ export default function Navbar() {
                             </div>
                             <Link
                               href="/products"
-                              className="mt-2 block text-center text-xs uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-gold-dark py-2 border-t border-cream-200 pt-3"
+                              className="mt-2 block text-center text-xs uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark py-2 border-t border-cream-200 pt-3"
                             >
                               View All Products →
                             </Link>
@@ -215,8 +215,8 @@ export default function Navbar() {
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium tracking-wide transition",
                     active
-                      ? "text-maroon-800"
-                      : "text-ink-soft hover:text-maroon-800",
+                      ? "text-gray-800"
+                      : "text-ink-soft hover:text-gray-800",
                   )}
                 >
                   {link.label}
@@ -235,14 +235,14 @@ export default function Navbar() {
           <div className="flex items-center gap-1">
             <Link
               href="/products"
-              className="hidden sm:grid h-10 w-10 place-items-center rounded-full text-ink-soft hover:bg-cream-100 hover:text-maroon-800 transition"
+              className="hidden sm:grid h-10 w-10 place-items-center rounded-full text-ink-soft hover:bg-cream-100 hover:text-gray-800 transition"
               aria-label="Search"
             >
               <FaSearch className="h-4 w-4" />
             </Link>
             <Link
               href="/wishlist"
-              className="relative grid h-10 w-10 place-items-center rounded-full text-ink-soft hover:bg-cream-100 hover:text-maroon-800 transition"
+              className="relative grid h-10 w-10 place-items-center rounded-full text-ink-soft hover:bg-cream-100 hover:text-gray-800 transition"
               aria-label="Wishlist"
             >
               <FaHeart className="h-4 w-4" />
@@ -299,7 +299,7 @@ export default function Navbar() {
                         ? pathname === "/"
                         : pathname.startsWith(link.href)
                     )
-                      ? "bg-maroon-800 text-cream-50"
+                      ? "bg-gray-800 text-cream-50"
                       : "text-ink-soft hover:bg-cream-100",
                   )}
                 >

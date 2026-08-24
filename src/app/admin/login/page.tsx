@@ -15,12 +15,12 @@ function BrandLogo({ className }: { className?: string }) {
       {siteConfig.logo ? (
         <img src={siteConfig.logo} alt={siteConfig.name} className="h-11 w-11 object-cover" />
       ) : (
-        <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-maroon-950 font-display text-2xl font-bold uppercase">
+        <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-gray-950 font-display text-2xl font-bold uppercase">
           {siteConfig?.name?.charAt(0) || "T"}
         </div>
       )}
       <div className="leading-tight">
-        <div className="display text-xl text-maroon-900 font-semibold tracking-tight">{siteConfig.name}</div>
+        <div className="display text-xl text-gray-900 font-semibold tracking-tight">{siteConfig.name}</div>
         <div className="text-[10px] uppercase tracking-widest-x text-gold-dark font-semibold">Admin Panel</div>
       </div>
     </Link>
@@ -164,7 +164,7 @@ export default function AdminLoginPage() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 rounded-lg bg-maroon-800 text-cream-50 py-3 text-sm font-semibold hover:bg-maroon-900 disabled:opacity-60 transition"
+        className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-800 text-cream-50 py-3 text-sm font-semibold hover:bg-gray-900 disabled:opacity-60 transition"
       >
         {loading && <FaSpinner className="h-3.5 w-3.5 animate-spin" />}
         {loading ? loadingLabel : label}
@@ -177,7 +177,7 @@ export default function AdminLoginPage() {
       <button
         type="button"
         onClick={goBack}
-        className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-maroon-800 transition"
+        className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-gray-800 transition"
       >
         <FaArrowLeft className="h-3 w-3" /> Back
       </button>
@@ -188,9 +188,9 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-5 bg-cream-50">
       {/* Visual side */}
-      <div className="hidden lg:flex lg:col-span-2 relative bg-maroon-950 text-cream-50 overflow-hidden">
+      <div className="hidden lg:flex lg:col-span-2 relative bg-gray-950 text-cream-50 overflow-hidden">
         <div className="absolute inset-0 bg-weave-dark opacity-50" />
-        <div className="absolute inset-0 bg-gradient-to-br from-maroon-950 via-maroon-900/90 to-maroon-950" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900/90 to-gray-950" />
         <div className="relative flex flex-col justify-between p-12 w-full">
           <BrandLogo />
           <div>
@@ -218,7 +218,7 @@ export default function AdminLoginPage() {
           {/* ── STEP: login ── */}
           {step === "login" && (
             <>
-              <h1 className="display text-4xl font-semibold text-maroon-950">Sign in</h1>
+              <h1 className="display text-4xl font-semibold text-gray-950">Sign in</h1>
               <p className="text-ink-soft mt-2">Enter your admin credentials to continue.</p>
 
               <form onSubmit={handleLogin} className="mt-10 space-y-5">
@@ -232,7 +232,7 @@ export default function AdminLoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="admin@example.in"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
                       autoFocus
                     />
                   </div>
@@ -249,7 +249,7 @@ export default function AdminLoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
                     />
                   </div>
                 </div>
@@ -262,7 +262,7 @@ export default function AdminLoginPage() {
                   <button
                     type="button"
                     onClick={() => { setError(""); setFpEmail(email); setStep("forgot"); }}
-                    className="text-maroon-700 hover:underline font-medium"
+                    className="text-gray-700 hover:underline font-medium"
                   >
                     Forgot password?
                   </button>
@@ -275,7 +275,7 @@ export default function AdminLoginPage() {
           {step === "forgot" && (
             <>
               <BackButton />
-              <h1 className="display text-4xl font-semibold text-maroon-950 mt-4">Forgot password</h1>
+              <h1 className="display text-4xl font-semibold text-gray-950 mt-4">Forgot password</h1>
               <p className="text-ink-soft mt-2">
                 Enter your admin email and we'll send a one-time code to reset your password.
               </p>
@@ -291,7 +291,7 @@ export default function AdminLoginPage() {
                       value={fpEmail}
                       onChange={(e) => setFpEmail(e.target.value)}
                       placeholder="admin@example.in"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
                       autoFocus
                     />
                   </div>
@@ -307,9 +307,9 @@ export default function AdminLoginPage() {
           {step === "otp" && (
             <>
               <BackButton />
-              <h1 className="display text-4xl font-semibold text-maroon-950 mt-4">Enter OTP</h1>
+              <h1 className="display text-4xl font-semibold text-gray-950 mt-4">Enter OTP</h1>
               <p className="text-ink-soft mt-2">
-                A 6-digit code was sent to <span className="font-medium text-maroon-800">{fpEmail}</span>. Enter it below.
+                A 6-digit code was sent to <span className="font-medium text-gray-800">{fpEmail}</span>. Enter it below.
               </p>
 
               <form onSubmit={handleVerifyOtp} className="mt-10 space-y-6">
@@ -330,7 +330,7 @@ export default function AdminLoginPage() {
                         title={`OTP digit ${i + 1}`}
                         aria-label={`OTP digit ${i + 1}`}
                         placeholder="·"
-                        className="w-full aspect-square text-center text-lg font-semibold rounded-lg border border-cream-300 bg-white focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10 caret-maroon-700"
+                        className="w-full aspect-square text-center text-lg font-semibold rounded-lg border border-cream-300 bg-white focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 caret-gray-700"
                         autoFocus={i === 0}
                       />
                     ))}
@@ -345,7 +345,7 @@ export default function AdminLoginPage() {
                   <button
                     type="button"
                     onClick={() => { setError(""); setOtp(["","","","","",""]); handleForgot({ preventDefault: () => {} } as FormEvent); }}
-                    className="text-maroon-700 hover:underline font-medium"
+                    className="text-gray-700 hover:underline font-medium"
                   >
                     Resend
                   </button>
@@ -358,7 +358,7 @@ export default function AdminLoginPage() {
           {step === "reset" && (
             <>
               <BackButton />
-              <h1 className="display text-4xl font-semibold text-maroon-950 mt-4">New password</h1>
+              <h1 className="display text-4xl font-semibold text-gray-950 mt-4">New password</h1>
               <p className="text-ink-soft mt-2">Choose a strong password for your admin account.</p>
 
               <form onSubmit={handleReset} className="mt-10 space-y-5">
@@ -373,7 +373,7 @@ export default function AdminLoginPage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Min. 8 characters"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
                       autoFocus
                     />
                   </div>
@@ -390,7 +390,7 @@ export default function AdminLoginPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat your password"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
                     />
                   </div>
                 </div>
@@ -407,12 +407,12 @@ export default function AdminLoginPage() {
               <div className="flex justify-center">
                 <FaCheckCircle className="h-14 w-14 text-green-500" />
               </div>
-              <h1 className="display text-3xl font-semibold text-maroon-950">Password updated</h1>
+              <h1 className="display text-3xl font-semibold text-gray-950">Password updated</h1>
               <p className="text-ink-soft">{success}</p>
               <button
                 type="button"
                 onClick={() => { setStep("login"); setError(""); setSuccess(""); }}
-                className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-maroon-800 text-cream-50 py-3 text-sm font-semibold hover:bg-maroon-900 transition"
+                className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-gray-800 text-cream-50 py-3 text-sm font-semibold hover:bg-gray-900 transition"
               >
                 Back to sign in
               </button>

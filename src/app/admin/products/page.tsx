@@ -224,7 +224,7 @@ export default function AdminProductsPage() {
       {/* List */}
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : !list || list.data.length === 0 ? (
         <EmptyState
@@ -301,7 +301,7 @@ export default function AdminProductsPage() {
                           type="button"
                           onClick={() => openEdit(p)}
                           aria-label="Edit"
-                          className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-maroon-800"
+                          className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-gray-800"
                         >
                           <FaEdit className="h-3.5 w-3.5" />
                         </button>

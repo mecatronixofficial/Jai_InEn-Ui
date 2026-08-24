@@ -39,7 +39,7 @@ export default async function CategoriesPage() {
                   alt={cat.name}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/90 via-maroon-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/30 to-transparent" />
 
                 <div className="absolute top-5 right-5 text-cream-50 text-xs font-semibold opacity-70">
                   {String(i + 1).padStart(2, "0")} / {String(categories.length).padStart(2, "0")}

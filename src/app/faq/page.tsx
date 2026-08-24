@@ -38,10 +38,10 @@ export default function FAQPage() {
 
               <div className="space-y-4">
                 <div className="card p-6">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-cream-100 text-maroon-800">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-cream-100 text-gray-800">
                     <FaQuestionCircle className="h-5 w-5" />
                   </div>
-                  <h3 className="display text-xl font-semibold text-maroon-950 mt-4">
+                  <h3 className="display text-xl font-semibold text-gray-950 mt-4">
                     {faqs.length} answered
                   </h3>
                   <p className="text-sm text-ink-muted mt-1">
@@ -49,7 +49,7 @@ export default function FAQPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-maroon-950 text-cream-50 p-7 relative overflow-hidden">
+                <div className="rounded-2xl bg-gray-950 text-cream-50 p-7 relative overflow-hidden">
                   <div className="absolute inset-0 bg-weave-dark opacity-40" />
                   <div className="relative">
                     <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold">
@@ -72,7 +72,7 @@ export default function FAQPage() {
                       </a>
                       <a
                         href={`mailto:${siteConfig.email}`}
-                        className="btn-outline !border-cream-50/30 !text-cream-50 hover:!bg-cream-50 hover:!text-maroon-900 w-full justify-center"
+                        className="btn-outline !border-cream-50/30 !text-cream-50 hover:!bg-cream-50 hover:!text-gray-900 w-full justify-center"
                       >
                         <FaEnvelope className="h-4 w-4" /> Email Us
                       </a>

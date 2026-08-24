@@ -67,7 +67,7 @@ export default function ContactPage() {
             {tiles.map(({ Icon, label, lines, href }) => {
               const inner = (
                 <div className="group card p-6 h-full hover:shadow-warm transition">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-maroon-800 text-cream-50 group-hover:bg-gold group-hover:text-maroon-950 transition">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-gray-800 text-cream-50 group-hover:bg-gold group-hover:text-gray-950 transition">
                     <Icon className="h-4 w-4" />
                   </div>
                   <div className="mt-4 text-[10px] uppercase tracking-widest-x text-gold-dark font-semibold">
@@ -79,7 +79,7 @@ export default function ContactPage() {
                         key={i}
                         className={
                           i === 0
-                            ? "text-maroon-950 font-semibold"
+                            ? "text-gray-950 font-semibold"
                             : "text-ink-muted text-sm"
                         }
                       >
@@ -117,7 +117,7 @@ export default function ContactPage() {
             </div>
 
             <aside className="lg:col-span-5 space-y-6">
-              <div className="rounded-2xl bg-maroon-950 text-cream-50 p-8 relative overflow-hidden">
+              <div className="rounded-2xl bg-gray-950 text-cream-50 p-8 relative overflow-hidden">
                 <div className="absolute inset-0 bg-weave-dark opacity-30 pointer-events-none" />
                 <div className="relative">
                   <h3 className="display text-2xl font-semibold">
@@ -132,7 +132,7 @@ export default function ContactPage() {
                       href={siteConfig.socials.whatsapp}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-4 rounded-xl bg-gold px-5 py-4 text-maroon-950 hover:bg-gold-light transition"
+                      className="flex items-center gap-4 rounded-xl bg-gold px-5 py-4 text-gray-950 hover:bg-gold-light transition"
                     >
                       <FaWhatsapp className="h-6 w-6" />
                       <div>
@@ -171,7 +171,7 @@ export default function ContactPage() {
               </div>
 
               <div className="card p-8">
-                <h3 className="display text-xl font-semibold text-maroon-950">
+                <h3 className="display text-xl font-semibold text-gray-950">
                   Follow our work
                 </h3>
                 <div className="mt-5 flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function ContactPage() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label={label}
-                      className="grid h-11 w-11 place-items-center rounded-full bg-cream-100 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50 transition"
+                      className="grid h-11 w-11 place-items-center rounded-full bg-cream-100 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
                     >
                       <Icon className="h-4 w-4" />
                     </a>

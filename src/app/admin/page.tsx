@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
     return (
       <AdminCard className="p-8 text-center">
         <FaExclamationTriangle className="h-8 w-8 text-amber-500 mx-auto mb-3" />
-        <h3 className="display text-xl text-maroon-950">Couldn't load dashboard</h3>
+        <h3 className="display text-xl text-gray-950">Couldn't load dashboard</h3>
         <p className="text-ink-muted text-sm mt-2">{error || "Unknown error"}</p>
         <p className="text-ink-muted text-xs mt-4">
           Check that the backend is running and reachable at{" "}
@@ -99,7 +99,7 @@ export default function AdminDashboardPage() {
       {/* Order pipeline */}
       <AdminCard className="p-6">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="display text-xl font-semibold text-maroon-950">
+          <h2 className="display text-xl font-semibold text-gray-950">
             Order pipeline
           </h2>
           <Link href="/admin/orders">
@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
                 >
                   {status}
                 </div>
-                <div className="display text-2xl font-semibold text-maroon-950 mt-2">
+                <div className="display text-2xl font-semibold text-gray-950 mt-2">
                   {count}
                 </div>
               </div>
@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
       {/* Recent orders */}
       <AdminCard>
         <div className="px-6 py-4 border-b border-cream-200 flex items-center justify-between">
-          <h2 className="display text-xl font-semibold text-maroon-950">
+          <h2 className="display text-xl font-semibold text-gray-950">
             Recent enquiries
           </h2>
           <Link href="/admin/orders">
@@ -198,9 +198,9 @@ export default function AdminDashboardPage() {
           <Link
             key={href}
             href={href}
-            className="rounded-2xl bg-maroon-950 text-cream-50 p-5 flex items-center gap-4 hover:bg-maroon-900 transition group"
+            className="rounded-2xl bg-gray-950 text-cream-50 p-5 flex items-center gap-4 hover:bg-gray-900 transition group"
           >
-            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gold text-maroon-950 group-hover:scale-105 transition">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-gold text-gray-950 group-hover:scale-105 transition">
               <Icon className="h-4 w-4" />
             </div>
             <span className="font-semibold">{label}</span>

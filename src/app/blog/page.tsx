@@ -39,7 +39,7 @@ export default async function BlogPage() {
                     alt={first.title}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute top-5 left-5 rounded-full bg-cream-50/95 px-3 py-1.5 text-[10px] uppercase tracking-widest-x font-bold text-maroon-800">
+                  <div className="absolute top-5 left-5 rounded-full bg-cream-50/95 px-3 py-1.5 text-[10px] uppercase tracking-widest-x font-bold text-gray-800">
                     Featured · {first.category}
                   </div>
                 </div>
@@ -51,13 +51,13 @@ export default async function BlogPage() {
                       <FaClock className="h-2.5 w-2.5" /> {first.readTime} min read
                     </span>
                   </div>
-                  <h2 className="display text-3xl md:text-4xl lg:text-5xl font-semibold text-maroon-950 leading-tight group-hover:text-maroon-700 transition">
+                  <h2 className="display text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-950 leading-tight group-hover:text-gray-700 transition">
                     {first.title}
                   </h2>
                   <p className="mt-4 text-ink-soft leading-relaxed">
                     {first.excerpt}
                   </p>
-                  <div className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-maroon-800 group-hover:gap-3 transition-all">
+                  <div className="mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-gray-800 group-hover:gap-3 transition-all">
                     Read article <FaArrowRight className="h-3 w-3" />
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export default async function BlogPage() {
                     alt={b.title}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 left-3 rounded-full bg-cream-50/95 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold text-maroon-800">
+                  <div className="absolute top-3 left-3 rounded-full bg-cream-50/95 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold text-gray-800">
                     {b.category}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export default async function BlogPage() {
                     <span>·</span>
                     <span>{b.readTime} min read</span>
                   </div>
-                  <h3 className="display text-2xl font-semibold text-maroon-950 mt-2 leading-tight group-hover:text-maroon-700 transition">
+                  <h3 className="display text-2xl font-semibold text-gray-950 mt-2 leading-tight group-hover:text-gray-700 transition">
                     {b.title}
                   </h3>
                   <p className="mt-2 text-sm text-ink-soft line-clamp-2">

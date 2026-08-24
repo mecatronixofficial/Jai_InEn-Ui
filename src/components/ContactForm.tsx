@@ -57,7 +57,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
         className="text-center py-12"
       >
         <FaCheckCircle className="mx-auto h-14 w-14 text-gold" />
-        <h3 className="display text-3xl font-semibold text-maroon-950 mt-5">
+        <h3 className="display text-3xl font-semibold text-gray-950 mt-5">
           Thank you!
         </h3>
         <p className="mt-3 text-ink-soft">
@@ -138,7 +138,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
         />
       </div>
 
-      {error && <p className="text-sm text-maroon-700">{error}</p>}
+      {error && <p className="text-sm text-gray-700">{error}</p>}
 
       <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-60">
         <FaPaperPlane className="h-4 w-4" /> {submitting ? "Sending…" : "Send Enquiry"}

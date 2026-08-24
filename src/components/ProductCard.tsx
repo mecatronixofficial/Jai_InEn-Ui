@@ -58,7 +58,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           {product.newArrival && (
-            <span className="inline-flex items-center rounded-full bg-cream-50 text-maroon-800 px-2.5 py-1 text-[10px] uppercase tracking-widest-x font-bold">
+            <span className="inline-flex items-center rounded-full bg-cream-50 text-gray-800 px-2.5 py-1 text-[10px] uppercase tracking-widest-x font-bold">
               New
             </span>
           )}
@@ -72,7 +72,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Out of stock overlay */}
         {product.stock === 0 && (
           <div className="absolute inset-0 grid place-items-center bg-cream-50/85 z-10">
-            <span className="text-maroon-800 uppercase tracking-widest-x text-xs font-bold">
+            <span className="text-gray-800 uppercase tracking-widest-x text-xs font-bold">
               Out of stock
             </span>
           </div>
@@ -86,10 +86,10 @@ export default function ProductCard({ product }: { product: Product }) {
             toggle(product.id);
           }}
           aria-label={has ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-cream-50/90 backdrop-blur text-maroon-800 hover:bg-cream-50 transition shadow-soft"
+          className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-cream-50/90 backdrop-blur text-gray-800 hover:bg-cream-50 transition shadow-soft"
         >
           {has ? (
-            <FaHeart className="h-3.5 w-3.5 text-maroon-800" />
+            <FaHeart className="h-3.5 w-3.5 text-gray-800" />
           ) : (
             <FaRegHeart className="h-3.5 w-3.5" />
           )}
@@ -101,7 +101,7 @@ export default function ProductCard({ product }: { product: Product }) {
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 w-full rounded-full bg-maroon-900 text-cream-50 py-2.5 text-xs font-medium tracking-wide hover:bg-maroon-950 transition"
+            className="flex items-center justify-center gap-2 w-full rounded-full bg-gray-900 text-cream-50 py-2.5 text-xs font-medium tracking-wide hover:bg-gray-950 transition"
           >
             <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
           </a>
@@ -119,7 +119,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
 
-        <h3 className="display text-xl font-semibold text-maroon-950 mt-2 leading-tight group-hover:text-maroon-700 transition">
+        <h3 className="display text-xl font-semibold text-gray-950 mt-2 leading-tight group-hover:text-gray-700 transition">
           {product.name}
         </h3>
 

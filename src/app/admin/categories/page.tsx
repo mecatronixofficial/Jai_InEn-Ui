@@ -112,7 +112,7 @@ export default function AdminCategoriesPage() {
 
       {loading ? (
         <AdminCard className="p-16 grid place-items-center">
-          <FaSpinner className="h-7 w-7 text-maroon-800 animate-spin" />
+          <FaSpinner className="h-7 w-7 text-gray-800 animate-spin" />
         </AdminCard>
       ) : list.length === 0 ? (
         <EmptyState
@@ -134,7 +134,7 @@ export default function AdminCategoriesPage() {
                 )}
               </div>
               <div className="p-5">
-                <h3 className="display text-xl font-semibold text-maroon-950">{c.name}</h3>
+                <h3 className="display text-xl font-semibold text-gray-950">{c.name}</h3>
                 <p className="text-xs text-ink-muted mt-1">/{c.slug} · {c.productCount} products</p>
                 <p className="text-sm text-ink-soft mt-2 line-clamp-2">{c.description}</p>
                 <div className="mt-4 flex gap-2 pt-4 border-t border-cream-200">

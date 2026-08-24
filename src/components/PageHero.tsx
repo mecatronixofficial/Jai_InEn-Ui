@@ -16,7 +16,7 @@ export default function PageHero({
   breadcrumbs,
 }: PageHeroProps) {
   return (
-    <section className="relative bg-maroon-950 text-cream-50 overflow-hidden">
+    <section className="relative bg-gray-950 text-cream-50 overflow-hidden">
       {bgImage && (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -25,7 +25,7 @@ export default function PageHero({
             alt=""
             className="absolute inset-0 h-full w-full object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-maroon-950/70 via-maroon-950/85 to-maroon-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/70 via-gray-950/85 to-gray-950" />
         </>
       )}
       <div className="absolute inset-0 bg-weave-dark opacity-50" />

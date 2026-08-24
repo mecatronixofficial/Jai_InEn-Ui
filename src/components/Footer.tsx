@@ -21,7 +21,7 @@ export default function Footer() {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-maroon-950 text-cream-100 relative overflow-hidden">
+    <footer className="bg-gray-950 text-cream-100 relative overflow-hidden">
       {/* Decorative weave overlay */}
       <div className="absolute inset-0 bg-weave-dark opacity-50 pointer-events-none" />
 
@@ -66,7 +66,7 @@ export default function Footer() {
                 className="h-12 w-12 object-cover"
               />
             ) : (
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-maroon-950 font-display text-2xl font-bold uppercase">
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-gray-950 font-display text-2xl font-bold uppercase">
                 {siteConfig?.name?.charAt(0) || "T"}
               </div>
             )}
@@ -114,7 +114,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-gold hover:text-maroon-950 transition"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-gold hover:text-gray-950 transition"
               >
                 <Icon className="h-4 w-4" />
               </a>
@@ -149,6 +149,8 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             {[
               ["About", "/about"],
+              ["Sustainability", "/sustainability"],
+              ["Certifications", "/certifications"],
               ["Categories", "/categories"],
               ["Blog", "/blog"],
               ["Reviews", "/testimonials"],

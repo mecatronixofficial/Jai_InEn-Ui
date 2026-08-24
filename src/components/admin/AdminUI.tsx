@@ -21,9 +21,9 @@ export function AdminButton({
   const base =
     "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed";
   const v = {
-    primary: "bg-maroon-800 text-cream-50 hover:bg-maroon-900",
-    outline: "border border-maroon-800 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50",
-    ghost: "text-ink-soft hover:bg-cream-100 hover:text-maroon-800",
+    primary: "bg-gray-800 text-cream-50 hover:bg-gray-900",
+    outline: "border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-cream-50",
+    ghost: "text-ink-soft hover:bg-cream-100 hover:text-gray-800",
     danger: "bg-red-600 text-white hover:bg-red-700",
   }[variant];
   return (
@@ -76,7 +76,7 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10 transition",
+        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 transition",
         props.className,
       )}
     />
@@ -88,7 +88,7 @@ export function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement
     <textarea
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-maroon-700 focus:ring-2 focus:ring-maroon-700/10 transition resize-y",
+        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 transition resize-y",
         props.className,
       )}
     />
@@ -100,7 +100,7 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     <select
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink focus:outline-none focus:border-maroon-700 transition",
+        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink focus:outline-none focus:border-gray-700 transition",
         props.className,
       )}
     />
@@ -181,7 +181,7 @@ export function Modal({
             className={cn("w-full bg-white rounded-2xl shadow-warm", maxWidth)}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-cream-200">
-              <h3 className="display text-xl font-semibold text-maroon-950">{title}</h3>
+              <h3 className="display text-xl font-semibold text-gray-950">{title}</h3>
               <button
                 type="button"
                 onClick={onClose}
@@ -351,18 +351,18 @@ export function ImageUploader({
       <label className="block">
         <div
           className={cn(
-            "border-2 border-dashed border-cream-300 rounded-lg p-6 text-center cursor-pointer hover:border-maroon-800 hover:bg-cream-50 transition",
+            "border-2 border-dashed border-cream-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-800 hover:bg-cream-50 transition",
             uploading && "opacity-60 pointer-events-none",
           )}
         >
           {uploading ? (
             <>
-              <FaSpinner className="h-6 w-6 text-maroon-800 animate-spin mx-auto" />
+              <FaSpinner className="h-6 w-6 text-gray-800 animate-spin mx-auto" />
               <p className="text-sm text-ink-soft mt-2">Uploading…</p>
             </>
           ) : (
             <>
-              <FaUpload className="h-6 w-6 text-maroon-800 mx-auto" />
+              <FaUpload className="h-6 w-6 text-gray-800 mx-auto" />
               <p className="text-sm text-ink-soft mt-2">
                 {multiple ? "Click to select images" : "Click to upload"}
               </p>
@@ -393,7 +393,7 @@ export function StatTile({
   label: string;
   value: string | number;
   hint?: string;
-  accent?: "gold" | "maroon";
+  accent?: "gold" | "gray";
 }) {
   return (
     <AdminCard className="p-6">
@@ -403,7 +403,7 @@ export function StatTile({
       <div
         className={cn(
           "display text-4xl font-semibold mt-2",
-          accent === "gold" ? "text-gold-dark" : "text-maroon-900",
+          accent === "gold" ? "text-gold-dark" : "text-gray-900",
         )}
       >
         {value}
@@ -426,7 +426,7 @@ export function EmptyState({
 }) {
   return (
     <AdminCard className="p-12 text-center">
-      <h3 className="display text-2xl text-maroon-950">{title}</h3>
+      <h3 className="display text-2xl text-gray-950">{title}</h3>
       {description && <p className="text-ink-muted mt-2">{description}</p>}
       {action && <div className="mt-6">{action}</div>}
     </AdminCard>

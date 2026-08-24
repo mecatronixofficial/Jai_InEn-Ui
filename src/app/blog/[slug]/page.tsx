@@ -61,7 +61,7 @@ export default async function BlogDetail({
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-4 text-xs text-ink-muted mb-10 pb-6 border-b border-cream-200">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-maroon-800 text-cream-50 font-semibold text-sm">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-gray-800 text-cream-50 font-semibold text-sm">
                 {post.author.charAt(0)}
               </div>
               <div>
@@ -119,7 +119,7 @@ export default async function BlogDetail({
               <button
                 key={label}
                 type="button"
-                className="grid h-9 w-9 place-items-center rounded-full bg-cream-100 text-maroon-800 hover:bg-maroon-800 hover:text-cream-50 transition"
+                className="grid h-9 w-9 place-items-center rounded-full bg-cream-100 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
                 aria-label={label}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -133,12 +133,12 @@ export default async function BlogDetail({
       <section className="section-y bg-cream-100/50">
         <div className="container-x">
           <div className="flex items-center justify-between mb-10">
-            <h2 className="display text-3xl md:text-4xl font-semibold text-maroon-950">
+            <h2 className="display text-3xl md:text-4xl font-semibold text-gray-950">
               Continue reading
             </h2>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-maroon-800 hover:text-gold-dark"
+              className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark"
             >
               <FaArrowLeft className="h-3 w-3" /> All articles
             </Link>
@@ -154,7 +154,7 @@ export default async function BlogDetail({
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="display text-xl font-semibold text-maroon-950 mt-4 leading-tight group-hover:text-maroon-700 transition">
+                <h3 className="display text-xl font-semibold text-gray-950 mt-4 leading-tight group-hover:text-gray-700 transition">
                   {b.title}
                 </h3>
                 <div className="text-xs text-ink-muted mt-2">

@@ -43,7 +43,7 @@ export default function SectionTitle({
           <span
             className={cn(
               "text-[11px] uppercase tracking-widest-x font-semibold",
-              light ? "text-gold-light" : "text-maroon-800"
+              light ? "text-gold-light" : "text-gray-800"
             )}
           >
             {eyebrow}
@@ -54,7 +54,7 @@ export default function SectionTitle({
       <h2
         className={cn(
           "display text-4xl md:text-5xl lg:text-[3.25rem] font-semibold leading-[1.05] tracking-tight",
-          light ? "text-cream-50" : "text-maroon-950"
+          light ? "text-cream-50" : "text-gray-950"
         )}
       >
         {title}

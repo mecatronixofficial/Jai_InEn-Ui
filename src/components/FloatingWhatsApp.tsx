@@ -36,7 +36,7 @@ export default function FloatingWhatsApp() {
               type="button"
               onClick={() => setTooltipOpen(false)}
               aria-label="Dismiss"
-              className="absolute top-1 right-2 text-ink-muted hover:text-maroon-800 text-xs"
+              className="absolute top-1 right-2 text-ink-muted hover:text-gray-800 text-xs"
             >
               ✕
             </button>

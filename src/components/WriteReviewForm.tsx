@@ -52,7 +52,7 @@ export default function WriteReviewForm() {
         <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 text-3xl mb-5">
           ✓
         </div>
-        <h3 className="display text-2xl font-semibold text-maroon-950 mb-3">
+        <h3 className="display text-2xl font-semibold text-gray-950 mb-3">
           Thank you for your review!
         </h3>
         <p className="text-ink-soft">
@@ -70,7 +70,7 @@ export default function WriteReviewForm() {
 
   return (
     <form onSubmit={handleSubmit} className="card p-8 md:p-10 space-y-5">
-      <h3 className="display text-2xl font-semibold text-maroon-950">
+      <h3 className="display text-2xl font-semibold text-gray-950">
         Share Your Experience
       </h3>
       <p className="text-sm text-ink-soft -mt-2">
@@ -109,7 +109,7 @@ export default function WriteReviewForm() {
             Your Name <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30"
+            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30"
             placeholder="Ravi Kumar"
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
@@ -120,7 +120,7 @@ export default function WriteReviewForm() {
             Role / Occupation <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30"
+            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30"
             placeholder="Retail Owner"
             value={form.role}
             onChange={(e) => set("role", e.target.value)}
@@ -134,7 +134,7 @@ export default function WriteReviewForm() {
             Location <span className="text-red-500">*</span>
           </label>
           <input
-            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30"
+            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30"
             placeholder="Chennai, TN"
             value={form.location}
             onChange={(e) => set("location", e.target.value)}
@@ -145,7 +145,7 @@ export default function WriteReviewForm() {
             Company (optional)
           </label>
           <input
-            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30"
+            className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30"
             placeholder="Your shop or company"
             value={form.company}
             onChange={(e) => set("company", e.target.value)}
@@ -158,7 +158,7 @@ export default function WriteReviewForm() {
           Product Purchased (optional)
         </label>
         <input
-          className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30"
+          className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30"
           placeholder="e.g. Cotton Lungis, Bed Sheets…"
           value={form.productPurchased}
           onChange={(e) => set("productPurchased", e.target.value)}
@@ -171,7 +171,7 @@ export default function WriteReviewForm() {
         </label>
         <textarea
           rows={5}
-          className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-maroon-800/30 resize-none"
+          className="w-full rounded-lg border border-cream-300 bg-cream-50 px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-gray-800/30 resize-none"
           placeholder="Tell us about your experience with our products or service…"
           value={form.review}
           onChange={(e) => set("review", e.target.value)}

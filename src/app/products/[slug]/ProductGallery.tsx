@@ -25,7 +25,7 @@ export default function ProductGallery({
             className={cn(
               "relative aspect-square overflow-hidden rounded-lg border-2 transition",
               i === active
-                ? "border-maroon-800"
+                ? "border-gray-800"
                 : "border-transparent hover:border-cream-300 opacity-70 hover:opacity-100"
             )}
           >

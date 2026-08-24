@@ -29,10 +29,10 @@ export default function CategoryCard({
           alt={category.name}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/85 via-maroon-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/85 via-gray-950/20 to-transparent" />
 
         {/* Top label */}
-        <div className="absolute top-5 left-5 inline-flex items-center rounded-full bg-cream-50/95 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold text-maroon-800">
+        <div className="absolute top-5 left-5 inline-flex items-center rounded-full bg-cream-50/95 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold text-gray-800">
           {category.productCount} items
         </div>
 
