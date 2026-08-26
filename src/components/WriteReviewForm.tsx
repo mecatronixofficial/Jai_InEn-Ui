@@ -52,7 +52,7 @@ export default function WriteReviewForm() {
         <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 text-3xl mb-5">
           ✓
         </div>
-        <h3 className="display text-2xl font-semibold text-gray-950 mb-3">
+        <h3 className="display mb-3 text-base font-semibold text-gray-950">
           Thank you for your review!
         </h3>
         <p className="text-ink-soft">
@@ -70,7 +70,7 @@ export default function WriteReviewForm() {
 
   return (
     <form onSubmit={handleSubmit} className="card p-8 md:p-10 space-y-5">
-      <h3 className="display text-2xl font-semibold text-gray-950">
+      <h3 className="display text-base font-semibold text-gray-950">
         Share Your Experience
       </h3>
       <p className="text-sm text-ink-soft -mt-2">

@@ -21,11 +21,11 @@ import { buildWhatsAppEnquiryUrl } from "@/lib/whatsapp";
 import { cn } from "@/utils";
 
 const statusOptions: { value: OrderStatus; label: string; color: string }[] = [
-  { value: "new", label: "New", color: "bg-blue-100 text-blue-700" },
+  { value: "new", label: "New", color: "bg-[#FBAA00]/15 text-[#E89D00]" },
   { value: "contacted", label: "Contacted", color: "bg-amber-100 text-amber-700" },
-  { value: "quoted", label: "Quoted", color: "bg-purple-100 text-purple-700" },
+  { value: "quoted", label: "Quoted", color: "bg-[#FBAA00]/15 text-[#E89D00]" },
   { value: "confirmed", label: "Confirmed", color: "bg-green-100 text-green-700" },
-  { value: "despatched", label: "Despatched", color: "bg-indigo-100 text-indigo-700" },
+  { value: "despatched", label: "Despatched", color: "bg-[#579515]/15 text-[#579515]" },
   { value: "delivered", label: "Delivered", color: "bg-emerald-100 text-emerald-700" },
   { value: "cancelled", label: "Cancelled", color: "bg-red-100 text-red-700" },
 ];
@@ -147,7 +147,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
               )}
             </div>
 
-            <a href={whatsappReply} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 w-full rounded-lg bg-[#25D366] text-white py-3 text-sm font-semibold hover:bg-[#1ea952] transition">
+            <a href={whatsappReply} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 w-full rounded-lg bg-[#579515] text-white py-3 text-sm font-semibold hover:bg-[#579515] transition">
               <FaWhatsapp className="h-4 w-4" /> Reply on WhatsApp
             </a>
           </AdminCard>

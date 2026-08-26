@@ -35,13 +35,13 @@ export default function FAQAccordion({
                 <span className="display text-2xl text-gold font-semibold leading-none mt-1">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="display text-xl md:text-2xl text-gray-950 font-semibold leading-tight group-hover:text-gray-700 transition">
+                <span className="display text-base font-semibold leading-tight text-gray-950 transition group-hover:text-gray-700">
                   {item.question}
                 </span>
               </div>
               <span
-                className={`grid shrink-0 h-9 w-9 place-items-center rounded-full border border-gray-800 text-gray-800 transition-transform duration-300 ${
-                  isOpen ? "rotate-45 bg-gray-800 text-cream-50 border-gray-800" : ""
+                className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#579515] text-[#579515] transition-transform duration-300 ${
+                  isOpen ? "rotate-45 border-[#579515] bg-[#579515] text-white" : ""
                 }`}
               >
                 <FaPlus className="h-3 w-3" />

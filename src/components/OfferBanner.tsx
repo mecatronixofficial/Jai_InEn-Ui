@@ -31,23 +31,23 @@ export default function OfferBanner({ offer }: { offer: Offer }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden rounded-2xl bg-gray-900 text-cream-50 p-7 md:p-10"
+      className="relative w-full overflow-hidden rounded-xl border border-[#ECECEC] bg-[#F5F5F5] px-5 py-4 text-[#222222] shadow-soft sm:px-6 sm:py-5"
     >
-      <div className="absolute inset-0 bg-weave-dark opacity-40 pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-weave-light opacity-50" />
       <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-gold/15 blur-2xl" />
 
-      <div className="relative grid md:grid-cols-2 gap-6 items-center">
+      <div className="relative grid items-center gap-4 md:grid-cols-[1fr_auto]">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-gold text-gray-950 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold">
             <FaTag className="h-2.5 w-2.5" /> Limited Time
           </div>
-          <h3 className="display text-3xl md:text-4xl font-semibold mt-4 leading-tight">
+          <h3 className="display mt-2 text-base font-semibold leading-tight">
             {offer.title}
           </h3>
-          <p className="mt-2 text-cream-100/80">{offer.description}</p>
+          <p className="mt-1.5 text-xs leading-5 text-[#666666]">{offer.description}</p>
           {offer.code && (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-dashed border-gold/60 bg-cream-50/5 px-4 py-2 text-sm">
-              <span className="text-cream-100/70">Code:</span>
+            <div className="mt-2 inline-flex items-center gap-2 rounded-md border border-dashed border-gold/60 bg-white px-3 py-1.5 text-xs">
+              <span className="text-[#666666]">Code:</span>
               <span className="font-bold tracking-wider text-gold-light">
                 {offer.code}
               </span>
@@ -66,19 +66,19 @@ export default function OfferBanner({ offer }: { offer: Offer }) {
               ].map(([label, val]) => (
                 <div
                   key={label as string}
-                  className="text-center rounded-lg bg-cream-50/10 backdrop-blur border border-cream-50/15 px-3 py-2 min-w-[58px]"
+                    className="min-w-[48px] rounded-md border border-[#ECECEC] bg-white px-2 py-1.5 text-center"
                 >
-                  <div className="display text-2xl font-semibold text-gold-light leading-none">
+                  <div className="display text-lg font-semibold leading-none text-gold-light">
                     {String(val).padStart(2, "0")}
                   </div>
-                  <div className="text-[9px] uppercase tracking-widest-x text-cream-100/60 mt-1">
+                  <div className="mt-1 text-[9px] uppercase tracking-widest-x text-[#737373]">
                     {label}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <span className="text-sm text-cream-100/70">Offer expired</span>
+            <span className="text-sm text-[#737373]">Offer expired</span>
           )}
 
           {offer.ctaHref && offer.ctaLabel && (

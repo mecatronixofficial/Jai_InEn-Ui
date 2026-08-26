@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaCertificate, FaExternalLinkAlt } from "react-icons/fa";
+import { FaCertificate } from "react-icons/fa";
 
 import { api, type CertificateApi } from "@/lib/api";
 
@@ -31,9 +31,9 @@ export default function CertificationsGallery() {
 
   if (loading) {
     return (
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className="h-[28rem] rounded-2xl shimmer" />
+      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div key={index} className="h-[240px] rounded-2xl shimmer sm:h-[270px] lg:h-[285px]" />
         ))}
       </div>
     );
@@ -45,7 +45,7 @@ export default function CertificationsGallery() {
         <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gray-50 text-gray-800">
           <FaCertificate className="h-5 w-5" />
         </div>
-        <h3 className="display mt-5 text-2xl font-semibold text-gray-950">
+        <h3 className="display mt-5 text-base font-semibold text-gray-950">
           Documents available on request
         </h3>
         <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">
@@ -56,81 +56,45 @@ export default function CertificationsGallery() {
   }
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 [perspective:1400px]">
       {certificates.map((certificate) => (
-        <article
+        <a
           key={certificate.id}
-          tabIndex={0}
-          className="group aspect-[4/5] rounded-2xl outline-none [perspective:1200px]"
+          href={certificate.image}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`View ${certificate.title}`}
+          className="certificate-card group relative h-[240px] rounded-2xl outline-none [perspective:1000px] focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-4 sm:h-[270px] lg:h-[285px]"
         >
-          <div className="relative h-full w-full rounded-2xl shadow-soft transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)] group-focus-visible:ring-2 group-focus-visible:ring-gray-700 group-focus-visible:ring-offset-4">
-            {/* Front */}
-            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-cream-200 bg-white [backface-visibility:hidden]">
+          <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-2xl bg-[#FBAA00]/45 transition-transform duration-500 group-hover:translate-x-3 group-hover:translate-y-3" />
+          <div className="certificate-card-inner relative h-full rounded-2xl shadow-[0_18px_35px_-22px_rgba(88,60,0,0.7)] transition-transform duration-700 [transform-style:preserve-3d]">
+            <div className="absolute inset-0 overflow-hidden rounded-2xl border border-[#FBAA00]/60 bg-[#fffdf7] p-2.5 [backface-visibility:hidden]">
+              <div className="relative h-full overflow-hidden rounded-xl border-2 border-[#FBAA00]/25 bg-white shadow-inner">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={certificate.image}
-                alt={certificate.title}
-                className="h-full w-full object-contain p-4 transition duration-700 group-hover:scale-[1.025] group-focus-within:scale-[1.025]"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950 via-gray-950/90 to-transparent px-6 pb-6 pt-16 text-cream-50">
-                <div className="text-[9px] font-semibold uppercase tracking-widest-x text-gold-light">
-                  Hover or tap for details
-                </div>
-                <h3 className="display mt-1.5 text-2xl font-semibold leading-tight">
-                  {certificate.title}
-                </h3>
+                <img src={certificate.image} alt={certificate.title} className="h-full w-full object-contain p-2" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#FBAA00]/10 via-transparent to-white/35 opacity-60" />
               </div>
+              <span className="absolute left-1/2 top-0 h-1 w-2/3 -translate-x-1/2 rounded-b-full bg-[#FBAA00]" />
             </div>
 
-            {/* Back */}
-            <div className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl bg-gray-950 p-7 text-cream-50 [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-8">
-              <div className="absolute inset-0 bg-weave-dark opacity-60" />
+            <div className="absolute inset-0 flex flex-col overflow-hidden rounded-2xl border border-[#FBAA00]/60 bg-gradient-to-br from-[#fffdf7] via-[#FBAA00]/20 to-[#FBAA00]/45 p-4 text-[#174D2A] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+              <div className="absolute inset-0 bg-weave-light opacity-40" />
               <div className="relative flex h-full flex-col">
-                <div className="flex items-center justify-between">
-                  <div className="grid h-12 w-12 place-items-center rounded-full border border-gold/40 bg-gold/10 text-gold-light">
-                    <FaCertificate className="h-5 w-5" />
-                  </div>
-                  <span className="text-[9px] font-semibold uppercase tracking-widest-x text-gold-light">
-                    Verified document
+                {certificate.issuedAt && (
+                  <span className="self-start rounded-full bg-white/70 px-3 py-1 text-[10px] font-bold tracking-wider text-[#D99100]">
+                    {new Date(certificate.issuedAt).getFullYear()}
                   </span>
-                </div>
-
-                <div className="mt-8">
-                  <div className="text-[10px] font-semibold uppercase tracking-widest-x text-gold-light">
-                    {certificate.issuer || "Official certificate"}
-                  </div>
-                  <h3 className="display mt-3 text-3xl font-semibold leading-tight">
-                    {certificate.title}
-                  </h3>
-                  {certificate.description && (
-                    <p className="mt-4 text-sm leading-relaxed text-cream-100/75">
-                      {certificate.description}
-                    </p>
-                  )}
-                  {certificate.issuedAt && (
-                    <p className="mt-5 border-l-2 border-gold pl-3 text-xs text-cream-100/70">
-                      Issued {new Date(certificate.issuedAt).toLocaleDateString("en-IN", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                  )}
-                </div>
-
-                <a
-                  href={certificate.image}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-gray-950 transition hover:bg-gold-light focus:outline-none focus:ring-2 focus:ring-cream-50"
-                  aria-label={`Open full-size ${certificate.title}`}
-                >
-                  View full certificate
-                  <FaExternalLinkAlt className="h-3 w-3" />
-                </a>
+                )}
+                <FaCertificate className="mt-3 h-5 w-5 text-[#D99100]" />
+                <h3 className="display mt-2 text-base font-semibold leading-tight">{certificate.title}</h3>
+                {certificate.description && (
+                  <p className="mt-2 line-clamp-4 text-[11px] font-semibold leading-relaxed">{certificate.description}</p>
+                )}
+                <span className="mt-auto border-t border-[#FBAA00]/30 pt-3 text-[9px] font-bold uppercase tracking-[0.16em] text-[#D99100]">View full certificate</span>
               </div>
             </div>
           </div>
-        </article>
+        </a>
       ))}
     </div>
   );

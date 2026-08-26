@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --brand-gray: #374151;
-  --gray-deep: #111827;
-  --gold: #b8860b;
-  --gold-light: #d4a72c;
-  --cream: #fdfaf4;
-  --ink: #1a1410;
+  --brand-gold: #FBAA00;
+  --brand-gold-hover: #E89D00;
+  --brand-green: #579515;
+  --surface-muted: #F5F5F5;
+  --gold: #FBAA00;
+  --gold-light: #FBAA00;
+  --cream: #FFFFFF;
+  --ink: #222222;
 }
 
 html {
@@ -16,7 +18,7 @@ html {
 }
 
 body {
-  background-color: var(--cream);
+  background-color: #ffffff;
   color: var(--ink);
   font-feature-settings: "ss01", "cv01";
   -webkit-font-smoothing: antialiased;
@@ -25,15 +27,15 @@ body {
 
 /* Selection */
 ::selection {
-  background: var(--brand-gray);
-  color: var(--cream);
+  background: var(--brand-gold);
+  color: #222222;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #f3ead4; }
-::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: #111827; }
+::-webkit-scrollbar-track { background: #ffffff; }
+::-webkit-scrollbar-thumb { background: #579515; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #FBAA00; }
 
 @layer components {
   .container-x {
@@ -41,7 +43,7 @@ body {
   }
 
   .section-y {
-    @apply py-16 md:py-24;
+    @apply py-10 sm:py-12 lg:py-16;
   }
 
   /* Buttons */
@@ -49,16 +51,16 @@ body {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium tracking-wide transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cream-50 focus:ring-gray-400;
   }
   .btn-primary {
-    @apply btn bg-gray-800 text-cream-50 hover:bg-gray-900 shadow-soft hover:shadow-warm;
+    @apply btn bg-gold text-white hover:bg-gold-dark shadow-soft hover:shadow-warm;
   }
   .btn-gold {
-    @apply btn bg-gold text-cream-50 hover:bg-gold-dark shadow-warm;
+    @apply btn bg-gold text-white hover:bg-gold-dark shadow-warm;
   }
   .btn-outline {
-    @apply btn border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-cream-50;
+    @apply btn border border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white;
   }
   .btn-ghost {
-    @apply btn text-ink hover:text-gray-800;
+    @apply btn text-ink hover:text-gold-dark;
   }
 
   /* Typography */
@@ -67,14 +69,14 @@ body {
       "Baskerville Old Face", Georgia, serif;
   }
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-widest-x text-gray-800 font-semibold;
+    @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold;
   }
   .eyebrow::before {
     content: "";
     @apply h-px w-8 bg-gold;
   }
   .eyebrow-center {
-    @apply text-[11px] uppercase tracking-widest-x text-gray-800 font-semibold;
+    @apply text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold;
   }
 
   /* Decorative */
@@ -92,7 +94,7 @@ body {
 
   /* Form */
   .field {
-    @apply w-full rounded-xl border border-cream-300 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 transition;
+    @apply w-full rounded-xl border border-cream-300 bg-white px-4 py-3 text-ink placeholder:text-ink-muted focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/10 transition;
   }
   .label {
     @apply block text-xs uppercase tracking-wider-x text-ink-soft font-semibold mb-2;
@@ -106,16 +108,255 @@ body {
 
 /* Hide scrollbar but keep scrollable */
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* About page typography: one family and an even scale across every section. */
+.about-page-typography,
+.about-page-typography .display,
+.about-page-typography h1,
+.about-page-typography h2,
+.about-page-typography h3,
+.about-page-typography h4,
+.about-page-typography p,
+.about-page-typography dt,
+.about-page-typography dd,
+.about-page-typography a,
+.about-page-typography button {
+  font-family: var(--font-sans), "DM Sans", Arial, sans-serif;
+}
+
+.about-page-typography section h2 {
+  font-size: clamp(1.875rem, 3.5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.about-page-typography section h3 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.about-page-typography section p {
+  font-size: 0.875rem;
+  line-height: 1.75rem;
+}
+
+.about-page-typography section dt {
+  font-size: 0.625rem;
+}
+
+.about-page-typography section dd {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Sustainability page uses one font family and a consistent editorial scale. */
+.sustainability-page,
+.sustainability-page .display,
+.sustainability-page h1,
+.sustainability-page h2,
+.sustainability-page h3,
+.sustainability-page p,
+.sustainability-page li,
+.sustainability-page a {
+  font-family: var(--font-sans), "DM Sans", Arial, sans-serif;
+}
+
+.sustainability-page section h2.display {
+  font-size: clamp(1.875rem, 3.5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.sustainability-page section h3 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.sustainability-page section p,
+.sustainability-page section li {
+  font-size: 0.875rem;
+  line-height: 1.75rem;
+}
+
+.sustainability-page .section-y {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .sustainability-page .section-y {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sustainability-page .section-y {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.home-page .section-y {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .home-page .section-y {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page .section-y {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Loading shimmer */
 .shimmer {
   background: linear-gradient(
     90deg,
-    #f3ead4 0%,
-    #faf5ea 50%,
-    #f3ead4 100%
+    #ECECEC 0%,
+    #F5F5F5 50%,
+    #ECECEC 100%
   );
   background-size: 200% 100%;
   animation: shimmer 2.5s linear infinite;
+}
+
+/* About page quality-card depth and hover motion */
+.quality-perspective {
+  perspective: 1000px;
+}
+
+.quality-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.quality-perspective:hover .quality-card {
+  animation: premium-card-shake 0.65s ease-in-out;
+  transform: rotateX(5deg) rotateY(-5deg) translateY(-8px);
+}
+
+@keyframes premium-card-shake {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) translateY(0);
+  }
+  20% {
+    transform: rotateX(4deg) rotateY(-6deg) translate(-2px, -4px);
+  }
+  40% {
+    transform: rotateX(-2deg) rotateY(5deg) translate(2px, -7px);
+  }
+  60% {
+    transform: rotateX(5deg) rotateY(-4deg) translate(-1px, -8px);
+  }
+  80% {
+    transform: rotateX(3deg) rotateY(-5deg) translate(1px, -8px);
+  }
+  100% {
+    transform: rotateX(5deg) rotateY(-5deg) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quality-perspective:hover .quality-card {
+    animation: none;
+    transform: translateY(-4px);
+  }
+}
+
+.category-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Compact certificate cards shake once, then reveal their details. */
+.certificate-card:hover,
+.certificate-card:focus-visible {
+  animation: certificate-card-shake 0.55s ease-in-out;
+}
+
+.certificate-card:hover .certificate-card-inner,
+.certificate-card:focus-visible .certificate-card-inner {
+  transform: translateY(-7px) rotateY(180deg);
+}
+
+@keyframes certificate-card-shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-3px) rotate(-1deg); }
+  40% { transform: translateX(3px) rotate(1deg); }
+  60% { transform: translateX(-2px) rotate(-0.6deg); }
+  80% { transform: translateX(2px) rotate(0.6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certificate-card:hover,
+  .certificate-card:focus-visible { animation: none; }
+}
+
+.related-products-track {
+  animation: related-products-left-to-right 34s linear infinite;
+  will-change: transform;
+}
+
+.related-products-marquee:hover .related-products-track,
+.related-products-marquee:focus-within .related-products-track {
+  animation-play-state: paused;
+}
+
+@keyframes related-products-left-to-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 0.625rem)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .related-products-track {
+    animation: none;
+  }
+
+  .related-products-marquee {
+    overflow-x: auto;
+  }
+}
+
+/* Premium framing for page banners that use the shared textile artwork. */
+section:has(> .premium-banner-image) {
+  height: 235px !important;
+  min-height: 235px !important;
+  margin: 1rem 0.75rem 0;
+  border: 1px solid rgb(251 170 0 / 0.7) !important;
+  border-radius: 24px;
+  box-shadow: 0 18px 0 -10px rgb(251 170 0 / 0.2), 0 30px 45px -24px rgb(20 59 50 / 0.65);
+}
+
+section:has(> .premium-banner-image) > .container-x {
+  height: 235px !important;
+  min-height: 235px !important;
+  padding-bottom: 1.75rem !important;
+}
+
+@media (min-width: 1024px) {
+  section:has(> .premium-banner-image) {
+    height: 295px !important;
+    min-height: 295px !important;
+    margin-inline: 2rem;
+    border-radius: 32px;
+  }
+
+  section:has(> .premium-banner-image) > .container-x {
+    height: 295px !important;
+    min-height: 295px !important;
+    padding-bottom: 2.25rem !important;
+  }
 }

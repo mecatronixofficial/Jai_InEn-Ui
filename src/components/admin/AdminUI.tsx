@@ -21,8 +21,8 @@ export function AdminButton({
   const base =
     "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed";
   const v = {
-    primary: "bg-gray-800 text-cream-50 hover:bg-gray-900",
-    outline: "border border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-cream-50",
+    primary: "bg-[#FBAA00] text-white hover:bg-[#E89D00]",
+    outline: "border border-[#579515] text-[#579515] hover:bg-[#579515] hover:text-white",
     ghost: "text-ink-soft hover:bg-cream-100 hover:text-gray-800",
     danger: "bg-red-600 text-white hover:bg-red-700",
   }[variant];
@@ -76,7 +76,7 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 transition",
+        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10 transition",
         props.className,
       )}
     />
@@ -88,7 +88,7 @@ export function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement
     <textarea
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 transition resize-y",
+        "w-full resize-y rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10 transition",
         props.className,
       )}
     />
@@ -100,7 +100,7 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     <select
       {...props}
       className={cn(
-        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink focus:outline-none focus:border-gray-700 transition",
+        "w-full rounded-lg border border-cream-300 bg-white px-3.5 py-2.5 text-sm text-ink focus:outline-none focus:border-[#FBAA00] transition",
         props.className,
       )}
     />
@@ -287,6 +287,43 @@ export function ToastHost() {
 
 /* ----------------------------- Image uploader --------------------------- */
 
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+const RESIZE_THRESHOLD_BYTES = 1024 * 1024;
+const MAX_IMAGE_EDGE = 2000;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+async function prepareImageForUpload(file: File): Promise<File> {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    throw new Error(`${file.name}: only JPG, PNG and WebP images are supported`);
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new Error(`${file.name}: image must be smaller than 10MB`);
+  }
+  if (file.size <= RESIZE_THRESHOLD_BYTES) return file;
+
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  if (!context) {
+    bitmap.close();
+    return file;
+  }
+  context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close();
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/webp", 0.85),
+  );
+  if (!blob || blob.size >= file.size) return file;
+  const name = file.name.replace(/\.[^.]+$/, "") + ".webp";
+  return new File([blob], name, { type: "image/webp", lastModified: file.lastModified });
+}
+
 export function ImageUploader({
   value,
   onChange,
@@ -304,11 +341,10 @@ export function ImageUploader({
     if (!files || files.length === 0) return;
     setUploading(true);
     try {
-      const uploaded: string[] = [];
-      for (const file of Array.from(files)) {
-        const res = await api.uploadImage(file);
-        uploaded.push(res.url);
-      }
+      const selectedFiles = multiple ? Array.from(files).slice(0, 10) : [files[0]];
+      const preparedFiles = await Promise.all(selectedFiles.map(prepareImageForUpload));
+      const results = await Promise.all(preparedFiles.map((file) => api.uploadImage(file)));
+      const uploaded = results.map((result) => result.url);
       if (multiple) onChange([...value, ...uploaded]);
       else onChange([uploaded[0]]);
       toast(`${uploaded.length} image${uploaded.length > 1 ? "s" : ""} uploaded`);
@@ -351,7 +387,7 @@ export function ImageUploader({
       <label className="block">
         <div
           className={cn(
-            "border-2 border-dashed border-cream-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-800 hover:bg-cream-50 transition",
+            "cursor-pointer rounded-lg border-2 border-dashed border-cream-300 p-6 text-center transition hover:border-[#FBAA00] hover:bg-cream-50",
             uploading && "opacity-60 pointer-events-none",
           )}
         >
@@ -372,7 +408,7 @@ export function ImageUploader({
         </div>
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp"
           multiple={multiple}
           onChange={(e) => handleFiles(e.target.files)}
           className="hidden"

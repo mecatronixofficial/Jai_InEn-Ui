@@ -57,7 +57,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
         className="text-center py-12"
       >
         <FaCheckCircle className="mx-auto h-14 w-14 text-gold" />
-        <h3 className="display text-3xl font-semibold text-gray-950 mt-5">
+        <h3 className="display mt-5 text-base font-semibold text-gray-950">
           Thank you!
         </h3>
         <p className="mt-3 text-ink-soft">

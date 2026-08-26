@@ -83,7 +83,7 @@ export default async function TestimonialsPage() {
                   &ldquo;{t.review}&rdquo;
                 </p>
                 <div className="mt-6 pt-5 border-t border-cream-200 flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-full bg-gray-800 text-cream-50 display text-lg font-semibold">
+                  <div className="display grid h-11 w-11 place-items-center rounded-full bg-[#FBAA00] text-lg font-semibold text-white">
                     {t.name.charAt(0)}
                   </div>
                   <div>

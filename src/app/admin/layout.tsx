@@ -54,7 +54,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   if (loading || !user) {
     return (
       <div className="min-h-screen grid place-items-center bg-cream-50">
-        <div className="h-10 w-10 rounded-full border-4 border-cream-200 border-t-gray-800 animate-spin" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-cream-200 border-t-[#FBAA00]" />
       </div>
     );
   }
@@ -62,8 +62,8 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-cream-50 flex">
       {/* Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-gray-950 text-cream-50 shrink-0">
-        <div className="px-6 py-6 border-b border-cream-50/10">
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-[#ECECEC] bg-white text-[#222222] lg:flex">
+        <div className="border-b border-[#ECECEC] px-6 py-6">
           <Link href="/admin" className="flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-full bg-gold text-gray-950 font-display text-xl">
               T
@@ -87,8 +87,8 @@ function Shell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition",
                   active
-                    ? "bg-gold text-gray-950 font-semibold"
-                    : "text-cream-100/80 hover:bg-cream-50/10 hover:text-cream-50",
+                    ? "bg-gold text-white font-semibold"
+                    : "text-[#666666] hover:bg-[#F5F5F5] hover:text-[#FBAA00]",
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -98,18 +98,18 @@ function Shell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-cream-50/10 space-y-1">
+        <div className="space-y-1 border-t border-[#ECECEC] p-4">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-cream-100/70 hover:bg-cream-50/10 hover:text-cream-50 transition"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#666666] transition hover:bg-[#F5F5F5] hover:text-[#FBAA00]"
           >
             <FaExternalLinkAlt className="h-3 w-3" /> View site
           </Link>
           <button
             type="button"
             onClick={logout}
-            className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-cream-100/70 hover:bg-cream-50/10 hover:text-cream-50 transition"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#666666] transition hover:bg-[#F5F5F5] hover:text-[#FBAA00]"
           >
             <FaSignOutAlt className="h-3.5 w-3.5" /> Sign out
           </button>
@@ -137,14 +137,14 @@ function Shell({ children }: { children: React.ReactNode }) {
                 {user.role}
               </div>
             </div>
-            <div className="grid h-10 w-10 place-items-center rounded-full bg-gray-800 text-cream-50 font-semibold">
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-[#FBAA00] font-semibold text-white">
               {user.name.charAt(0).toUpperCase()}
             </div>
           </div>
         </header>
 
         {/* Mobile nav strip */}
-        <nav className="lg:hidden bg-gray-950 text-cream-50 overflow-x-auto no-scrollbar">
+        <nav className="no-scrollbar overflow-x-auto border-b border-[#ECECEC] bg-white text-[#222222] lg:hidden">
           <div className="flex gap-1 px-2 py-2">
             {navItems.map(({ href, label, Icon, exact }) => {
               const active = exact ? pathname === href : pathname.startsWith(href);
@@ -155,8 +155,8 @@ function Shell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs whitespace-nowrap transition",
                     active
-                      ? "bg-gold text-gray-950 font-semibold"
-                      : "text-cream-100/80 hover:bg-cream-50/10",
+                      ? "bg-gold text-white font-semibold"
+                      : "text-[#666666] hover:bg-[#F5F5F5]",
                   )}
                 >
                   <Icon className="h-3 w-3" />

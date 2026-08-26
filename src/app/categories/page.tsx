@@ -46,7 +46,7 @@ export default async function CategoriesPage() {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-7 text-cream-50">
-                  <h3 className="display text-3xl md:text-4xl font-semibold leading-tight">
+                  <h3 className="display text-base font-semibold leading-tight">
                     {cat.name}
                   </h3>
                   <p className="mt-2 text-sm text-cream-100/80 line-clamp-2">

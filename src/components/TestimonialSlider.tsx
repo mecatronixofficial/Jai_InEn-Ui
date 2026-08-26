@@ -43,12 +43,12 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             ))}
           </div>
 
-          <blockquote className="display text-2xl md:text-3xl text-gray-950 leading-snug font-medium italic">
+          <blockquote className="display text-sm font-medium italic leading-6 text-gray-950 sm:text-base sm:leading-7">
             &ldquo;{t.review}&rdquo;
           </blockquote>
 
           <div className="mt-8 flex items-center gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-full bg-gray-800 text-cream-50 display text-xl font-semibold">
+            <div className="display grid h-14 w-14 place-items-center rounded-full bg-[#FBAA00] text-xl font-semibold text-white">
               {t.name.charAt(0)}
             </div>
             <div>
@@ -73,7 +73,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
               aria-label={`Review ${i + 1}`}
               className={cn(
                 "h-1 rounded-full transition-all",
-                i === idx ? "w-8 bg-gray-800" : "w-4 bg-cream-300 hover:bg-cream-400"
+                i === idx ? "w-8 bg-[#FBAA00]" : "w-4 bg-[#ECECEC] hover:bg-[#579515]"
               )}
             />
           ))}
@@ -83,7 +83,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             type="button"
             onClick={prev}
             aria-label="Previous"
-            className="grid h-10 w-10 place-items-center rounded-full border border-gray-800/30 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[#579515] text-[#579515] transition hover:bg-[#579515] hover:text-white"
           >
             <FaChevronLeft className="h-3 w-3" />
           </button>
@@ -91,7 +91,7 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
             type="button"
             onClick={next}
             aria-label="Next"
-            className="grid h-10 w-10 place-items-center rounded-full border border-gray-800/30 text-gray-800 hover:bg-gray-800 hover:text-cream-50 transition"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[#579515] text-[#579515] transition hover:bg-[#579515] hover:text-white"
           >
             <FaChevronRight className="h-3 w-3" />
           </button>

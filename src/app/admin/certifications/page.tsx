@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import {
-  FaCertificate,
   FaEdit,
   FaEyeSlash,
   FaPlus,
@@ -28,9 +27,8 @@ import {
 interface FormState {
   title: string;
   image: string;
+  year: string;
   description: string;
-  issuer: string;
-  issuedAt: string;
   order: number;
   active: boolean;
 }
@@ -38,9 +36,8 @@ interface FormState {
 const emptyForm: FormState = {
   title: "",
   image: "",
+  year: "",
   description: "",
-  issuer: "",
-  issuedAt: "",
   order: 0,
   active: true,
 };
@@ -78,13 +75,10 @@ export default function AdminCertificationsPage() {
   function openEdit(certificate: CertificateApi) {
     setEditing(certificate);
     setForm({
-      title: certificate.title,
+      title: certificate.title || "",
       image: certificate.image,
+      year: certificate.issuedAt ? String(new Date(certificate.issuedAt).getFullYear()) : "",
       description: certificate.description || "",
-      issuer: certificate.issuer || "",
-      issuedAt: certificate.issuedAt
-        ? new Date(certificate.issuedAt).toISOString().slice(0, 10)
-        : "",
       order: certificate.order,
       active: certificate.active,
     });
@@ -92,8 +86,7 @@ export default function AdminCertificationsPage() {
   }
 
   async function handleSave() {
-    const title = form.title.trim();
-    if (!title) {
+    if (!form.title.trim()) {
       toast("Enter a certificate title.", "error");
       return;
     }
@@ -105,11 +98,10 @@ export default function AdminCertificationsPage() {
     setSaving(true);
     try {
       const body = {
-        title,
+        title: form.title.trim(),
         image: form.image,
         description: form.description.trim() || undefined,
-        issuer: form.issuer.trim() || undefined,
-        issuedAt: form.issuedAt || undefined,
+        issuedAt: form.year ? `${form.year}-01-01` : undefined,
         order: Number(form.order),
         active: form.active,
       };
@@ -133,7 +125,7 @@ export default function AdminCertificationsPage() {
 
   function handleDelete(certificate: CertificateApi) {
     confirm(
-      `Delete "${certificate.title}"?`,
+      "Delete this certificate?",
       "This removes the certificate from the website and cannot be undone.",
       async () => {
         try {
@@ -162,7 +154,7 @@ export default function AdminCertificationsPage() {
       ) : list.length === 0 ? (
         <EmptyState
           title="No certificates yet"
-          description="Upload your first certificate and enter the title visitors should see."
+          description="Upload your first certificate image. No additional text is required."
           action={
             <AdminButton onClick={openCreate}>
               <FaPlus className="h-3 w-3" /> Add Certificate
@@ -170,7 +162,7 @@ export default function AdminCertificationsPage() {
           }
         />
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {list.map((certificate) => (
             <AdminCard key={certificate.id} className="overflow-hidden">
               <div className="relative aspect-[4/3] bg-cream-100">
@@ -186,23 +178,18 @@ export default function AdminCertificationsPage() {
                   </span>
                 )}
               </div>
-              <div className="p-5">
-                <div className="text-[10px] font-semibold uppercase tracking-widest-x text-gold-dark">
-                  {certificate.issuer || "Certificate"}
-                </div>
-                <h3 className="display mt-2 text-xl font-semibold text-gray-950">
-                  {certificate.title}
-                </h3>
-                <div className="mt-4 flex items-center justify-between border-t border-cream-200 pt-4">
-                  <span className="text-xs text-ink-muted">
-                    Display order #{certificate.order}
-                  </span>
+              <div className="p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-semibold text-gray-950">{certificate.title}</div>
+                    <div className="text-[10px] text-ink-muted">Order #{certificate.order}</div>
+                  </div>
                   <div className="flex gap-1">
                     <button
                       type="button"
                       onClick={() => openEdit(certificate)}
                       className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-cream-100 hover:text-gray-800"
-                      aria-label={`Edit ${certificate.title}`}
+                      aria-label="Edit certificate"
                     >
                       <FaEdit className="h-3.5 w-3.5" />
                     </button>
@@ -210,7 +197,7 @@ export default function AdminCertificationsPage() {
                       type="button"
                       onClick={() => handleDelete(certificate)}
                       className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft hover:bg-red-50 hover:text-red-600"
-                      aria-label={`Delete ${certificate.title}`}
+                      aria-label="Delete certificate"
                     >
                       <FaTrash className="h-3.5 w-3.5" />
                     </button>
@@ -240,64 +227,41 @@ export default function AdminCertificationsPage() {
             label="Certificate Image"
           />
 
-          <Field
-            label="Certificate Title"
-            required
-            hint="Enter the public title manually. Uploading a file will not fill this field."
-          >
+          <Field label="Certificate Title" required>
             <Input
               value={form.title}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, title: event.target.value }))
-              }
-              placeholder="Enter certificate title"
-              autoComplete="off"
+              onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))}
+              placeholder="Certificate title"
             />
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Issuing Organisation">
+            <Field label="Year">
               <Input
-                value={form.issuer}
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, issuer: event.target.value }))
-                }
-                placeholder="Optional"
+                type="number"
+                min={1900}
+                max={2100}
+                value={form.year}
+                onChange={(event) => setForm((current) => ({ ...current, year: event.target.value }))}
+                placeholder="2026"
               />
             </Field>
-            <Field label="Issue Date">
+            <Field label="Display Order" hint="Lower numbers appear first.">
               <Input
-                type="date"
-                value={form.issuedAt}
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, issuedAt: event.target.value }))
-                }
+                type="number"
+                min={0}
+                value={form.order}
+                onChange={(event) => setForm((current) => ({ ...current, order: Number(event.target.value) }))}
               />
             </Field>
           </div>
 
           <Field label="Description">
             <TextArea
-              rows={3}
+              rows={4}
               value={form.description}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, description: event.target.value }))
-              }
-              placeholder="Optional details shown below the certificate"
-            />
-          </Field>
-
-          <Field label="Display Order">
-            <Input
-              type="number"
-              min={0}
-              value={form.order}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  order: Number(event.target.value),
-                }))
-              }
+              onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
+              placeholder="Description shown on the back of the card"
             />
           </Field>
 

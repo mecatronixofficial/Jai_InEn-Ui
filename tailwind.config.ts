@@ -13,39 +13,53 @@ const config: Config = {
     container: { center: true, padding: "1.25rem" },
     extend: {
       colors: {
-        // Cream / ivory neutrals
+        // Jai Export Enterprises light surfaces
         cream: {
-          50: "#fdfaf4",
-          100: "#faf5ea",
-          200: "#f3ead4",
-          300: "#e8dab7",
-          400: "#d4bf8a",
+          50: "#FFFFFF",
+          100: "#F5F5F5",
+          200: "#ECECEC",
+          300: "#E2E2E2",
+          400: "#D5D5D5",
         },
         // Neutral graphite gray — primary brand
         gray: {
-          50: "#f9fafb",
-          100: "#f3f4f6",
-          200: "#e5e7eb",
-          300: "#d1d5db",
-          400: "#9ca3af",
-          500: "#6b7280",
-          600: "#4b5563",
-          700: "#374151",
-          800: "#1f2937",
-          900: "#111827",
-          950: "#030712",
+          50: "#F5F5F5",
+          100: "#F5F5F5",
+          200: "#ECECEC",
+          300: "#D5D5D5",
+          400: "#9A9A9A",
+          500: "#737373",
+          600: "#666666",
+          700: "#444444",
+          800: "#222222",
+          900: "#222222",
+          950: "#222222",
         },
-        // Antique gold accent
+        // Jai Export Enterprises primary gold
         gold: {
-          DEFAULT: "#b8860b",
-          light: "#d4a72c",
-          dark: "#8a6508",
+          DEFAULT: "#FBAA00",
+          light: "#FBAA00",
+          dark: "#E89D00",
         },
-        // Charcoal text
+        // Neutral typography
         ink: {
-          DEFAULT: "#1a1410",
-          soft: "#3d3530",
-          muted: "#7a6f68",
+          DEFAULT: "#222222",
+          soft: "#666666",
+          muted: "#737373",
+        },
+        // Jai Export Enterprises secondary green (legacy emerald utilities)
+        emerald: {
+          50: "#F3F8ED",
+          100: "#E6F0DA",
+          200: "#CDE1B7",
+          300: "#A8CA82",
+          400: "#7FAE49",
+          500: "#579515",
+          600: "#4B8212",
+          700: "#3E6D0F",
+          800: "#345A10",
+          900: "#2D4C11",
+          950: "#172A07",
         },
       },
       fontFamily: {
@@ -61,14 +75,14 @@ const config: Config = {
       },
       boxShadow: {
         soft: "0 4px 24px -8px rgba(31, 41, 55, 0.12)",
-        warm: "0 12px 40px -12px rgba(184, 134, 11, 0.25)",
+        warm: "0 12px 40px -12px rgba(251, 170, 0, 0.25)",
         crisp: "0 1px 0 0 rgba(26, 20, 16, 0.08)",
       },
       backgroundImage: {
         "weave-light":
-          "repeating-linear-gradient(45deg, rgba(184,134,11,0.04) 0px, rgba(184,134,11,0.04) 1px, transparent 1px, transparent 8px), repeating-linear-gradient(-45deg, rgba(55,65,81,0.035) 0px, rgba(55,65,81,0.035) 1px, transparent 1px, transparent 8px)",
+          "repeating-linear-gradient(45deg, rgba(251,170,0,0.045) 0px, rgba(251,170,0,0.045) 1px, transparent 1px, transparent 8px), repeating-linear-gradient(-45deg, rgba(87,149,21,0.035) 0px, rgba(87,149,21,0.035) 1px, transparent 1px, transparent 8px)",
         "weave-dark":
-          "repeating-linear-gradient(45deg, rgba(212,167,44,0.08) 0px, rgba(212,167,44,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, rgba(212,167,44,0.06) 0px, rgba(212,167,44,0.06) 1px, transparent 1px, transparent 10px)",
+          "repeating-linear-gradient(45deg, rgba(251,170,0,0.08) 0px, rgba(251,170,0,0.08) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, rgba(87,149,21,0.06) 0px, rgba(87,149,21,0.06) 1px, transparent 1px, transparent 10px)",
         noise:
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },

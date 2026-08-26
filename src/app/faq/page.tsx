@@ -41,7 +41,7 @@ export default function FAQPage() {
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-cream-100 text-gray-800">
                     <FaQuestionCircle className="h-5 w-5" />
                   </div>
-                  <h3 className="display text-xl font-semibold text-gray-950 mt-4">
+                  <h3 className="display mt-4 text-base font-semibold text-gray-950">
                     {faqs.length} answered
                   </h3>
                   <p className="text-sm text-ink-muted mt-1">
@@ -49,16 +49,16 @@ export default function FAQPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-gray-950 text-cream-50 p-7 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-weave-dark opacity-40" />
+                <div className="relative overflow-hidden rounded-2xl border border-[#ECECEC] bg-[#F5F5F5] p-7 text-[#222222] shadow-soft">
+                  <div className="absolute inset-0 bg-weave-light opacity-40" />
                   <div className="relative">
                     <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold">
                       Talk to us
                     </div>
-                    <h3 className="display text-2xl font-semibold mt-2 leading-tight">
+                    <h3 className="display mt-2 text-base font-semibold leading-tight">
                       Still need help?
                     </h3>
-                    <p className="text-sm text-cream-100/80 mt-2">
+                    <p className="mt-2 text-sm text-[#666666]">
                       Reach out via WhatsApp or email for a faster response.
                     </p>
                     <div className="mt-5 flex flex-col gap-3">
@@ -72,7 +72,7 @@ export default function FAQPage() {
                       </a>
                       <a
                         href={`mailto:${siteConfig.email}`}
-                        className="btn-outline !border-cream-50/30 !text-cream-50 hover:!bg-cream-50 hover:!text-gray-900 w-full justify-center"
+                        className="btn-outline w-full justify-center"
                       >
                         <FaEnvelope className="h-4 w-4" /> Email Us
                       </a>

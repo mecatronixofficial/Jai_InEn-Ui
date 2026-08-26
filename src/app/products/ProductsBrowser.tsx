@@ -1,263 +1,110 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaArrowRight, FaImages, FaSearch } from "react-icons/fa";
 
-import PageHero from "@/components/PageHero";
-import ProductCard from "@/components/ProductCard";
-import { api, type ProductApi, type CategoryApi } from "@/lib/api";
-import { cn } from "@/utils";
+import PremiumPageBanner from "@/components/PremiumPageBanner";
+import { api, type CategoryApi, type ProductApi } from "@/lib/api";
 
-type SortKey = "featured" | "price-asc" | "price-desc" | "rating" | "newest";
-
-const sortOptions: { value: SortKey; label: string }[] = [
-  { value: "featured", label: "Featured" },
-  { value: "newest", label: "New Arrivals" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
-  { value: "rating", label: "Top Rated" },
-];
-
-export default function ProductsPage() {
+export default function ProductsBrowser() {
   const params = useSearchParams();
-  const initialCategory = params.get("category") || "all";
-
   const [products, setProducts] = useState<ProductApi[]>([]);
   const [categories, setCategories] = useState<CategoryApi[]>([]);
-  const [category, setCategory] = useState(initialCategory);
+  const [category, setCategory] = useState(params.get("category") || "all");
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<SortKey>("featured");
-  const [showFilters, setShowFilters] = useState(false);
-  const [maxPrice, setMaxPrice] = useState(2000);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.publicProducts().then((r) => {
-      setProducts(r.data);
-      const top = Math.max(...r.data.map((p) => p.offerPrice), 2000);
-      setMaxPrice(top);
-    }).catch(() => {});
-    api.publicCategories().then(setCategories).catch(() => {});
+    Promise.all([api.publicProducts("limit=100"), api.publicCategories()])
+      .then(([productResult, categoryResult]) => {
+        setProducts(productResult.data);
+        setCategories(categoryResult);
+      })
+      .catch(() => {
+        setProducts([]);
+        setCategories([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
     setCategory(params.get("category") || "all");
   }, [params]);
 
-  const filtered = useMemo(() => {
-    let list = [...products];
-    if (category !== "all") list = list.filter((p) => p.category === category);
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q)) ||
-          p.material.toLowerCase().includes(q)
-      );
-    }
-    list = list.filter((p) => p.offerPrice <= maxPrice);
-
-    switch (sort) {
-      case "price-asc":
-        list.sort((a, b) => a.offerPrice - b.offerPrice);
-        break;
-      case "price-desc":
-        list.sort((a, b) => b.offerPrice - a.offerPrice);
-        break;
-      case "rating":
-        list.sort((a, b) => b.rating - a.rating);
-        break;
-      case "newest":
-        list.sort((a, b) => Number(b.newArrival) - Number(a.newArrival));
-        break;
-      default:
-        list.sort((a, b) => Number(b.featured) - Number(a.featured));
-    }
-    return list;
-  }, [products, category, search, sort, maxPrice]);
+  const visibleProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return products.filter((product) => {
+      const matchesCategory = category === "all" || product.category === category;
+      const matchesSearch = !query || product.name.toLowerCase().includes(query) || product.material.toLowerCase().includes(query) || product.tags.some((tag) => tag.toLowerCase().includes(query));
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, category, search]);
 
   return (
-    <>
-      <PageHero
-        eyebrow="Catalogue"
-        title="Browse our complete textile range."
-        subtitle="From everyday petticoats to heritage handloom — every piece manufactured in our Erode facility."
-        bgImage="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=1920&auto=format&fit=crop&q=80"
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Products" }]}
-      />
+    <main className="overflow-hidden bg-white">
+      <PremiumPageBanner eyebrow="Our Collections" title={<>Textiles for every part of <span className="text-[#FBAA00]">the home.</span></>} description="Explore our product catalogue and select any product to see its complete details and image collection." current="Products" bgImage="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=1920&auto=format&fit=crop&q=80" />
 
-      <section className="section-y">
-        <div className="container-x">
-          {/* Toolbar */}
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-8">
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Search */}
-              <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink-muted" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products..."
-                  className="rounded-full border border-cream-300 bg-white pl-11 pr-5 py-2.5 text-sm w-72 focus:outline-none focus:border-gray-700 transition"
-                />
-              </div>
+      <section className="section-y relative bg-gradient-to-br from-white via-[#fffaf0] to-[#FBAA00]/10">
+        <div className="absolute right-8 top-12 hidden grid-cols-7 gap-2 opacity-50 lg:grid">
+          {Array.from({ length: 28 }).map((_, index) => <span key={index} className="h-1 w-1 rounded-full bg-[#FBAA00]" />)}
+        </div>
 
-              <button
-                type="button"
-                onClick={() => setShowFilters((v) => !v)}
-                className="lg:hidden btn-outline !py-2 !px-4 text-xs"
-              >
-                <FaFilter className="h-3 w-3" /> Filters
-              </button>
+        <div className="container-x relative">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="display text-3xl font-semibold leading-[1.1] text-[#FBAA00] sm:text-4xl">Choose a collection</h2>
             </div>
-
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-ink-muted">
-                {filtered.length} {filtered.length === 1 ? "product" : "products"}
-              </span>
-              <div className="h-4 w-px bg-cream-300" />
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value as SortKey)}
-                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm focus:outline-none focus:border-gray-700"
-              >
-                {sortOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label className="relative w-full sm:max-w-xs">
+              <FaSearch className="absolute left-4 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#579515]/55" />
+              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by product name" className="w-full rounded-full border border-[#FBAA00]/35 bg-white py-2.5 pl-11 pr-5 text-xs text-black outline-none transition focus:border-[#579515] focus:shadow-[0_0_0_3px_rgba(87,149,21,0.1)]" />
+            </label>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8">
-            {/* Sidebar filters */}
-            <aside
-              className={cn(
-                "lg:col-span-3 lg:block",
-                showFilters
-                  ? "fixed inset-0 z-40 bg-cream-50 p-6 overflow-y-auto"
-                  : "hidden"
-              )}
-            >
-              <div className="flex items-center justify-between mb-6 lg:hidden">
-                <h3 className="display text-2xl text-gray-950">Filters</h3>
-                <button onClick={() => setShowFilters(false)} aria-label="Close">
-                  <FaTimes className="h-5 w-5" />
-                </button>
-              </div>
-
-              {/* Categories */}
-              <div className="mb-8">
-                <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold mb-4">
-                  Category
-                </div>
-                <div className="space-y-1">
-                  <button
-                    type="button"
-                    onClick={() => setCategory("all")}
-                    className={cn(
-                      "w-full flex items-center justify-between rounded-lg px-4 py-2.5 text-sm text-left transition",
-                      category === "all"
-                        ? "bg-gray-800 text-cream-50"
-                        : "text-ink-soft hover:bg-cream-100"
-                    )}
-                  >
-                    <span>All Products</span>
-                    <span className="text-xs opacity-70">{products.length}</span>
-                  </button>
-                  {categories.map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      onClick={() => setCategory(c.slug)}
-                      className={cn(
-                        "w-full flex items-center justify-between rounded-lg px-4 py-2.5 text-sm text-left transition",
-                        category === c.slug
-                          ? "bg-gray-800 text-cream-50"
-                          : "text-ink-soft hover:bg-cream-100"
-                      )}
-                    >
-                      <span>{c.name}</span>
-                      <span className="text-xs opacity-70">{c.productCount}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price */}
-              <div className="mb-8">
-                <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold mb-4">
-                  Maximum Price
-                </div>
-                <input
-                  type="range"
-                  min={100}
-                  max={2000}
-                  step={50}
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-gray-800"
-                />
-                <div className="flex items-center justify-between text-xs text-ink-muted mt-2">
-                  <span>₹100</span>
-                  <span className="font-semibold text-gray-800">
-                    Up to ₹{maxPrice.toLocaleString("en-IN")}
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setCategory("all");
-                  setSearch("");
-                  setMaxPrice(2000);
-                  setSort("featured");
-                  setShowFilters(false);
-                }}
-                className="btn-outline w-full text-xs"
-              >
-                Reset Filters
-              </button>
-            </aside>
-
-            {/* Grid */}
-            <div className="lg:col-span-9">
-              <AnimatePresence mode="popLayout">
-                {filtered.length === 0 ? (
-                  <motion.div
-                    key="empty"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="card p-16 text-center"
-                  >
-                    <h3 className="display text-2xl text-gray-950">
-                      No products match your filters
-                    </h3>
-                    <p className="mt-2 text-ink-muted">
-                      Try removing a filter or searching differently.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    layout
-                    className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7"
-                  >
-                    {filtered.map((p) => (
-                      <ProductCard key={p.id} product={p} />
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          <div className="mt-4 flex flex-col items-start">
+            <div className="flex w-full max-w-full gap-2 overflow-x-auto pb-2 no-scrollbar">
+              <button type="button" onClick={() => setCategory("all")} className={`shrink-0 rounded-full px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition ${category === "all" ? "bg-[#579515] text-white shadow-[0_7px_0_rgba(49,91,13,0.2)]" : "border border-[#579515]/20 bg-white text-[#579515] hover:border-[#FBAA00]"}`}>All Products</button>
+              {categories.map((item) => (
+                <button key={item.id} type="button" onClick={() => setCategory(item.slug)} className={`shrink-0 rounded-full px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition ${category === item.slug ? "bg-[#579515] text-white shadow-[0_7px_0_rgba(49,91,13,0.2)]" : "border border-[#579515]/20 bg-white text-[#579515] hover:border-[#FBAA00]"}`}>{item.name}</button>
+              ))}
             </div>
+
           </div>
+
+          {loading ? (
+            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => <div key={index} className="aspect-[4/3] rounded-lg shimmer" />)}
+            </div>
+          ) : visibleProducts.length === 0 ? (
+            <div className="mx-auto mt-12 max-w-xl border-y border-[#FBAA00]/30 py-14 text-center">
+              <FaImages className="mx-auto h-7 w-7 text-[#FBAA00]" />
+              <h3 className="display mt-4 text-base font-semibold text-black">No products found</h3>
+              <p className="mt-2 text-sm text-black/60">Try another category or search term.</p>
+            </div>
+          ) : (
+            <motion.div layout className="mt-6 grid gap-x-5 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+              {visibleProducts.map((product, index) => (
+                <motion.article key={product.id} layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: (index % 3) * 0.08 }} className="group relative [perspective:1200px]">
+                  <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-lg bg-[#FBAA00]/30 transition-transform duration-500 group-hover:translate-x-3 group-hover:translate-y-3" />
+                  <Link href={`/products/${product.slug}`} className="relative block overflow-hidden rounded-lg border border-[#143B32]/25 bg-white p-2 shadow-[0_15px_28px_-22px_rgba(20,59,50,0.55)] transition-[transform,box-shadow] duration-500 [transform-style:preserve-3d] group-hover:[transform:translateY(-5px)_rotateX(2deg)_rotateY(-2deg)] group-hover:shadow-[0_24px_40px_-22px_rgba(20,59,50,0.6)]">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#F5F5F5]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={product.images[0] || ""} alt={product.name} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                      <span className="absolute right-2.5 top-2.5 grid h-8 w-8 translate-y-2 place-items-center rounded-full bg-[#FBAA00] text-[#174D2A] opacity-0 shadow-lg transition duration-300 group-hover:translate-y-0 group-hover:opacity-100"><FaArrowRight className="h-2.5 w-2.5 -rotate-45" /></span>
+                    </div>
+                    <div className="px-1.5 pb-1.5 pt-3 text-center">
+                      <div className="text-[7px] font-bold uppercase tracking-[0.18em] text-[#579515]">{categories.find((item) => item.slug === product.category)?.name || product.category}</div>
+                      <h3 className="display mt-1 text-base font-semibold text-black underline decoration-[#FBAA00]/50 underline-offset-4">{product.name}</h3>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
-    </>
+    </main>
   );
 }

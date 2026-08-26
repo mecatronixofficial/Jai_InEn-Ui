@@ -58,7 +58,7 @@ export default function ProductActions({ product }: { product: Product }) {
                 className={cn(
                   "rounded-full border px-4 py-2 text-xs transition",
                   c === color
-                    ? "border-gray-800 bg-gray-800 text-cream-50"
+                    ? "border-[#579515] bg-[#579515] text-white"
                     : "border-cream-300 text-ink-soft hover:border-gray-800"
                 )}
               >
@@ -84,7 +84,7 @@ export default function ProductActions({ product }: { product: Product }) {
                 className={cn(
                   "rounded-full border px-4 py-2 text-xs transition min-w-[60px]",
                   s === size
-                    ? "border-gray-800 bg-gray-800 text-cream-50"
+                    ? "border-[#579515] bg-[#579515] text-white"
                     : "border-cream-300 text-ink-soft hover:border-gray-800"
                 )}
               >

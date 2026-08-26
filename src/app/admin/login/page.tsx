@@ -164,7 +164,7 @@ export default function AdminLoginPage() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-800 text-cream-50 py-3 text-sm font-semibold hover:bg-gray-900 disabled:opacity-60 transition"
+        className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FBAA00] text-white py-3 text-sm font-semibold hover:bg-[#E89D00] disabled:opacity-60 transition"
       >
         {loading && <FaSpinner className="h-3.5 w-3.5 animate-spin" />}
         {loading ? loadingLabel : label}
@@ -188,9 +188,9 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-5 bg-cream-50">
       {/* Visual side */}
-      <div className="hidden lg:flex lg:col-span-2 relative bg-gray-950 text-cream-50 overflow-hidden">
+      <div className="hidden lg:flex lg:col-span-2 relative bg-[#F5F5F5] text-[#222222] overflow-hidden">
         <div className="absolute inset-0 bg-weave-dark opacity-50" />
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900/90 to-gray-950" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-[#F5F5F5] to-white" />
         <div className="relative flex flex-col justify-between p-12 w-full">
           <BrandLogo />
           <div>
@@ -200,11 +200,11 @@ export default function AdminLoginPage() {
             <h2 className="display text-5xl font-semibold leading-tight">
               Manage your catalogue, orders & content — all in one place.
             </h2>
-            <p className="mt-5 text-cream-100/70 leading-relaxed max-w-md">
+            <p className="mt-5 text-[#666666] leading-relaxed max-w-md">
               Update product images, publish blog posts, respond to enquiries, and keep the storefront fresh. Sign in to begin.
             </p>
           </div>
-          <div className="text-xs text-cream-100/50">
+          <div className="text-xs text-[#737373]">
             {siteConfig.address.city} · {siteConfig.address.state} · Manufacturing since {siteConfig.established}
           </div>
         </div>
@@ -232,7 +232,7 @@ export default function AdminLoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="admin@example.in"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10"
                       autoFocus
                     />
                   </div>
@@ -249,7 +249,7 @@ export default function AdminLoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10"
                     />
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export default function AdminLoginPage() {
                       value={fpEmail}
                       onChange={(e) => setFpEmail(e.target.value)}
                       placeholder="admin@example.in"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10"
                       autoFocus
                     />
                   </div>
@@ -330,7 +330,7 @@ export default function AdminLoginPage() {
                         title={`OTP digit ${i + 1}`}
                         aria-label={`OTP digit ${i + 1}`}
                         placeholder="·"
-                        className="w-full aspect-square text-center text-lg font-semibold rounded-lg border border-cream-300 bg-white focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10 caret-gray-700"
+                        className="w-full aspect-square text-center text-lg font-semibold rounded-lg border border-cream-300 bg-white focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10 caret-[#579515]"
                         autoFocus={i === 0}
                       />
                     ))}
@@ -373,7 +373,7 @@ export default function AdminLoginPage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Min. 8 characters"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10"
                       autoFocus
                     />
                   </div>
@@ -390,7 +390,7 @@ export default function AdminLoginPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat your password"
-                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-700/10"
+                      className="w-full rounded-lg border border-cream-300 bg-white pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-[#FBAA00] focus:ring-2 focus:ring-[#FBAA00]/10"
                     />
                   </div>
                 </div>
@@ -412,7 +412,7 @@ export default function AdminLoginPage() {
               <button
                 type="button"
                 onClick={() => { setStep("login"); setError(""); setSuccess(""); }}
-                className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-gray-800 text-cream-50 py-3 text-sm font-semibold hover:bg-gray-900 transition"
+                className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-[#FBAA00] text-white py-3 text-sm font-semibold hover:bg-[#E89D00] transition"
               >
                 Back to sign in
               </button>

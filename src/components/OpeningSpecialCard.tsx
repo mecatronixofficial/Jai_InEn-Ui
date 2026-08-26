@@ -86,7 +86,7 @@ export default function OpeningSpecialCard() {
               <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold">
                 {card.title}
               </div>
-              <h2 className="display text-4xl md:text-5xl font-semibold text-gray-900 mt-3 leading-tight">
+              <h2 className="display mt-3 text-3xl font-semibold leading-[1.1] text-gray-900 md:text-4xl">
                 {card.subtitle}
               </h2>
               <p className="mt-4 text-ink-soft leading-relaxed">

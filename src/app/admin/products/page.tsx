@@ -31,7 +31,6 @@ import {
   toast,
   useConfirm,
 } from "@/components/admin/AdminUI";
-import { formatINR, cn } from "@/utils";
 
 interface FormState {
   name: string;
@@ -138,8 +137,8 @@ export default function AdminProductsPage() {
   }
 
   async function handleSave() {
-    if (!form.name || !form.category || !form.description || !form.material || !form.clothType) {
-      toast("Name, category, description, material and cloth type are required.", "error");
+    if (!form.name || !form.category || !form.description) {
+      toast("Name, category and description are required.", "error");
       return;
     }
     if (form.images.length === 0) {
@@ -151,27 +150,28 @@ export default function AdminProductsPage() {
     try {
       const body = {
         name: form.name,
-        slug: form.slug || undefined,
+        slug: undefined,
         category: form.category,
-        subcategory: form.subcategory || undefined,
         images: form.images,
         description: form.description,
-        clothType: form.clothType,
-        colors: form.colors.split(",").map((s) => s.trim()).filter(Boolean),
-        sizes: form.sizes.split(",").map((s) => s.trim()).filter(Boolean),
-        tags: form.tags.split(",").map((s) => s.trim()).filter(Boolean),
-        stock: Number(form.stock),
-        offerPrice: Number(form.offerPrice),
-        originalPrice: Number(form.originalPrice),
-        material: form.material,
-        gsm: form.gsm || undefined,
-        pattern: form.pattern || undefined,
+        // Defaults keep compatibility with the existing product API while the
+        // simplified admin workflow only asks for catalogue-relevant fields.
+        clothType: editing?.clothType || "Home Textile",
+        material: editing?.material || "Textile",
+        colors: editing?.colors || [],
+        sizes: editing?.sizes || [],
+        tags: editing?.tags || [],
+        stock: editing?.stock ?? 0,
+        offerPrice: editing?.offerPrice ?? 0,
+        originalPrice: editing?.originalPrice ?? 0,
+        gsm: editing?.gsm || undefined,
+        pattern: editing?.pattern || undefined,
         washable: form.washable,
         featured: form.featured,
         newArrival: form.newArrival,
         active: form.active,
-        rating: Number(form.rating),
-        reviews: Number(form.reviews),
+        rating: editing?.rating ?? 0,
+        reviews: editing?.reviews ?? 0,
       };
 
       if (editing) {
@@ -212,7 +212,7 @@ export default function AdminProductsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search products by name, tag, material..."
+            placeholder="Search products by name..."
             className="!pl-9"
           />
         </div>
@@ -240,8 +240,6 @@ export default function AdminProductsPage() {
                 <tr>
                   <th className="text-left px-5 py-3">Product</th>
                   <th className="text-left px-3 py-3">Category</th>
-                  <th className="text-right px-3 py-3">Price</th>
-                  <th className="text-right px-3 py-3">Stock</th>
                   <th className="text-center px-3 py-3">Flags</th>
                   <th className="text-right px-5 py-3">Actions</th>
                 </tr>
@@ -257,38 +255,17 @@ export default function AdminProductsPage() {
                             <img src={p.images[0]} alt="" className="h-full w-full object-cover" />
                           )}
                         </div>
-                        <div className="min-w-0">
-                          <div className="font-semibold text-ink truncate">{p.name}</div>
-                          <div className="text-[10px] text-ink-muted truncate">{p.slug}</div>
-                        </div>
+                        <div className="min-w-0 font-semibold text-ink truncate">{p.name}</div>
                       </div>
                     </td>
                     <td className="px-3 py-3 text-ink-soft capitalize">
                       {p.category.replace("-", " ")}
                     </td>
-                    <td className="px-3 py-3 text-right">
-                      <div className="font-semibold">{formatINR(p.offerPrice)}</div>
-                      {p.originalPrice > p.offerPrice && (
-                        <div className="text-[10px] text-ink-muted line-through">
-                          {formatINR(p.originalPrice)}
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-3 py-3 text-right">
-                      <span
-                        className={cn(
-                          "font-semibold",
-                          p.stock === 0 ? "text-red-600" : p.stock < 20 ? "text-amber-600" : "text-ink",
-                        )}
-                      >
-                        {p.stock}
-                      </span>
-                    </td>
                     <td className="px-3 py-3 text-center">
                       <div className="inline-flex items-center gap-1.5">
                         {p.featured && <FaStar className="h-3 w-3 text-gold" title="Featured" />}
                         {p.newArrival && (
-                          <span className="rounded-full bg-blue-100 text-blue-700 px-1.5 py-0.5 text-[8px] uppercase tracking-wider font-bold">
+                          <span className="rounded-full bg-[#FBAA00]/15 text-[#E89D00] px-1.5 py-0.5 text-[8px] uppercase tracking-wider font-bold">
                             New
                           </span>
                         )}
@@ -341,43 +318,25 @@ export default function AdminProductsPage() {
             label="Product Images (first one is the main image)"
           />
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Name" required>
-              <Input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Premium Cotton Petticoat"
-              />
-            </Field>
-            <Field label="Slug" hint="Auto-generated from name if blank">
-              <Input
-                value={form.slug}
-                onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                placeholder="premium-cotton-petticoat"
-              />
-            </Field>
-          </div>
+          <Field label="Product Name" required>
+            <Input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Enter product name"
+            />
+          </Field>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Category" required>
-              <Select
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-              >
-                <option value="">Select category…</option>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.slug}>{c.name}</option>
-                ))}
-              </Select>
-            </Field>
-            <Field label="Subcategory">
-              <Input
-                value={form.subcategory}
-                onChange={(e) => setForm({ ...form, subcategory: e.target.value })}
-                placeholder="e.g. Cotton Petticoat"
-              />
-            </Field>
-          </div>
+          <Field label="Category" required>
+            <Select
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+            >
+              <option value="">Select category…</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.slug}>{c.name}</option>
+              ))}
+            </Select>
+          </Field>
 
           <Field label="Description" required>
             <TextArea
@@ -387,112 +346,6 @@ export default function AdminProductsPage() {
               placeholder="A detailed description of the product..."
             />
           </Field>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            <Field label="Cloth Type" required>
-              <Input
-                value={form.clothType}
-                onChange={(e) => setForm({ ...form, clothType: e.target.value })}
-                placeholder="Cotton"
-              />
-            </Field>
-            <Field label="Material" required>
-              <Input
-                value={form.material}
-                onChange={(e) => setForm({ ...form, material: e.target.value })}
-                placeholder="100% Pure Cotton"
-              />
-            </Field>
-            <Field label="GSM">
-              <Input
-                value={form.gsm}
-                onChange={(e) => setForm({ ...form, gsm: e.target.value })}
-                placeholder="150 GSM"
-              />
-            </Field>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Colors" hint="Comma-separated (White, Maroon, Black)">
-              <Input
-                value={form.colors}
-                onChange={(e) => setForm({ ...form, colors: e.target.value })}
-                placeholder="White, Maroon, Black"
-              />
-            </Field>
-            <Field label="Sizes" hint="Comma-separated (S, M, L, XL)">
-              <Input
-                value={form.sizes}
-                onChange={(e) => setForm({ ...form, sizes: e.target.value })}
-                placeholder="S, M, L, XL"
-              />
-            </Field>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            <Field label="Offer Price (₹)" required>
-              <Input
-                type="number"
-                value={form.offerPrice}
-                onChange={(e) => setForm({ ...form, offerPrice: Number(e.target.value) })}
-                min={0}
-              />
-            </Field>
-            <Field label="Original Price (₹)" required>
-              <Input
-                type="number"
-                value={form.originalPrice}
-                onChange={(e) => setForm({ ...form, originalPrice: Number(e.target.value) })}
-                min={0}
-              />
-            </Field>
-            <Field label="Stock">
-              <Input
-                type="number"
-                value={form.stock}
-                onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
-                min={0}
-              />
-            </Field>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Pattern">
-              <Input
-                value={form.pattern}
-                onChange={(e) => setForm({ ...form, pattern: e.target.value })}
-                placeholder="Solid / Checks / Border"
-              />
-            </Field>
-            <Field label="Tags" hint="Comma-separated">
-              <Input
-                value={form.tags}
-                onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                placeholder="cotton, daily-wear"
-              />
-            </Field>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Rating (0-5)">
-              <Input
-                type="number"
-                step="0.1"
-                min={0}
-                max={5}
-                value={form.rating}
-                onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}
-              />
-            </Field>
-            <Field label="Review Count">
-              <Input
-                type="number"
-                min={0}
-                value={form.reviews}
-                onChange={(e) => setForm({ ...form, reviews: Number(e.target.value) })}
-              />
-            </Field>
-          </div>
 
           <div className="flex flex-wrap gap-6 pt-2 border-t border-cream-200">
             <Toggle
