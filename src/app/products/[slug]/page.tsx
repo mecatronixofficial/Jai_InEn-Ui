@@ -1,238 +1,128 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import Link from "next/link";
-import { FaCheck, FaTruck, FaShieldAlt, FaUndoAlt, FaArrowRight } from "react-icons/fa";
+import { notFound } from "next/navigation";
+import { FaArrowLeft, FaArrowRight, FaImages, FaLeaf } from "react-icons/fa";
 
-import PageHero from "@/components/PageHero";
-import ProductCard from "@/components/ProductCard";
-import SectionTitle from "@/components/SectionTitle";
 import ProductGallery from "./ProductGallery";
 import ProductActions from "./ProductActions";
-
+import AboutBannerImage from "@/components/AboutBannerImage";
 import { products as staticProducts } from "@/data/products";
-import { loadProductBySlug, loadRelatedProducts } from "@/lib/data";
-import { formatINR, discountPercent } from "@/utils";
+import { loadProductBySlug, loadProducts } from "@/lib/data";
 
-// Build-time params come from static seed data. Any product added in admin after
-// build is rendered on-demand (dynamicParams = true is the default).
 export function generateStaticParams() {
-  return staticProducts.map((p) => ({ slug: p.slug }));
+  return staticProducts.map((product) => ({ slug: product.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const product = await loadProductBySlug(slug);
   if (!product) return { title: "Product Not Found" };
   return {
     title: product.name,
     description: product.description.slice(0, 160),
-    openGraph: {
-      title: product.name,
-      description: product.description.slice(0, 160),
-      images: [product.images[0]],
-    },
+    openGraph: { title: product.name, description: product.description.slice(0, 160), images: product.images[0] ? [product.images[0]] : [] },
   };
 }
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await loadProductBySlug(slug);
   if (!product) notFound();
 
-  const related = await loadRelatedProducts(slug);
-  const discount = discountPercent(product.originalPrice, product.offerPrice);
-  const inStock = product.stock > 0;
+  const allProducts = await loadProducts();
+  const otherCategories = allProducts
+    .filter((item) => item.slug !== product.slug && item.category !== product.category)
+    .slice(0, 12);
 
   return (
-    <>
-      <PageHero
-        title={product.name}
-        eyebrow={product.category}
-        bgImage={product.images[0]}
-        breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Products", href: "/products" },
-          { label: product.name },
-        ]}
-      />
+    <main className="overflow-hidden bg-white">
+      <section className="relative min-h-[165px] overflow-hidden border-y-2 border-[#FBAA00] bg-[#174D2A]">
+        <div className="absolute inset-0 opacity-35">
+          <AboutBannerImage pageKey="product" fallbackImage={product.images[0] || "/images/contact/contact-textile-banner-v3.png"} />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#174D2A]/95 via-[#174D2A]/80 to-[#579515]/55" />
+        <div className="absolute inset-y-0 left-0 w-2 bg-[#579515]" />
+        <div className="container-x relative flex min-h-[165px] flex-col justify-end pb-4 pt-10">
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/80 sm:text-[11px]">
+            <Link href="/" className="text-[#FBAA00] hover:text-white">Home</Link><span>/</span>
+            <Link href="/products" className="text-[#FBAA00] hover:text-white">Products</Link><span>/</span>
+            <span className="line-clamp-1">{product.name}</span>
+          </div>
+          <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#FBAA00] sm:text-[10px]">{product.category}</div>
+          <h1 className="mt-1 max-w-4xl text-3xl font-semibold uppercase leading-[1.1] tracking-tight text-white sm:text-4xl">{product.name}</h1>
+        </div>
+      </section>
 
-      <section className="section-y">
-        <div className="container-x">
-          <div className="grid lg:grid-cols-12 gap-12">
-            {/* Gallery */}
-            <div className="lg:col-span-7">
-              <ProductGallery images={product.images} name={product.name} />
-            </div>
+      <section className="relative bg-gradient-to-br from-white via-[#fffaf0] to-[#FBAA00]/10 py-6 md:py-8">
+        <div className="absolute -right-28 top-12 h-72 w-72 rounded-full border-[55px] border-[#FBAA00]/10" />
+        <div className="container-x relative">
+          <div className="mx-auto max-w-5xl">
+          <Link href="/products" className="mb-4 inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#579515] transition hover:text-[#FBAA00] sm:text-xs"><FaArrowLeft className="h-4 w-4" /> Back to all products</Link>
 
-            {/* Info */}
-            <div className="lg:col-span-5">
-              <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest-x font-semibold mb-4">
-                <span className="text-gold-dark">{product.category}</span>
-                {product.subcategory && (
-                  <>
-                    <span className="h-1 w-1 rounded-full bg-cream-300" />
-                    <span className="text-ink-muted">{product.subcategory}</span>
-                  </>
-                )}
-              </div>
-
-              <h1 className="display text-4xl md:text-5xl font-semibold text-gray-950 leading-tight">
-                {product.name}
-              </h1>
-
-              <div className="mt-4 flex items-center gap-3 text-sm text-ink-muted">
-                <span className="text-gold">
-                  {"★".repeat(Math.round(product.rating))}
-                  <span className="text-cream-300">
-                    {"★".repeat(5 - Math.round(product.rating))}
-                  </span>
-                </span>
-                <span>·</span>
-                <span>
-                  {product.rating} ({product.reviews} reviews)
-                </span>
-              </div>
-
-              {/* Price */}
-              <div className="mt-6 flex items-end gap-4">
-                <div className="display text-4xl font-semibold text-gray-900">
-                  {formatINR(product.offerPrice)}
-                </div>
-                {product.originalPrice > product.offerPrice && (
-                  <>
-                    <div className="text-lg text-ink-muted line-through mb-1">
-                      {formatINR(product.originalPrice)}
-                    </div>
-                    <div className="inline-flex items-center rounded-full bg-gold/15 text-gold-dark px-2.5 py-1 text-xs font-bold mb-1">
-                      Save {discount}%
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Stock */}
-              <div className="mt-3 flex items-center gap-2 text-sm">
-                <span
-                  className={`h-2 w-2 rounded-full ${
-                    inStock ? "bg-green-600" : "bg-red-600"
-                  }`}
-                />
-                <span className={inStock ? "text-green-700" : "text-red-700"}>
-                  {inStock
-                    ? `In stock — ${product.stock} available`
-                    : "Out of stock"}
-                </span>
-              </div>
-
-              {/* Description */}
-              <p className="mt-6 text-ink-soft leading-relaxed">
-                {product.description}
-              </p>
-
-              {/* Actions (client) */}
-              <div className="mt-8">
-                <ProductActions product={product} />
-              </div>
-
-              {/* Trust badges */}
-              <div className="mt-8 grid grid-cols-2 gap-3 pt-8 border-t border-cream-200">
-                {[
-                  { Icon: FaTruck, label: "Pan-India delivery", sub: "3–7 working days" },
-                  { Icon: FaShieldAlt, label: "Quality assured", sub: "Multi-stage QC" },
-                  { Icon: FaUndoAlt, label: "Easy returns", sub: "7-day policy" },
-                  { Icon: FaCheck, label: "GST invoice", sub: "Wholesale ready" },
-                ].map(({ Icon, label, sub }) => (
-                  <div key={label} className="flex items-start gap-3">
-                    <div className="grid h-9 w-9 place-items-center rounded-full bg-cream-100 text-gray-800">
-                      <Icon className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-ink">{label}</div>
-                      <div className="text-xs text-ink-muted">{sub}</div>
-                    </div>
+          <div className="grid items-start gap-6 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <div className="group relative pb-3 pr-3 [perspective:1200px]">
+                <div className="absolute bottom-0 left-3 right-0 top-3 rounded-[0.75rem_2rem_0.75rem_2rem] bg-[#579515] shadow-[0_20px_38px_-28px_rgba(20,59,50,0.75)] transition-transform duration-500 group-hover:translate-x-1 group-hover:translate-y-1" />
+                <div className="relative overflow-hidden rounded-[2rem_0.75rem_2rem_0.75rem] border border-[#FBAA00]/50 bg-white p-2.5 shadow-[0_24px_48px_-34px_rgba(20,59,50,0.65)] transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:translateY(-4px)_rotateY(-1.5deg)]">
+                  <span className="absolute left-0 top-8 z-10 h-16 w-1.5 rounded-r-full bg-[#FBAA00]" />
+                  <span className="absolute right-0 top-0 z-10 h-14 w-14 rounded-bl-[2rem] border-b border-l border-[#FBAA00]/50 bg-white/20" />
+                  <ProductGallery images={product.images} name={product.name} />
+                  <div className="absolute bottom-5 right-5 z-20 flex items-center gap-2 rounded-full bg-[#174D2A]/90 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.14em] text-white shadow-lg backdrop-blur">
+                    <FaImages className="h-3 w-3 text-[#FBAA00]" /> {product.images.length} views
                   </div>
-                ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 lg:pt-1">
+              <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-[0.22em] text-[#579515]">
+                <span className="h-px w-9 bg-[#FBAA00]" /> {product.category}
+              </div>
+              <h2 className="display mt-2.5 text-3xl font-semibold leading-[1.1] text-black sm:text-4xl">{product.name}</h2>
+              <p className="mt-3 border-l-2 border-[#FBAA00] pl-4 text-[13px] leading-6 text-black/75">{product.description}</p>
+
+              <div className="mt-4"><ProductActions product={product} /></div>
+
+              <div className="mt-4 flex items-center gap-2.5 rounded-xl bg-[#579515]/10 px-4 py-3 text-[10px] leading-4 text-[#174D2A]">
+                <FaLeaf className="h-3.5 w-3.5 shrink-0 text-[#579515]" />
+                Contact us for specifications, custom development, quantities and buyer documentation.
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Specifications */}
-      <section className="section-y bg-cream-100/50">
-        <div className="container-x grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <SectionTitle
-              eyebrow="Details"
-              title="Specifications"
-              description="The technical details you need before placing a wholesale or retail order."
-            />
-          </div>
-          <div className="lg:col-span-7">
-            <dl className="rounded-2xl bg-white border border-cream-200 overflow-hidden divide-y divide-cream-200">
-              {[
-                ["Material", product.material],
-                product.gsm ? ["GSM", product.gsm] : null,
-                product.pattern ? ["Pattern", product.pattern] : null,
-                ["Cloth Type", product.clothType],
-                ["Colors Available", product.colors.join(", ")],
-                ["Sizes Available", product.sizes.join(", ")],
-                ["Washable", product.washable ? "Yes — machine wash recommended" : "Dry clean only"],
-                ["Country of Origin", "India (Erode, Tamil Nadu)"],
-                ...(product.specifications?.map((s) => [s.label, s.value]) || []),
-              ]
-                .filter(Boolean)
-                .map((row, i) => {
-                  const [k, v] = row as [string, string];
-                  return (
-                    <div
-                      key={`${k}-${i}`}
-                      className="grid grid-cols-3 gap-4 p-5"
-                    >
-                      <dt className="text-sm text-ink-muted col-span-1">{k}</dt>
-                      <dd className="text-sm text-ink font-medium col-span-2">
-                        {v}
-                      </dd>
-                    </div>
-                  );
-                })}
-            </dl>
           </div>
         </div>
       </section>
 
-      {/* Related */}
-      {related.length > 0 && (
-        <section className="section-y">
-          <div className="container-x">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-              <SectionTitle
-                eyebrow="You may also like"
-                title="Related products"
-              />
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 text-sm uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gold-dark"
-              >
-                View All <FaArrowRight className="h-3 w-3" />
-              </Link>
+      {otherCategories.length > 0 && (
+        <section className="relative overflow-hidden bg-white py-8 text-black md:py-10">
+          <div className="container-x relative">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.24em] text-[#FBAA00]">Explore something different</div>
+                <h2 className="display mt-2 text-3xl font-semibold leading-[1.1] text-black sm:text-4xl">Products from other categories</h2>
+              </div>
+              <Link href="/products" className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.18em] text-[#579515] hover:text-[#FBAA00]">View all products <FaArrowRight className="h-3 w-3" /></Link>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
+
+            <div dir="ltr" className="related-products-marquee mt-6 overflow-hidden px-1 pb-5">
+              <div className="related-products-track flex w-max gap-4 lg:gap-5">
+              {[...otherCategories, ...otherCategories].map((item, index) => (
+                <Link key={`${item.id}-${index}`} href={`/products/${item.slug}`} className="group relative w-[210px] shrink-0 overflow-hidden rounded-lg border border-[#143B32]/25 bg-white p-2 shadow-[0_15px_28px_-22px_rgba(20,59,50,0.55)] transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_38px_-20px_rgba(20,59,50,0.6)] sm:w-[240px] lg:w-[255px]">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[#F5F5F5]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.images[0] || ""} alt={item.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  </div>
+                  <div className="px-1.5 pb-1.5 pt-3 text-center">
+                    <div className="text-[7px] font-bold uppercase tracking-[0.18em] text-[#579515]">{item.category}</div>
+                    <h3 className="display mt-1 text-sm font-semibold text-black">{item.name}</h3>
+                  </div>
+                </Link>
               ))}
+              </div>
             </div>
           </div>
         </section>
       )}
-    </>
+    </main>
   );
 }

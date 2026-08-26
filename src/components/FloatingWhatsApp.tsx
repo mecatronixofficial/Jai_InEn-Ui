@@ -58,8 +58,8 @@ export default function FloatingWhatsApp() {
         aria-label="Chat on WhatsApp"
         className="relative group"
       >
-        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-50 animate-ping" />
-        <span className="relative grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-warm hover:scale-105 transition">
+        <span className="absolute inset-0 rounded-full bg-[#579515] opacity-50 animate-ping" />
+        <span className="relative grid h-14 w-14 place-items-center rounded-full bg-[#579515] text-white shadow-warm hover:scale-105 transition">
           <FaWhatsapp className="h-7 w-7" />
         </span>
       </a>

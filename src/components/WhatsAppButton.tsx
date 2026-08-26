@@ -11,7 +11,7 @@ export default function WhatsAppButton({ url }: { url: string }) {
         e.stopPropagation();
         window.open(url, "_blank", "noreferrer");
       }}
-      className="flex items-center justify-center gap-2 w-full rounded-lg bg-[#25D366] text-white py-3 text-sm font-semibold hover:bg-[#1ea952] transition"
+      className="flex items-center justify-center gap-2 w-full rounded-lg bg-[#579515] text-white py-3 text-sm font-semibold hover:bg-[#579515] transition"
     >
       <FaWhatsapp className="h-4 w-4" /> Reply on WhatsApp
     </button>

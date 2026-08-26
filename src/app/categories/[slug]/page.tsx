@@ -43,6 +43,7 @@ export default async function CategoryDetail({
   return (
     <>
       <PageHero
+        pageKey="category"
         eyebrow="Category"
         title={cat.name}
         subtitle={cat.description}
@@ -70,7 +71,7 @@ export default async function CategoryDetail({
 
           {list.length === 0 ? (
             <div className="card p-12 text-center">
-              <h3 className="display text-2xl text-gray-950">Coming soon</h3>
+              <h3 className="display text-base font-semibold text-gray-950">Coming soon</h3>
               <p className="text-ink-muted mt-2">
                 We&apos;re updating this category. Check back shortly.
               </p>

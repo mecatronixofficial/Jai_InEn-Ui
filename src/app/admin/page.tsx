@@ -17,11 +17,11 @@ import { AdminCard, StatTile, AdminButton } from "@/components/admin/AdminUI";
 import { cn } from "@/utils";
 
 const statusBadgeColor: Record<string, string> = {
-  new: "bg-blue-100 text-blue-700",
+  new: "bg-[#FBAA00]/15 text-[#E89D00]",
   contacted: "bg-amber-100 text-amber-700",
-  quoted: "bg-purple-100 text-purple-700",
+  quoted: "bg-[#FBAA00]/15 text-[#E89D00]",
   confirmed: "bg-green-100 text-green-700",
-  despatched: "bg-indigo-100 text-indigo-700",
+  despatched: "bg-[#579515]/15 text-[#579515]",
   delivered: "bg-emerald-100 text-emerald-700",
   cancelled: "bg-red-100 text-red-700",
 };
@@ -198,7 +198,7 @@ export default function AdminDashboardPage() {
           <Link
             key={href}
             href={href}
-            className="rounded-2xl bg-gray-950 text-cream-50 p-5 flex items-center gap-4 hover:bg-gray-900 transition group"
+            className="group flex items-center gap-4 rounded-2xl border border-[#ECECEC] bg-white p-5 text-[#222222] shadow-soft transition hover:-translate-y-1 hover:border-[#FBAA00]/50"
           >
             <div className="grid h-11 w-11 place-items-center rounded-xl bg-gold text-gray-950 group-hover:scale-105 transition">
               <Icon className="h-4 w-4" />

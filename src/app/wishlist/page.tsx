@@ -26,7 +26,7 @@ export default function WishlistPage() {
       <section className="section-y">
         <div className="container-x">
           {saved.length === 0 ? (
-            <div className="text-center py-16">
+            <div className="py-10 text-center sm:py-12">
               <div className="grid h-20 w-20 mx-auto place-items-center rounded-full bg-cream-100 text-gray-800 mb-6">
                 <FaHeart className="h-7 w-7" />
               </div>

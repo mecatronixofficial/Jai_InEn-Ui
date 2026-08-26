@@ -30,8 +30,10 @@ import {
   openingCard as staticOpening,
 } from "@/data/content";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+const publicApiUrl = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE = publicApiUrl?.startsWith("http")
+  ? publicApiUrl
+  : `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000"}/api/v1`;
 
 async function tryFetch<T>(path: string): Promise<T | null> {
   try {
@@ -77,7 +79,9 @@ function mapProduct(api: any): ProductType {
     clothType: api.clothType,
     colors: api.colors || [],
     sizes: api.sizes || [],
-    stock: api.stock ?? 0,
+    // Older backend records may not contain inventory yet. Treat a missing
+    // value as available; an explicit zero still remains out of stock.
+    stock: api.stock ?? 1,
     offerPrice: api.offerPrice,
     originalPrice: api.originalPrice,
     material: api.material,
@@ -182,7 +186,7 @@ export async function loadProducts(): Promise<ProductType[]> {
 }
 
 export async function loadProductBySlug(slug: string): Promise<ProductType | null> {
-  const res = await tryFetch<any>(`/products/${slug}`);
+  const res = await tryFetch<any>(`/products/${encodeURIComponent(slug)}`);
   if (res) return mapProduct(res);
   return staticProducts.find((p) => p.slug === slug) || null;
 }

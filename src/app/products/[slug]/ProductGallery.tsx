@@ -14,29 +14,8 @@ export default function ProductGallery({
   const [active, setActive] = useState(0);
 
   return (
-    <div className="grid grid-cols-5 gap-4">
-      {/* Thumbs */}
-      <div className="col-span-1 flex flex-col gap-3">
-        {images.map((img, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setActive(i)}
-            className={cn(
-              "relative aspect-square overflow-hidden rounded-lg border-2 transition",
-              i === active
-                ? "border-gray-800"
-                : "border-transparent hover:border-cream-300 opacity-70 hover:opacity-100"
-            )}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={img} alt="" className="h-full w-full object-cover" />
-          </button>
-        ))}
-      </div>
-
-      {/* Main */}
-      <div className="col-span-4 relative aspect-[4/5] overflow-hidden rounded-2xl bg-cream-100">
+    <div>
+      <div className="relative aspect-[16/11] overflow-hidden rounded-lg bg-cream-100">
         <AnimatePresence mode="wait">
           <motion.img
             key={active}
@@ -50,6 +29,27 @@ export default function ProductGallery({
           />
         </AnimatePresence>
       </div>
+
+      {images.length > 1 && (
+        <div className="mt-2 flex gap-1.5 overflow-x-auto pb-0.5 no-scrollbar">
+          {images.map((img, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setActive(i)}
+              className={cn(
+                "relative h-12 w-16 shrink-0 overflow-hidden rounded-md border-2 transition sm:h-14 sm:w-20",
+                i === active
+                  ? "border-[#FBAA00] shadow-[0_5px_0_rgba(251,170,0,0.15)]"
+                  : "border-transparent opacity-65 hover:border-[#579515]/30 hover:opacity-100"
+              )}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={img} alt={`${name} view ${i + 1}`} className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

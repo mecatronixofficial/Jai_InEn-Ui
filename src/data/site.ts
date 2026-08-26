@@ -3,7 +3,7 @@ export const siteConfig = {
   name: "Jai Export Enterprises",
   tagline: "Woven in Karur. Worn across India.",
   description:
-    "Jai Export Enterprises — a leading textile manufacturer and wholesaler from Karur, Tamil Nadu. Specialists in petticoats, lungis, towels, gamcha, bed sheets, dhotis and handloom products.",
+    "Jai Export Enterprises — a home textile manufacturer and exporter from Karur, Tamil Nadu, serving international markets with table, kitchen, bed, living and outdoor textile collections.",
   ceo: "Jai",
   established: "2017",
   gstSince: "Jul 2017",

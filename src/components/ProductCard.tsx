@@ -9,7 +9,15 @@ import { useWishlist } from "@/store";
 import { buildWhatsAppOrderUrl } from "@/lib/whatsapp";
 import { formatINR, discountPercent } from "@/utils";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  compact = false,
+  showPrice = true,
+}: {
+  product: Product;
+  compact?: boolean;
+  showPrice?: boolean;
+}) {
   const has = useWishlist((s) => s.has(product.id));
   const toggle = useWishlist((s) => s.toggle);
   const discount = discountPercent(product.originalPrice, product.offerPrice);
@@ -25,7 +33,7 @@ export default function ProductCard({ product }: { product: Product }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5 }}
-      className="group relative"
+      className={`group relative ${compact ? "rounded-lg border border-[#143B32]/25 bg-white p-2 shadow-[0_10px_24px_rgba(20,59,50,0.10)]" : ""}`}
     >
       {/* Full-card link overlay — sits below interactive elements */}
       <Link
@@ -35,7 +43,7 @@ export default function ProductCard({ product }: { product: Product }) {
       />
 
       {/* Image */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-cream-100">
+      <div className={`relative overflow-hidden bg-cream-100 ${compact ? "aspect-[4/3] rounded-md" : "aspect-[4/5] rounded-xl"}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.images[0] ?? ""}
@@ -70,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* Out of stock overlay */}
-        {product.stock === 0 && (
+        {!compact && product.stock === 0 && (
           <div className="absolute inset-0 grid place-items-center bg-cream-50/85 z-10">
             <span className="text-gray-800 uppercase tracking-widest-x text-xs font-bold">
               Out of stock
@@ -101,7 +109,7 @@ export default function ProductCard({ product }: { product: Product }) {
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center justify-center gap-2 w-full rounded-full bg-gray-900 text-cream-50 py-2.5 text-xs font-medium tracking-wide hover:bg-gray-950 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-[#FBAA00] py-2.5 text-xs font-semibold tracking-wide text-white transition hover:bg-[#E89D00]"
           >
             <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
           </a>
@@ -109,8 +117,8 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Info */}
-      <div className="relative z-10 mt-4 px-1 pointer-events-none">
-        <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest-x text-ink-muted font-semibold">
+      <div className={`relative z-10 px-1 pointer-events-none ${compact ? "pb-1 pt-3" : "mt-4"}`}>
+        <div className={`flex items-center gap-2 uppercase tracking-widest-x text-ink-muted font-semibold ${compact ? "text-[7px]" : "text-[10px]"}`}>
           <span>{product.category}</span>
           <span className="h-1 w-1 rounded-full bg-gold" />
           <span className="flex items-center gap-1">
@@ -119,20 +127,22 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
 
-        <h3 className="display text-xl font-semibold text-gray-950 mt-2 leading-tight group-hover:text-gray-700 transition">
+        <h3 className={`display text-base font-semibold leading-tight text-gray-950 transition group-hover:text-gray-700 ${compact ? "mt-1" : "mt-2"}`}>
           {product.name}
         </h3>
 
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className="text-lg font-semibold text-ink">
-            {formatINR(product.offerPrice)}
-          </span>
-          {product.originalPrice > product.offerPrice && (
-            <span className="text-sm text-ink-muted line-through">
-              {formatINR(product.originalPrice)}
+        {showPrice && (
+          <div className={`flex items-baseline gap-2 ${compact ? "mt-1.5" : "mt-2"}`}>
+            <span className={`font-semibold text-ink ${compact ? "text-sm" : "text-lg"}`}>
+              {formatINR(product.offerPrice)}
             </span>
-          )}
-        </div>
+            {product.originalPrice > product.offerPrice && (
+              <span className="text-sm text-ink-muted line-through">
+                {formatINR(product.originalPrice)}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Color swatches */}
         {product.colors.length > 0 && (

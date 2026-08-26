@@ -1,4 +1,5 @@
-import Breadcrumbs, { type Crumb } from "@/components/Breadcrumbs";
+import type { Crumb } from "@/components/Breadcrumbs";
+import PremiumPageBanner from "@/components/PremiumPageBanner";
 
 interface PageHeroProps {
   title: string;
@@ -6,6 +7,7 @@ interface PageHeroProps {
   eyebrow?: string;
   bgImage?: string;
   breadcrumbs?: Crumb[];
+  pageKey?: string;
 }
 
 export default function PageHero({
@@ -14,45 +16,9 @@ export default function PageHero({
   eyebrow,
   bgImage,
   breadcrumbs,
+  pageKey,
 }: PageHeroProps) {
-  return (
-    <section className="relative bg-gray-950 text-cream-50 overflow-hidden">
-      {bgImage && (
-        <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={bgImage}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/70 via-gray-950/85 to-gray-950" />
-        </>
-      )}
-      <div className="absolute inset-0 bg-weave-dark opacity-50" />
-
-      <div className="relative container-x py-24 md:py-32">
-        {breadcrumbs && (
-          <div className="mb-6">
-            <Breadcrumbs items={breadcrumbs} />
-          </div>
-        )}
-        {eyebrow && (
-          <div className="flex items-center gap-3 mb-4">
-            <span className="h-px w-10 bg-gold" />
-            <span className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold">
-              {eyebrow}
-            </span>
-          </div>
-        )}
-        <h1 className="display text-5xl md:text-7xl font-semibold leading-[1.02] tracking-tight max-w-4xl">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-6 text-lg text-cream-100/85 max-w-2xl leading-relaxed">
-            {subtitle}
-          </p>
-        )}
-      </div>
-    </section>
-  );
+  const current = breadcrumbs?.[breadcrumbs.length - 1]?.label || title;
+  const parentCrumb = breadcrumbs && breadcrumbs.length > 2 ? breadcrumbs[breadcrumbs.length - 2] : undefined;
+  return <PremiumPageBanner eyebrow={eyebrow || "Jai Export Enterprises"} title={title} description={subtitle} current={current} parent={parentCrumb?.href ? { label: parentCrumb.label, href: parentCrumb.href } : undefined} bgImage={bgImage} pageKey={pageKey} />;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 const TOKEN_KEY = "tt-admin-token";
 
 export class ApiError extends Error {
@@ -38,17 +38,27 @@ async function request<T = any>(path: string, opts: RequestOpts = {}): Promise<T
     if (token) headers.Authorization = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${BASE}${path}`, {
-    method,
-    headers,
-    body:
-      body === undefined
-        ? undefined
-        : multipart
-        ? (body as BodyInit)
-        : JSON.stringify(body),
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method,
+      headers,
+      body:
+        body === undefined
+          ? undefined
+          : multipart
+          ? (body as BodyInit)
+          : JSON.stringify(body),
+      cache: "no-store",
+    });
+  } catch {
+    throw new ApiError(
+      503,
+      multipart
+        ? "Image upload connection was interrupted. Please check the backend and try again."
+        : "Unable to connect to the server. Please try again.",
+    );
+  }
 
   let payload: any = null;
   const text = await res.text();
@@ -135,6 +145,10 @@ export const api = {
     }),
   publicOffers: () => request<OfferApi[]>("/offers", { auth: false }),
   publicHeroBanners: () => request<BannerApi[]>("/banners/hero", { auth: false }),
+  publicAboutBanner: () =>
+    request<BannerApi[]>("/banners/about", { auth: false }),
+  publicPageBanner: (pageKey: string) =>
+    request<BannerApi | null>(`/banners/page/${encodeURIComponent(pageKey)}`, { auth: false }),
   publicOpeningCard: () =>
     request<BannerApi[]>("/banners/opening-card", { auth: false }),
   publicCertificates: () =>
@@ -314,7 +328,8 @@ export interface BlogApi {
 
 export interface BannerApi {
   id: string;
-  kind: "hero" | "opening_card";
+  kind: "hero" | "opening_card" | "about_banner" | "page_banner";
+  pageKey?: string;
   title: string;
   highlight?: string;
   subtitle?: string;

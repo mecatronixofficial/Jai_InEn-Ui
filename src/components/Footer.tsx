@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -14,226 +15,363 @@ import {
 } from "react-icons/fa";
 
 import { siteConfig } from "@/data/site";
-import { categories } from "@/data/categories";
+import { api, type CategoryApi } from "@/lib/api";
 
 export default function Footer() {
   const pathname = usePathname();
+  const [shopCategories, setShopCategories] = useState<CategoryApi[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    api.publicCategories()
+      .then((items) => {
+        if (active) setShopCategories(items);
+      })
+      .catch(() => {
+        if (active) setShopCategories([]);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-gray-950 text-cream-100 relative overflow-hidden">
-      {/* Decorative weave overlay */}
-      <div className="absolute inset-0 bg-weave-dark opacity-50 pointer-events-none" />
+    <footer className="relative overflow-hidden  border-[#ECECEC] bg-[#F5F5F5] text-[#666666]">
+      {/* ===================================================== */}
+      {/* GLOBAL DECORATIONS */}
+      {/* ===================================================== */}
 
-      {/* Top: newsletter */}
-      <div className="relative border-b border-cream-50/10">
-        <div className="container-x py-12 grid lg:grid-cols-2 gap-8 items-center">
+      <div className="pointer-events-none absolute inset-0 bg-weave-light opacity-[0.13]" />
+
+      <div className="pointer-events-none absolute -right-32 top-10 h-[360px] w-[360px] rounded-full bg-[#FBAA00]/[0.08] blur-3xl" />
+
+      <div className="pointer-events-none absolute -bottom-32 -left-28 h-[340px] w-[340px] rounded-full bg-[#579515]/[0.07] blur-3xl" />
+
+      {/* ===================================================== */}
+      {/* NEWSLETTER */}
+      {/* ===================================================== */}
+
+      <div className="relative overflow-hidden border-b border-[#FBAA00]/45 bg-[#FBAA00]/35 text-[#174D2A]">
+        <div className="container-x grid items-center gap-5 py-6 lg:grid-cols-2 lg:py-7">
+          {/* LEFT CONTENT */}
           <div>
-            <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold">
-              Stay in touch
+            <div className="flex items-center gap-3">
+              <span className="h-px w-7 bg-[#579515]" />
+
+              <span className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#174D2A]">
+                Stay in touch
+              </span>
             </div>
-            <h3 className="display text-3xl md:text-4xl font-semibold mt-2 text-cream-50">
-              Wholesale rates, new collections, festival drops.
+
+            <h3 className="display mt-2 max-w-xl text-xl font-semibold leading-[1.15] text-[#174D2A] md:text-2xl">
+              Wholesale rates, new collections,
+              <span className="text-[#579515]"> festival drops.</span>
             </h3>
-            <p className="text-cream-100/70 text-sm mt-2 max-w-md">
-              Join our list to be the first to know about new arrivals and bulk
-              order deals.
+
+            <p className="mt-2 max-w-lg text-xs leading-5 text-[#174D2A]/75">
+              Join our list to be the first to know about new arrivals,
+              seasonal collections and exclusive bulk-order opportunities.
             </p>
           </div>
-          <form className="flex flex-col sm:flex-row gap-3">
+
+          {/* FORM */}
+          <form className="relative rounded-xl border border-white/70 bg-white p-1.5 shadow-[0_12px_28px_-18px_rgba(23,77,42,0.4)] sm:flex sm:items-center">
             <input
               type="email"
               required
-              placeholder="Enter your email"
-              className="flex-1 rounded-full bg-white/10 border border-white/20 px-5 py-3 text-cream-50 placeholder:text-cream-100/50 focus:outline-none focus:border-gold focus:bg-white/15 transition"
+              placeholder="Enter your email address"
+              className="w-full flex-1 bg-transparent px-3 py-2 text-xs text-[#174D2A] outline-none placeholder:text-[#174D2A]/55 sm:px-4"
             />
-            <button type="submit" className="btn-gold">
+
+            <button
+              type="submit"
+              className="mt-1.5 inline-flex w-full items-center justify-center rounded-lg bg-[#579515] px-5 py-2.5 text-xs font-semibold text-white shadow-[0_6px_16px_rgba(87,149,21,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#174D2A] sm:mt-0 sm:w-auto"
+            >
               Subscribe
             </button>
           </form>
         </div>
       </div>
 
-      {/* Mid */}
-      <div className="relative container-x py-16 grid md:grid-cols-2 lg:grid-cols-12 gap-10">
-        {/* Brand */}
-        <div className="lg:col-span-4">
-          <div className="flex items-center gap-3">
-            {siteConfig.logo ? (
-              <img
-                src={siteConfig.logo}
-                alt={siteConfig.name}
-                className="h-12 w-12 object-cover"
-              />
-            ) : (
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-gray-950 font-display text-2xl font-bold uppercase">
-                {siteConfig?.name?.charAt(0) || "T"}
-              </div>
-            )}
+      {/* ===================================================== */}
+      {/* MAIN FOOTER */}
+      {/* ===================================================== */}
 
-            <div>
-              <div className="display text-2xl text-cream-50 font-semibold">
-                {siteConfig.name}
-              </div>
+      <div className="relative bg-[#F5F5F5]">
+        <div className="container-x grid gap-7 py-8 md:grid-cols-2 lg:grid-cols-12 lg:py-10">
+          {/* ================================================= */}
+          {/* BRAND */}
+          {/* ================================================= */}
 
-              <div className="text-[10px] uppercase tracking-widest text-gold-light font-semibold">
-                {siteConfig.address.city} · {siteConfig.address.state}
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-3">
+              {siteConfig.logo ? (
+                <div className="grid h-11 w-11 place-items-center rounded-xl border border-[#ECECEC] bg-white p-1 shadow-[0_8px_20px_rgba(51,59,55,0.06)]">
+                  <img
+                    src={siteConfig.logo}
+                    alt={siteConfig.name}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#579515] font-display text-xl font-bold uppercase text-[#FBAA00]">
+                  {siteConfig?.name?.charAt(0) || "T"}
+                </div>
+              )}
+
+              <div>
+                <div className="display text-xl font-semibold text-[#579515]">
+                  {siteConfig.name}
+                </div>
+
+                <div className="mt-1 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.18em] text-[#FBAA00]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#E89D00]" />
+
+                  {siteConfig.address.city} · {siteConfig.address.state}
+                </div>
               </div>
             </div>
-          </div>
-          <p className="mt-5 text-sm text-cream-100/70 leading-relaxed max-w-sm">
-            {siteConfig.description}
-          </p>
 
-          <div className="mt-6 flex items-center gap-3">
-            {[
-              {
-                href: siteConfig.socials.facebook,
-                Icon: FaFacebookF,
-                label: "Facebook",
-              },
-              {
-                href: siteConfig.socials.instagram,
-                Icon: FaInstagram,
-                label: "Instagram",
-              },
-              {
-                href: siteConfig.socials.youtube,
-                Icon: FaYoutube,
-                label: "YouTube",
-              },
-              {
-                href: siteConfig.socials.whatsapp,
-                Icon: FaWhatsapp,
-                label: "WhatsApp",
-              },
-            ].map(({ href, Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={label}
-                className="grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-gold hover:text-gray-950 transition"
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
-        </div>
+            <p className="mt-4 max-w-sm text-[13px] leading-5 text-[#666666]">
+              {siteConfig.description}
+            </p>
 
-        {/* Categories */}
-        <div className="lg:col-span-3">
-          <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold mb-5">
-            Shop
-          </div>
-          <ul className="space-y-3 text-sm">
-            {categories.map((c) => (
-              <li key={c.id}>
-                <Link
-                  href={`/products?category=${c.slug}`}
-                  className="text-cream-100/80 hover:text-gold-light transition"
-                >
-                  {c.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Company */}
-        <div className="lg:col-span-2">
-          <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold mb-5">
-            Company
-          </div>
-          <ul className="space-y-3 text-sm">
-            {[
-              ["About", "/about"],
-              ["Sustainability", "/sustainability"],
-              ["Certifications", "/certifications"],
-              ["Categories", "/categories"],
-              ["Blog", "/blog"],
-              ["Reviews", "/testimonials"],
-              ["Contact", "/contact"],
-            ].map(([label, href]) => (
-              <li key={href}>
-                <Link
+            {/* SOCIAL */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {[
+                {
+                  href: siteConfig.socials.facebook,
+                  Icon: FaFacebookF,
+                  label: "Facebook",
+                },
+                {
+                  href: siteConfig.socials.instagram,
+                  Icon: FaInstagram,
+                  label: "Instagram",
+                },
+                {
+                  href: siteConfig.socials.youtube,
+                  Icon: FaYoutube,
+                  label: "YouTube",
+                },
+                {
+                  href: siteConfig.socials.whatsapp,
+                  Icon: FaWhatsapp,
+                  label: "WhatsApp",
+                },
+              ].map(({ href, Icon, label }) => (
+                <a
+                  key={label}
                   href={href}
-                  className="text-cream-100/80 hover:text-gold-light transition"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="grid h-10 w-10 place-items-center rounded-lg border border-[#ECECEC] bg-[#F5F5F5] text-[#579515] transition-all duration-300 hover:-translate-y-1 hover:border-[#E89D00] hover:bg-[#E89D00] hover:text-white"
                 >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div className="lg:col-span-3">
-          <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold mb-5">
-            Reach us
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
-          <ul className="space-y-4 text-sm">
-            <li className="flex gap-3">
-              <FaMapMarkerAlt className="h-4 w-4 text-gold-light shrink-0 mt-0.5" />
-              <span className="text-cream-100/80 leading-relaxed">
-                {siteConfig.address.line2},<br />
-                {siteConfig.address.city}, {siteConfig.address.state} -{" "}
-                {siteConfig.address.pincode}
-              </span>
-            </li>
-            <li className="flex gap-3">
-              <FaPhoneAlt className="h-4 w-4 text-gold-light shrink-0 mt-0.5" />
-              <a
-                href={`tel:${siteConfig.phone.replace(/\s+/g, "")}`}
-                className="text-cream-100/80 hover:text-gold-light"
-              >
-                {siteConfig.phone}
-              </a>
-            </li>
-            <li className="flex gap-3">
-              <FaEnvelope className="h-4 w-4 text-gold-light shrink-0 mt-0.5" />
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="text-cream-100/80 hover:text-gold-light"
-              >
-                {siteConfig.email}
-              </a>
-            </li>
-            <li className="flex gap-3">
-              <FaClock className="h-4 w-4 text-gold-light shrink-0 mt-0.5" />
-              <span className="text-cream-100/80">
-                {siteConfig.workingHours}
-              </span>
-            </li>
-          </ul>
+
+          {/* ================================================= */}
+          {/* SHOP */}
+          {/* ================================================= */}
+
+          <div className="lg:col-span-3">
+            <FooterHeading title="Shop" />
+
+            <ul className="space-y-2">
+              {shopCategories.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/products?category=${category.slug}`}
+                    className="group inline-flex items-center gap-2 text-[13px] text-[#666666] transition duration-300 hover:translate-x-1 hover:text-[#FBAA00]"
+                  >
+                    <span className="h-px w-0 bg-[#E89D00] transition-all duration-300 group-hover:w-4" />
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ================================================= */}
+          {/* COMPANY */}
+          {/* ================================================= */}
+
+          <div className="lg:col-span-2">
+            <FooterHeading title="Company" />
+
+            <ul className="space-y-2">
+              {[
+                ["About", "/about"],
+                ["Sustainability", "/sustainability"],
+                ["Certifications", "/certifications"],
+                ["Categories", "/categories"],
+                ["Blog", "/blog"],
+                ["Reviews", "/testimonials"],
+                ["Contact", "/contact"],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="group inline-flex items-center gap-2 text-[13px] text-[#666666] transition duration-300 hover:translate-x-1 hover:text-[#FBAA00]"
+                  >
+                    <span className="h-px w-0 bg-[#E89D00] transition-all duration-300 group-hover:w-4" />
+
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ================================================= */}
+          {/* CONTACT */}
+          {/* ================================================= */}
+
+          <div className="lg:col-span-3">
+            <FooterHeading title="Reach us" />
+
+            <ul className="space-y-2.5">
+              {/* ADDRESS */}
+              <li className="group flex items-start gap-2.5">
+                <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#F5F5F5] text-[#FBAA00] transition group-hover:bg-[#E89D00] group-hover:text-white">
+                  <FaMapMarkerAlt className="h-3.5 w-3.5" />
+                </div>
+
+                <span className="text-[13px] leading-5 text-[#666666]">
+                  {siteConfig.address.line2}
+                  <br />
+                  {siteConfig.address.city}, {siteConfig.address.state} -{" "}
+                  {siteConfig.address.pincode}
+                </span>
+              </li>
+
+              {/* PHONE */}
+              <li className="group flex items-center gap-2.5">
+                <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#F5F5F5] text-[#579515] transition group-hover:bg-[#579515] group-hover:text-white">
+                  <FaPhoneAlt className="h-3.5 w-3.5" />
+                </div>
+
+                <a
+                  href={`tel:${siteConfig.phone.replace(/\s+/g, "")}`}
+                  className="text-[13px] text-[#666666] transition hover:text-[#FBAA00]"
+                >
+                  {siteConfig.phone}
+                </a>
+              </li>
+
+              {/* EMAIL */}
+              <li className="group flex items-center gap-2.5">
+                <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#F5F5F5] text-[#FBAA00] transition group-hover:bg-[#E89D00] group-hover:text-white">
+                  <FaEnvelope className="h-3.5 w-3.5" />
+                </div>
+
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="break-all text-[13px] text-[#666666] transition hover:text-[#FBAA00]"
+                >
+                  {siteConfig.email}
+                </a>
+              </li>
+
+              {/* HOURS */}
+              <li className="group flex items-center gap-2.5">
+                <div className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#F5F5F5] text-[#579515] transition group-hover:bg-[#579515] group-hover:text-white">
+                  <FaClock className="h-3.5 w-3.5" />
+                </div>
+
+                <span className="text-[13px] text-[#666666]">
+                  {siteConfig.workingHours}
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      {/* Business strip */}
-      <div className="relative border-t border-cream-50/10">
-        <div className="container-x py-6 grid sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs text-cream-100/60">
+      {/* ===================================================== */}
+      {/* BUSINESS INFORMATION */}
+      {/* ===================================================== */}
+
+      <div className="relative border-y border-[#ECECEC] bg-[#F5F5F5]">
+        <div className="container-x grid gap-0 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ["Legal Status", siteConfig.legalStatus],
             ["CEO", siteConfig.ceo],
             ["GST Since", siteConfig.gstSince],
             ["Business", siteConfig.natureOfBusiness],
-          ].map(([k, v]) => (
-            <div key={k}>
-              <div className="uppercase tracking-wider-x">{k}</div>
-              <div className="mt-1 text-cream-50 font-medium">{v}</div>
+          ].map(([key, value], index) => (
+            <div
+              key={key}
+              className={`relative py-3 sm:px-5 ${
+                index !== 0 ? "lg:border-l lg:border-[#ECECEC]" : ""
+              }`}
+            >
+              <span className="absolute left-0 top-1/2 hidden h-7 w-[2px] -translate-y-1/2 bg-[#E89D00] lg:block" />
+
+              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#FBAA00]">
+                {key}
+              </div>
+
+              <div className="mt-1 text-[13px] font-semibold text-[#579515]">
+                {value}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="relative border-t border-cream-50/10">
-        <div className="container-x py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-cream-100/60">
-          <span>© 2026 {siteConfig.name}. All rights reserved.</span>
-          <span>Designed & manufactured with care in Erode, Tamil Nadu.</span>
+      {/* ===================================================== */}
+      {/* BOTTOM PREMIUM BAR */}
+      {/* ===================================================== */}
+
+      <div className="relative overflow-hidden bg-[#579515]">
+        <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-[#FBAA00]/10 blur-3xl" />
+
+        <div className="container-x relative flex flex-col items-center justify-between gap-2 py-3 text-center text-[11px] text-white/60 sm:flex-row sm:text-left">
+          <span>
+            © 2026{" "}
+            <span className="font-medium text-[#FBAA00]">
+              {siteConfig.name}
+            </span>
+            . All rights reserved.
+          </span>
+
+          <span className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#FBAA00]" />
+
+            <span>
+              Designed & manufactured with care in Karur, Tamil Nadu.
+            </span>
+          </span>
         </div>
       </div>
     </footer>
+  );
+}
+
+/* ========================================================= */
+/* FOOTER HEADING */
+/* ========================================================= */
+
+function FooterHeading({ title }: { title: string }) {
+  return (
+    <div className="mb-3.5">
+      <div className="flex items-center gap-2.5">
+        <span className="h-2 w-2 rounded-full bg-[#E89D00]" />
+
+        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#579515]">
+          {title}
+        </span>
+      </div>
+
+      <div className="mt-2 h-px w-7 bg-[#FBAA00]" />
+    </div>
   );
 }
