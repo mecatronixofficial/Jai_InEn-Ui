@@ -1,185 +1,327 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { FaHeart, FaRegHeart, FaWhatsapp, FaStar } from "react-icons/fa";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  FaArrowRight,
+  FaHeart,
+  FaRegHeart,
+  FaStar,
+  FaWhatsapp,
+} from "react-icons/fa";
 
-import type { Product } from "@/types";
-import { useWishlist } from "@/store";
 import { buildWhatsAppOrderUrl } from "@/lib/whatsapp";
-import { formatINR, discountPercent } from "@/utils";
+import { useWishlist } from "@/store";
+import type { Product } from "@/types";
+import { discountPercent, formatINR } from "@/utils";
+
+interface ProductCardProps {
+  product: Product;
+  compact?: boolean;
+  showPrice?: boolean;
+}
+
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.jai-india.com"
+).replace(/\/$/, "");
 
 export default function ProductCard({
   product,
   compact = false,
   showPrice = true,
-}: {
-  product: Product;
-  compact?: boolean;
-  showPrice?: boolean;
-}) {
-  const has = useWishlist((s) => s.has(product.id));
-  const toggle = useWishlist((s) => s.toggle);
-  const discount = discountPercent(product.originalPrice, product.offerPrice);
+}: ProductCardProps) {
+  const reducedMotion = useReducedMotion();
+  const isSaved = useWishlist((state) => state.has(product.id));
+  const toggleWishlist = useWishlist((state) => state.toggle);
 
+  const colors = product.colors ?? [];
+  const primaryImage = product.images?.[0];
+  const secondaryImage = product.images?.[1];
+  const detail = product.material || product.clothType;
+  const isOutOfStock = product.stock <= 0;
+  const hasRating = Number.isFinite(product.rating) && product.rating > 0;
+  const hasReviews = Number.isFinite(product.reviews) && product.reviews > 0;
+  const hasOfferPrice =
+    Number.isFinite(product.offerPrice) && product.offerPrice > 0;
+  const hasOriginalPrice =
+    Number.isFinite(product.originalPrice) && product.originalPrice > 0;
+  const currentPrice = hasOfferPrice
+    ? product.offerPrice
+    : hasOriginalPrice
+      ? product.originalPrice
+      : 0;
+  const discount =
+    hasOfferPrice &&
+    hasOriginalPrice &&
+    product.originalPrice > product.offerPrice
+      ? Math.max(0, discountPercent(product.originalPrice, product.offerPrice))
+      : 0;
+  const productPath = `/products/${encodeURIComponent(product.slug)}`;
   const whatsappUrl = buildWhatsAppOrderUrl({
     productName: product.name,
-    productLink: `https://thangaveltextile.in/products/${product.slug}`,
+    productLink: `${SITE_URL}${productPath}`,
   });
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? false : { opacity: 0, y: 24, scale: 0.985 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5 }}
-      className={`group relative ${compact ? "rounded-lg border border-[#143B32]/25 bg-white p-2 shadow-[0_10px_24px_rgba(20,59,50,0.10)]" : ""}`}
+      transition={{
+        duration: reducedMotion ? 0 : 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className={`group relative isolate flex h-full flex-col overflow-hidden border bg-white transition-[transform,border-color,box-shadow] duration-500 motion-reduce:transform-none motion-reduce:transition-none ${
+        compact
+          ? "rounded-[1.25rem] border-[#143B32]/10 p-2 shadow-[0_18px_45px_-30px_rgba(20,59,50,0.6)] hover:-translate-y-1.5 hover:border-[#FBAA00]/45 hover:shadow-[0_28px_55px_-30px_rgba(20,59,50,0.65)]"
+          : "rounded-[1.75rem] border-[#143B32]/10 p-2.5 shadow-[0_22px_60px_-38px_rgba(20,59,50,0.65)] hover:-translate-y-2 hover:border-[#FBAA00]/50 hover:shadow-[0_35px_70px_-36px_rgba(20,59,50,0.7)]"
+      }`}
     >
-      {/* Full-card link overlay — sits below interactive elements */}
-      <Link
-        href={`/products/${product.slug}`}
-        className="absolute inset-0 z-0"
-        aria-label={product.name}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#FBAA00] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-12 -top-12 h-28 w-28 rounded-full bg-[#FBAA00]/10 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
       />
 
-      {/* Image */}
-      <div className={`relative overflow-hidden bg-cream-100 ${compact ? "aspect-[4/3] rounded-md" : "aspect-[4/5] rounded-xl"}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={product.images[0] ?? ""}
-          alt={product.name}
-          loading="eager"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+      <Link
+        href={productPath}
+        aria-label={`View ${product.name}`}
+        className="absolute inset-0 z-10 rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-inset"
+      />
 
-        {/* Hover image */}
-        {product.images[1] && (
+      <div
+        className={`relative overflow-hidden bg-[#F2ECDD] ${
+          compact
+            ? "aspect-[5/4] rounded-[0.9rem]"
+            : "aspect-[4/5] rounded-[1.3rem]"
+        }`}
+      >
+        {primaryImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={product.images[1]}
+            src={primaryImage}
             alt={product.name}
             loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
+          />
+        ) : (
+          <div className="absolute inset-0 grid place-items-center overflow-hidden bg-gradient-to-br from-[#143B32] via-[#315B0D] to-[#579515] px-6 text-center">
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-weave-dark opacity-60"
+            />
+            <span className="display relative text-3xl font-semibold text-white/90">
+              {product.name}
+            </span>
+          </div>
+        )}
+
+        {secondaryImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={secondaryImage}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100 motion-reduce:transform-none motion-reduce:transition-none"
           />
         )}
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0D2B24]/70 via-[#143B32]/[0.03] to-black/10"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/40"
+        />
+
+        <div className="pointer-events-none absolute left-3 top-3 z-20 flex max-w-[calc(100%-4rem)] flex-wrap gap-1.5">
           {product.newArrival && (
-            <span className="inline-flex items-center rounded-full bg-cream-50 text-gray-800 px-2.5 py-1 text-[10px] uppercase tracking-widest-x font-bold">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.17em] text-[#143B32] shadow-sm backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#579515]" />
               New
             </span>
           )}
           {discount > 0 && (
-            <span className="inline-flex items-center rounded-full bg-gold text-cream-50 px-2.5 py-1 text-[10px] uppercase tracking-widest-x font-bold">
-              {discount}% off
+            <span className="rounded-full bg-[#FBAA00] px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-[#143B32] shadow-sm">
+              Save {discount}%
+            </span>
+          )}
+          {isOutOfStock && (
+            <span className="rounded-full border border-white/20 bg-[#143B32]/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-white backdrop-blur-md">
+              Out of stock
             </span>
           )}
         </div>
 
-        {/* Out of stock overlay */}
-        {!compact && product.stock === 0 && (
-          <div className="absolute inset-0 grid place-items-center bg-cream-50/85 z-10">
-            <span className="text-gray-800 uppercase tracking-widest-x text-xs font-bold">
-              Out of stock
-            </span>
-          </div>
-        )}
-
-        {/* Wishlist — z-10 so it sits above the card link overlay */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggle(product.id);
+          aria-label={
+            isSaved
+              ? `Remove ${product.name} from wishlist`
+              : `Add ${product.name} to wishlist`
+          }
+          aria-pressed={isSaved}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleWishlist(product.id);
           }}
-          aria-label={has ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-cream-50/90 backdrop-blur text-gray-800 hover:bg-cream-50 transition shadow-soft"
+          className="absolute right-3 top-3 z-30 grid h-9 w-9 place-items-center rounded-full border border-white/60 bg-white/90 text-[#143B32] shadow-[0_10px_25px_-15px_rgba(20,59,50,0.8)] backdrop-blur-md transition duration-300 hover:scale-105 hover:border-[#FBAA00] hover:bg-[#FBAA00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 motion-reduce:transform-none"
         >
-          {has ? (
-            <FaHeart className="h-3.5 w-3.5 text-gray-800" />
+          {isSaved ? (
+            <FaHeart aria-hidden="true" className="h-3.5 w-3.5 text-[#315B0D]" />
           ) : (
-            <FaRegHeart className="h-3.5 w-3.5" />
+            <FaRegHeart aria-hidden="true" className="h-3.5 w-3.5" />
           )}
         </button>
 
-        {/* WhatsApp CTA — slides up on hover, z-10 so it sits above the card link */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-[#FBAA00] py-2.5 text-xs font-semibold tracking-wide text-white transition hover:bg-[#E89D00]"
-          >
-            <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
-          </a>
-        </div>
+        {!isOutOfStock && (
+          <div className="absolute inset-x-0 bottom-0 z-30 p-3 sm:translate-y-2 sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100 motion-reduce:transition-none">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Enquire about ${product.name} on WhatsApp`}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-[#FBAA00] px-3 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#143B32] shadow-[0_12px_30px_-16px_rgba(0,0,0,0.75)] transition-colors duration-300 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#143B32]"
+            >
+              <FaWhatsapp aria-hidden="true" className="h-3.5 w-3.5" />
+              Enquire on WhatsApp
+            </a>
+          </div>
+        )}
       </div>
 
-      {/* Info */}
-      <div className={`relative z-10 px-1 pointer-events-none ${compact ? "pb-1 pt-3" : "mt-4"}`}>
-        <div className={`flex items-center gap-2 uppercase tracking-widest-x text-ink-muted font-semibold ${compact ? "text-[7px]" : "text-[10px]"}`}>
-          <span>{product.category}</span>
-          <span className="h-1 w-1 rounded-full bg-gold" />
-          <span className="flex items-center gap-1">
-            <FaStar className="h-2.5 w-2.5 text-gold" />
-            {product.rating} ({product.reviews})
-          </span>
+      <div
+        className={`pointer-events-none relative z-20 flex flex-1 flex-col ${
+          compact ? "px-1.5 pb-1.5 pt-3.5" : "px-2 pb-2 pt-[1.125rem]"
+        }`}
+      >
+        <div className="flex min-w-0 items-center justify-between gap-3">
+          {product.category ? (
+            <span
+              className={`truncate font-extrabold uppercase tracking-[0.18em] text-[#579515] ${
+                compact ? "text-[7px]" : "text-[9px]"
+              }`}
+            >
+              {product.category}
+            </span>
+          ) : (
+            <span />
+          )}
+
+          {hasRating && (
+            <span className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFF7E5] px-2 py-1 text-[9px] font-bold text-[#143B32]">
+              <FaStar aria-hidden="true" className="h-2.5 w-2.5 text-[#FBAA00]" />
+              {product.rating}
+              {hasReviews && (
+                <span className="text-[#7D8985]">({product.reviews})</span>
+              )}
+            </span>
+          )}
         </div>
 
-        <h3 className={`display text-base font-semibold leading-tight text-gray-950 transition group-hover:text-gray-700 ${compact ? "mt-1" : "mt-2"}`}>
+        <h3
+          className={`display line-clamp-2 font-semibold leading-[1.15] text-[#143B32] transition-colors duration-300 group-hover:text-[#D79000] ${
+            compact ? "mt-2 text-[1.05rem]" : "mt-2.5 text-xl"
+          }`}
+        >
           {product.name}
         </h3>
 
-        {showPrice && (
-          <div className={`flex items-baseline gap-2 ${compact ? "mt-1.5" : "mt-2"}`}>
-            <span className={`font-semibold text-ink ${compact ? "text-sm" : "text-lg"}`}>
-              {formatINR(product.offerPrice)}
-            </span>
-            {product.originalPrice > product.offerPrice && (
-              <span className="text-sm text-ink-muted line-through">
-                {formatINR(product.originalPrice)}
-              </span>
-            )}
-          </div>
+        {detail && (
+          <p
+            className={`mt-1.5 truncate text-[#73807C] ${
+              compact ? "text-[9px]" : "text-xs"
+            }`}
+          >
+            {detail}
+          </p>
         )}
 
-        {/* Color swatches */}
-        {product.colors.length > 0 && (
-          <div className="mt-2 flex items-center gap-1.5">
-            {product.colors.slice(0, 4).map((c, i) => (
-              <span
-                key={i}
-                title={c}
-                className={`${colorSwatch(c)} inline-block h-2.5 w-2.5 rounded-full border border-cream-300`}
-              />
-            ))}
-            {product.colors.length > 4 && (
-              <span className="text-[10px] text-ink-muted">
-                +{product.colors.length - 4}
-              </span>
+        <div
+          className={`mt-auto flex items-end justify-between gap-3 ${
+            compact ? "pt-3" : "pt-4"
+          }`}
+        >
+          <div className="min-w-0">
+            {showPrice && currentPrice > 0 && (
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <span
+                  className={`font-extrabold tracking-tight text-[#143B32] ${
+                    compact ? "text-sm" : "text-lg"
+                  }`}
+                >
+                  {formatINR(currentPrice)}
+                </span>
+                {hasOfferPrice &&
+                  hasOriginalPrice &&
+                  product.originalPrice > product.offerPrice && (
+                    <span className="text-[10px] text-[#8A9692] line-through">
+                      {formatINR(product.originalPrice)}
+                    </span>
+                  )}
+              </div>
+            )}
+
+            {colors.length > 0 && (
+              <div
+                role="list"
+                aria-label="Available colors"
+                className={`${
+                  showPrice && currentPrice > 0 ? "mt-2" : ""
+                } flex items-center gap-1.5`}
+              >
+                {colors.slice(0, compact ? 3 : 4).map((color, index) => (
+                  <span
+                    role="listitem"
+                    key={`${color}-${index}`}
+                    title={color}
+                    aria-label={color}
+                    className={`${colorSwatch(color)} inline-block h-3 w-3 rounded-full border border-black/10 ring-2 ring-white shadow-[0_0_0_1px_rgba(20,59,50,0.08)]`}
+                  />
+                ))}
+                {colors.length > (compact ? 3 : 4) && (
+                  <span className="text-[9px] font-bold text-[#66736F]">
+                    +{colors.length - (compact ? 3 : 4)}
+                  </span>
+                )}
+              </div>
             )}
           </div>
-        )}
+
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[#143B32]/10 bg-[#F7F3E9] text-[#143B32] transition duration-300 group-hover:rotate-[-8deg] group-hover:border-[#FBAA00] group-hover:bg-[#FBAA00] motion-reduce:transform-none">
+            <FaArrowRight aria-hidden="true" className="h-3 w-3" />
+          </span>
+        </div>
       </div>
     </motion.article>
   );
 }
 
 function colorSwatch(name: string): string {
-  const n = name.toLowerCase();
-  if (n.includes("white") || n.includes("cream") || n.includes("off")) return "bg-[#f5e9d4]";
-  if (n.includes("maroon")) return "bg-[#7d2b2b]";
-  if (n.includes("red")) return "bg-[#c0392b]";
-  if (n.includes("black")) return "bg-[#1a1410]";
-  if (n.includes("navy") || n.includes("indigo")) return "bg-[#1e3a8a]";
-  if (n.includes("blue")) return "bg-[#2563eb]";
-  if (n.includes("sea green")) return "bg-[#2dd4bf]"; // must precede "green"
-  if (n.includes("green") || n.includes("bottle")) return "bg-[#15803d]";
-  if (n.includes("yellow") || n.includes("mustard")) return "bg-[#eab308]";
-  if (n.includes("orange")) return "bg-[#ea580c]";
-  if (n.includes("pink")) return "bg-[#ec4899]";
-  if (n.includes("beige") || n.includes("skin")) return "bg-[#e8dab7]";
-  if (n.includes("brown")) return "bg-[#92400e]";
+  const color = name.toLowerCase();
+
+  if (color.includes("white") || color.includes("cream") || color.includes("off")) {
+    return "bg-[#f5e9d4]";
+  }
+  if (color.includes("maroon")) return "bg-[#7d2b2b]";
+  if (color.includes("red")) return "bg-[#c0392b]";
+  if (color.includes("black")) return "bg-[#1a1410]";
+  if (color.includes("navy") || color.includes("indigo")) return "bg-[#1e3a8a]";
+  if (color.includes("blue")) return "bg-[#2563eb]";
+  if (color.includes("sea green")) return "bg-[#2dd4bf]";
+  if (color.includes("green") || color.includes("bottle")) return "bg-[#15803d]";
+  if (color.includes("yellow") || color.includes("mustard")) return "bg-[#eab308]";
+  if (color.includes("orange")) return "bg-[#ea580c]";
+  if (color.includes("pink")) return "bg-[#ec4899]";
+  if (color.includes("beige") || color.includes("skin")) return "bg-[#e8dab7]";
+  if (color.includes("brown")) return "bg-[#92400e]";
+
   return "bg-[#9ca3af]";
 }

@@ -15,6 +15,14 @@ export default function TestimonialSlider({ items }: { items: Testimonial[] }) {
     return () => clearInterval(id);
   }, [items.length]);
 
+  if (!t) {
+    return (
+      <div className="relative py-6 text-center text-sm text-ink-muted">
+        Customer reviews will appear here soon.
+      </div>
+    );
+  }
+
   const prev = () => setIdx((i) => (i - 1 + items.length) % items.length);
   const next = () => setIdx((i) => (i + 1) % items.length);
 

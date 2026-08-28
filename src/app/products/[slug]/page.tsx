@@ -6,11 +6,11 @@ import { FaArrowLeft, FaArrowRight, FaImages, FaLeaf } from "react-icons/fa";
 import ProductGallery from "./ProductGallery";
 import ProductActions from "./ProductActions";
 import AboutBannerImage from "@/components/AboutBannerImage";
-import { products as staticProducts } from "@/data/products";
 import { loadProductBySlug, loadProducts } from "@/lib/data";
 
-export function generateStaticParams() {
-  return staticProducts.map((product) => ({ slug: product.slug }));
+export async function generateStaticParams() {
+  const products = await loadProducts();
+  return (products ?? []).map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

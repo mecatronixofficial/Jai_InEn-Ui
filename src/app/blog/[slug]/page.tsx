@@ -5,11 +5,11 @@ import moment from "moment";
 import { FaClock, FaArrowLeft, FaArrowRight, FaFacebookF, FaTwitter, FaWhatsapp } from "react-icons/fa";
 
 import AboutBannerImage from "@/components/AboutBannerImage";
-import { blogPosts as staticBlogs } from "@/data/content";
 import { loadBlogs, loadBlogBySlug } from "@/lib/data";
 
-export function generateStaticParams() {
-  return staticBlogs.map((b) => ({ slug: b.slug }));
+export async function generateStaticParams() {
+  const blogs = await loadBlogs();
+  return blogs.map((blog) => ({ slug: blog.slug }));
 }
 
 export async function generateMetadata({

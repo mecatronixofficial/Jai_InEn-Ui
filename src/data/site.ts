@@ -128,3 +128,26 @@ export const latestUpdates = [
     tag: "Product",
   },
 ];
+
+export const faqs = [
+  {
+    id: "ordering",
+    question: "How can I place an order?",
+    answer: "Share your requirements with our team by WhatsApp or email. We will confirm availability, quantities, pricing and delivery details.",
+  },
+  {
+    id: "wholesale",
+    question: "Do you accept wholesale and bulk orders?",
+    answer: "Yes. We support wholesale, retail and custom bulk requirements. Contact us with the product, quantity and destination for a tailored quotation.",
+  },
+  {
+    id: "custom",
+    question: "Can products be made to specification?",
+    answer: "We can discuss custom sizes, colours, materials, packaging and documentation depending on the product and order quantity.",
+  },
+  {
+    id: "shipping",
+    question: "Where do you deliver?",
+    answer: "We arrange deliveries across India and support international shipments through established freight partners.",
+  },
+];
