@@ -6,10 +6,10 @@ import { FaArrowRight } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
 import { loadCategories, loadProducts } from "@/lib/data";
-import { categories as staticCategories } from "@/data/categories";
 
-export function generateStaticParams() {
-  return staticCategories.map((c) => ({ slug: c.slug }));
+export async function generateStaticParams() {
+  const categories = await loadCategories();
+  return categories.map((category) => ({ slug: category.slug }));
 }
 
 export async function generateMetadata({

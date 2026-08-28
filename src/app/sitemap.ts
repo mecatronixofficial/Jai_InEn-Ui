@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/data/products";
-import { collections, blogPosts } from "@/data/content";
+import { loadBlogs, loadProducts } from "@/lib/data";
 
 const BASE = "https://www.jai-india.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
     "/about",
@@ -24,26 +23,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1.0 : 0.7,
   }));
 
-  const productRoutes = products.map((p) => ({
+  const [products, blogs] = await Promise.all([loadProducts(), loadBlogs()]);
+
+  const productRoutes = (products ?? []).map((p) => ({
     url: `${BASE}/products/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const collectionRoutes = collections.map((c) => ({
-    url: `${BASE}/categories/${c.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  const blogRoutes = blogPosts.map((b) => ({
+  const blogRoutes = (blogs ?? []).map((b) => ({
     url: `${BASE}/blog/${b.slug}`,
     lastModified: new Date(b.publishedAt),
     changeFrequency: "monthly" as const,
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...productRoutes, ...collectionRoutes, ...blogRoutes];
+  return [...staticRoutes, ...productRoutes, ...blogRoutes];
 }

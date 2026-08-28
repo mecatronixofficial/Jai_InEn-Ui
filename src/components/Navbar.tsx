@@ -1,21 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import {
-  FaArrowRight,
-  FaHeart,
-  FaSearch,
-  FaWhatsapp,
-} from "react-icons/fa";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { FaArrowRight, FaHeart, FaSearch, FaWhatsapp } from "react-icons/fa";
 
 import { siteConfig } from "@/data/site";
 import { api, type CategoryApi } from "@/lib/api";
@@ -31,148 +20,93 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-/* =====================================================================
-   TILT CARD — pointer-tracked 3D depth, reused for links + categories
-===================================================================== */
-
-function TiltCard({
-  children,
-  className = "",
-  maxTilt = 8,
-  liftZ = 22,
-  glare = true,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  maxTilt?: number;
-  liftZ?: number;
-  glare?: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [hovering, setHovering] = useState(false);
-
-  const px = useMotionValue(0.5);
-  const py = useMotionValue(0.5);
-
-  const springCfg = { stiffness: 220, damping: 20, mass: 0.6 };
-  const rotateX = useSpring(
-    useTransform(py, [0, 1], [maxTilt, -maxTilt]),
-    springCfg
-  );
-  const rotateY = useSpring(
-    useTransform(px, [0, 1], [-maxTilt, maxTilt]),
-    springCfg
-  );
-  const translateZ = useSpring(hovering ? liftZ : 0, springCfg);
-  const glareX = useTransform(px, [0, 1], ["10%", "90%"]);
-  const glareY = useTransform(py, [0, 1], ["10%", "90%"]);
-
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const bounds = ref.current?.getBoundingClientRect();
-    if (!bounds) return;
-    px.set((e.clientX - bounds.left) / bounds.width);
-    py.set((e.clientY - bounds.top) / bounds.height);
-  };
-
-  const handleLeave = () => {
-    setHovering(false);
-    px.set(0.5);
-    py.set(0.5);
-  };
+function BrandMark() {
+  const [logoFailed, setLogoFailed] = useState(false);
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={handleLeave}
-      style={{ rotateX, rotateY, translateZ, transformStyle: "preserve-3d" }}
-      className={`relative [transform-style:preserve-3d] ${className}`}
+    <Link
+      href="/"
+      aria-label={`${siteConfig.name} home`}
+      className="group flex min-w-0 items-center gap-2.5"
     >
-      {children}
+      <span className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-[#143B32]/10 bg-white p-1 shadow-[0_8px_22px_-15px_rgba(20,59,50,0.75)] transition duration-300 group-hover:-rotate-3 group-hover:scale-[1.04] motion-reduce:transform-none sm:h-11 sm:w-11">
+        <span className="absolute inset-1 rounded-lg border border-[#FBAA00]/15" />
+        {siteConfig.logo && !logoFailed ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={siteConfig.logo}
+            alt=""
+            onError={() => setLogoFailed(true)}
+            className="relative h-full w-full object-contain"
+          />
+        ) : (
+          <span className="display relative text-lg font-bold text-[#579515]">
+            {siteConfig.name.charAt(0)}
+          </span>
+        )}
+      </span>
 
-      {glare && (
-        <motion.span
-          aria-hidden="true"
-          style={{
-            background: useTransform(
-              [glareX, glareY],
-              ([gx, gy]) =>
-                `radial-gradient(180px circle at ${gx} ${gy}, rgba(246,233,221,0.14), transparent 65%)`
-            ),
-          }}
-          className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        />
-      )}
-    </motion.div>
+      <span className="min-w-0">
+        <span className="display block truncate text-[0.92rem] font-bold leading-none tracking-[-0.035em] text-[#143B32] sm:text-base">
+          Jai Export
+        </span>
+        <span className="mt-1.5 block truncate text-[6px] font-extrabold uppercase tracking-[0.24em] text-[#579515] sm:text-[7px]">
+          Enterprises
+        </span>
+      </span>
+    </Link>
   );
 }
 
-/* =====================================================================
-   MENU TOGGLE — 3D flip-coin button: hamburger face flips to a close
-   face on a real rotateY axis, with pointer tilt layered on top.
-===================================================================== */
-
-function MenuToggle({
-  open,
-  onClick,
-}: {
-  open: boolean;
-  onClick: () => void;
-}) {
+function MenuButton({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
-    <TiltCard maxTilt={16} liftZ={18} glare={false} className="rounded-2xl">
-      <motion.button
-        type="button"
-        onClick={onClick}
-        whileTap={{ scale: 0.9 }}
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
-        className="group relative block h-12 w-12 sm:h-14 sm:w-14 lg:h-[3.75rem] lg:w-[3.75rem] [perspective:700px]"
-      >
-        <motion.div
-          animate={{ rotateY: open ? 180 : 0 }}
-          transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
-          className="relative h-full w-full [transform-style:preserve-3d]"
-        >
-          {/* FRONT FACE — closed state */}
-          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-[#100025]/15 bg-gradient-to-b from-white to-[#f3efe6] shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_-3px_5px_rgba(0,0,0,0.08)_inset,0_14px_26px_-14px_rgba(16,0,37,0.4)] transition-shadow duration-300 [backface-visibility:hidden] group-hover:shadow-[0_1px_0_rgba(255,255,255,0.9)_inset,0_-3px_5px_rgba(0,0,0,0.08)_inset,0_18px_32px_-14px_rgba(198,154,53,0.55)]">
-            <span className="flex flex-col items-end gap-[5px]">
-              <span className="h-[2px] w-6 rounded-full bg-[#100025] transition-all duration-300 group-hover:w-7" />
-              <span className="h-[2px] w-4 rounded-full bg-[#c69a35] transition-all duration-300 group-hover:w-7" />
-              <span className="h-[2px] w-5 rounded-full bg-[#100025] transition-all duration-300 group-hover:w-7" />
-            </span>
-          </span>
-
-          {/* BACK FACE — open state */}
-          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-[#c69a35]/50 bg-gradient-to-b from-[#1c4a37] to-[#0f2a1f] shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_-3px_6px_rgba(0,0,0,0.5)_inset,0_14px_26px_-14px_rgba(0,0,0,0.65)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
-            <span className="relative grid h-6 w-6 place-items-center">
-              <motion.span
-                animate={{ rotate: open ? 360 : 0 }}
-                transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border border-dashed border-[#c69a35]/45"
-              />
-              <span className="absolute h-[2px] w-4 rotate-45 rounded-full bg-[#f6e9dd]" />
-              <span className="absolute h-[2px] w-4 -rotate-45 rounded-full bg-[#f6e9dd]" />
-            </span>
-          </span>
-        </motion.div>
-      </motion.button>
-    </TiltCard>
+    <motion.button
+      type="button"
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      aria-label={open ? "Close menu" : "Open menu"}
+      aria-expanded={open}
+      aria-controls="site-menu"
+      className={`group flex h-10 items-center gap-2.5 rounded-full border px-3 transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 xl:hidden ${
+        open
+          ? "border-[#FBAA00] bg-[#FBAA00] text-[#143B32]"
+          : "border-[#143B32]/10 bg-white/70 text-[#143B32] hover:border-[#FBAA00]/60 hover:bg-white"
+      }`}
+    >
+      <span className="hidden text-[7px] font-extrabold uppercase tracking-[0.17em] sm:block">
+        {open ? "Close" : "Menu"}
+      </span>
+      <span className="relative h-4 w-[18px]">
+        <span
+          className={`absolute left-0 top-0 h-[1.5px] rounded-full bg-current transition-all duration-300 ${
+            open ? "top-[7px] w-[18px] rotate-45" : "w-[18px]"
+          }`}
+        />
+        <span
+          className={`absolute left-0 top-[7px] h-[1.5px] rounded-full bg-current transition-all duration-300 ${
+            open ? "w-0 opacity-0" : "w-3"
+          }`}
+        />
+        <span
+          className={`absolute bottom-0 right-0 h-[1.5px] rounded-full bg-current transition-all duration-300 ${
+            open ? "bottom-[7px] w-[18px] -rotate-45" : "w-[18px]"
+          }`}
+        />
+      </span>
+    </motion.button>
   );
 }
 
 export default function Navbar() {
   const pathname = usePathname();
-
+  const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [categories, setCategories] = useState<CategoryApi[]>([]);
-  const [logoFailed, setLogoFailed] = useState(false);
-
   const wishlistCount = useWishlist((state) => state.items.length);
 
   useEffect(() => {
-    api.publicCategories().then(setCategories).catch(() => {});
+    api.publicCategories().then(setCategories).catch(() => setCategories([]));
   }, []);
 
   useEffect(() => {
@@ -180,14 +114,28 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
+    const updateScrolled = () => setScrolled(window.scrollY > 16);
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrolled);
+  }, []);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1280px)");
+    const closeAtDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+
+    desktop.addEventListener("change", closeAtDesktop);
+    return () => desktop.removeEventListener("change", closeAtDesktop);
+  }, []);
+
+  useEffect(() => {
     if (!menuOpen) return;
 
     const previousOverflow = document.body.style.overflow;
-
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMenuOpen(false);
-      }
+      if (event.key === "Escape") setMenuOpen(false);
     };
 
     document.body.style.overflow = "hidden";
@@ -199,279 +147,249 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  if (pathname.startsWith("/admin")) {
-    return null;
-  }
+  if (pathname.startsWith("/admin")) return null;
+
+  const isActive = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 h-14 border-b border-[#c69a35]/15 bg-white/95 shadow-[0_8px_24px_-20px_rgba(16,0,37,0.4)] backdrop-blur-md sm:h-[4.5rem]">
-      {/* ===================================================
-          SIDE MENU — dim backdrop + panel that swings in from
-          the right on a 3D hinge (perspective + rotateY), then
-          settles flat into place.
-      =================================================== */}
+    <header className="pointer-events-none sticky inset-x-0 top-0 z-50 h-20 pt-2">
+      <div className="container-x">
+        <div
+          className={`pointer-events-auto relative z-50 flex h-16 items-center justify-between gap-3 overflow-hidden rounded-[1.35rem] border px-2.5 transition-[background-color,border-color,box-shadow] duration-500 sm:px-3.5 ${
+            scrolled || menuOpen
+              ? "border-white/70 bg-white/[0.94] shadow-[0_20px_55px_-30px_rgba(20,59,50,0.8)] backdrop-blur-2xl"
+              : "border-white/55 bg-white/[0.78] shadow-[0_14px_40px_-30px_rgba(20,59,50,0.55)] backdrop-blur-xl"
+          }`}
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#579515]/[0.035] via-transparent to-[#FBAA00]/[0.06]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-10 bottom-0 h-px bg-gradient-to-r from-transparent via-[#FBAA00]/55 to-transparent"
+          />
+
+          <div className="relative shrink-0">
+            <BrandMark />
+          </div>
+
+          <nav
+            aria-label="Primary navigation"
+            className="relative hidden items-center rounded-full border border-[#143B32]/[0.07] bg-[#143B32]/[0.045] p-1 xl:flex"
+          >
+            {navLinks.map((link) => {
+              const active = isActive(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative rounded-full px-3 py-2 text-[9px] font-bold transition duration-300 2xl:px-3.5 ${
+                    active
+                      ? "bg-[#143B32] text-white shadow-[0_8px_20px_-13px_rgba(20,59,50,0.9)]"
+                      : "text-[#52615D] hover:bg-white/80 hover:text-[#143B32]"
+                  }`}
+                >
+                  <span className="relative z-10">{link.label}</span>
+                  {active && (
+                    <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-white bg-[#FBAA00]" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="relative flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <Link
+              href="/products"
+              aria-label="Browse and search products"
+              className="hidden h-10 w-10 place-items-center rounded-full border border-[#143B32]/[0.08] bg-white/70 text-xs text-[#52615D] transition duration-300 hover:-translate-y-0.5 hover:border-[#FBAA00]/60 hover:bg-white hover:text-[#D79000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] md:grid"
+            >
+              <FaSearch aria-hidden="true" />
+            </Link>
+
+            <Link
+              href="/wishlist"
+              aria-label={`Wishlist with ${wishlistCount} items`}
+              className="group relative grid h-10 w-10 place-items-center rounded-full border border-[#143B32]/[0.08] bg-white/70 text-xs text-[#52615D] transition duration-300 hover:-translate-y-0.5 hover:border-[#FBAA00]/60 hover:bg-white hover:text-[#D79000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00]"
+            >
+              <FaHeart
+                aria-hidden="true"
+                className="transition-transform duration-300 group-hover:scale-110"
+              />
+              {wishlistCount > 0 && (
+                <span className="absolute -right-1 -top-1 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-[#FBAA00] px-1 text-[7px] font-extrabold text-[#143B32] ring-2 ring-white">
+                  {wishlistCount > 99 ? "99+" : wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            <a
+              href={siteConfig.socials.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="group hidden h-10 items-center gap-2.5 rounded-full bg-[#579515] px-4 text-[8px] font-extrabold uppercase tracking-[0.14em] text-white shadow-[0_10px_25px_-15px_rgba(87,149,21,0.8)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#143B32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 lg:flex"
+            >
+              <FaWhatsapp
+                aria-hidden="true"
+                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-6"
+              />
+              Enquire
+            </a>
+
+            <MenuButton
+              open={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            />
+          </div>
+        </div>
+      </div>
 
       <AnimatePresence>
         {menuOpen && (
-          <>
-            {/* BACKDROP */}
-            <motion.button
-              type="button"
-              aria-label="Close menu"
-              onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="fixed inset-0 z-40 h-[100dvh] w-screen cursor-default bg-[#100025]/20 backdrop-blur-[3px]"
-            />
+          <motion.aside
+            id="site-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+            initial={
+              reduceMotion
+                ? { opacity: 0 }
+                : {
+                    clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)",
+                  }
+            }
+            animate={{
+              opacity: 1,
+              clipPath: "circle(150% at calc(100% - 2.5rem) 2.5rem)",
+            }}
+            exit={
+              reduceMotion
+                ? { opacity: 0 }
+                : {
+                    clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)",
+                  }
+            }
+            transition={{
+              duration: reduceMotion ? 0 : 0.62,
+              ease: [0.76, 0, 0.24, 1],
+            }}
+            className="pointer-events-auto fixed inset-0 z-40 overflow-y-auto bg-[#0D2B24] px-5 pb-8 pt-24 text-white sm:px-8 xl:hidden"
+          >
+            <div className="pointer-events-none absolute inset-0 bg-weave-dark opacity-55" />
+            <div className="pointer-events-none absolute -right-40 -top-36 h-[32rem] w-[32rem] rounded-full border-[100px] border-white/[0.025]" />
+            <div className="pointer-events-none absolute -bottom-40 -left-36 h-[32rem] w-[32rem] rounded-full bg-[#FBAA00]/10 blur-3xl" />
 
-            {/* PANEL — hinge from the right edge */}
-            <div className="fixed inset-0 z-[45] h-[100dvh] w-screen overflow-hidden [perspective:1800px]">
-              <motion.aside
-                initial={{ x: 40, rotateY: -55, opacity: 0 }}
-                animate={{ x: 0, rotateY: 0, opacity: 1 }}
-                exit={{ x: 40, rotateY: -35, opacity: 0 }}
-                transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-                style={{ transformOrigin: "right center" }}
-                className="absolute right-0 top-0 flex h-full w-full flex-col overflow-x-hidden overflow-y-auto border-l border-[#c69a35]/25 bg-white text-[#100025] shadow-[-30px_0_60px_-34px_rgba(16,0,37,0.28)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:w-[420px] md:w-[440px]"
-              >
-                {/* ambient glow, kept subtle for the narrower panel */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(198,154,53,0.10),transparent_70%)]"
-                />
+            <div className="relative mx-auto grid min-h-[calc(100dvh-8rem)] max-w-7xl gap-10 md:grid-cols-[1.35fr_0.65fr] md:items-center">
+              <div>
+                <span className="flex items-center gap-3 text-[8px] font-extrabold uppercase tracking-[0.3em] text-[#FBAA00]">
+                  <span className="h-px w-8 bg-[#FBAA00]" />
+                  Navigate
+                </span>
 
-                <div
-                  onClick={(e) => {
-                    if (e.target === e.currentTarget) setMenuOpen(false);
-                  }}
-                  className="relative flex h-full min-w-0 flex-col overflow-x-hidden px-6 pb-8 pt-8 sm:px-8 sm:pt-9"
+                <nav
+                  aria-label="Menu navigation"
+                  className="mt-5 grid grid-cols-2 gap-x-5 sm:gap-x-8"
                 >
-                  {/* HEADER STRIP — brand + close */}
-                  <div className="sticky top-0 z-30 -mx-2 mb-7 flex items-center justify-between rounded-xl border border-[#100025]/[0.06] bg-white/95 px-2 py-2 shadow-[0_8px_24px_-20px_rgba(16,0,37,0.45)] backdrop-blur-md">
-                    <Link
-                      href="/"
-                      className="flex min-w-0 items-center gap-3"
-                      aria-label={`${siteConfig.name} home`}
-                    >
-                      {siteConfig.logo && !logoFailed ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={siteConfig.logo}
-                          alt={siteConfig.name}
-                          onError={() => setLogoFailed(true)}
-                          className="h-12 w-12 shrink-0 rounded-xl border border-[#c69a35]/35 bg-white object-contain p-1.5 shadow-sm"
-                        />
-                      ) : (
-                        <span className="display grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#c69a35] bg-[#143b32] text-xl font-bold text-[#FBAA00] shadow-sm">
-                          {siteConfig.name.charAt(0)}
-                        </span>
-                      )}
-                      <span className="truncate text-sm font-bold uppercase tracking-[0.16em] text-[#100025] sm:text-[15px]">
-                        {siteConfig.name}
-                      </span>
-                    </Link>
+                  {navLinks.map((link, index) => {
+                    const active = isActive(link.href);
 
-                    <TiltCard maxTilt={16} liftZ={14} glare={false}>
-                      <button
-                        type="button"
-                        onClick={() => setMenuOpen(false)}
-                        aria-label="Close menu"
-                        className="group grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#100025]/10 bg-[#faf9f6] text-[#100025]/65 transition-all duration-300 hover:border-[#c69a35] hover:bg-[#c69a35] hover:text-white hover:shadow-[0_12px_28px_-16px_rgba(198,154,53,0.7)]"
+                    return (
+                      <motion.div
+                        key={link.href}
+                        initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          delay: reduceMotion ? 0 : 0.18 + index * 0.04,
+                        }}
                       >
-                        <span className="relative block h-4 w-4">
-                          <span className="absolute left-1/2 top-1/2 h-[2px] w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-full bg-current" />
-                          <span className="absolute left-1/2 top-1/2 h-[2px] w-4 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-full bg-current" />
-                        </span>
-                      </button>
-                    </TiltCard>
-                  </div>
-
-                  <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="h-px w-8 bg-[#c69a35]" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.30em] text-[#c69a35] sm:text-[11px]">
-                        Menu
-                      </span>
-                    </div>
-                    <span className="text-[9px] uppercase tracking-[0.22em] text-[#100025]/35">
-                      01 — 07
-                    </span>
-                  </div>
-
-                  {/* NAV LINKS */}
-                  <nav aria-label="Primary navigation" className="flex flex-col gap-1.5 [perspective:1000px]">
-                    {navLinks.map((link, index) => {
-                      const isActive =
-                        pathname === link.href ||
-                        (link.href !== "/" && pathname.startsWith(link.href));
-
-                      return (
-                        <motion.div
-                          key={link.href}
-                          initial={{ opacity: 0, x: 18 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.16 + index * 0.05, duration: 0.4 }}
+                        <Link
+                          href={link.href}
+                          aria-current={active ? "page" : undefined}
+                          className={`group flex min-h-[76px] items-end justify-between border-b py-4 transition-colors duration-300 sm:min-h-[88px] ${
+                            active
+                              ? "border-[#FBAA00] text-[#FBAA00]"
+                              : "border-white/10 text-white hover:border-[#FBAA00]/45 hover:text-[#FBAA00]"
+                          }`}
                         >
-                          <TiltCard maxTilt={5} liftZ={12} className="group">
-                            <Link
-                              href={link.href}
-                              className={`relative flex min-h-[58px] items-center justify-between overflow-hidden border-b px-1 py-2 transition-[transform,border-color] duration-300 sm:min-h-[62px] sm:px-2 ${
-                                isActive
-                                  ? "border-[#c69a35]/70"
-                                  : "border-[#100025]/10 group-hover:border-[#c69a35]/45"
-                              }`}
-                            >
-                              <div className="flex min-w-0 items-center gap-3" style={{ transform: "translateZ(14px)" }}>
-                                <span
-                                  className={`w-5 shrink-0 text-[7px] font-semibold tracking-[0.18em] ${
-                                    isActive ? "text-[#c69a35]" : "text-[#100025]/30"
-                                  }`}
-                                >
-                                  {String(index + 1).padStart(2, "0")}
-                                </span>
-                                <span
-                                  className={`display block truncate text-[1.65rem] leading-[0.95] tracking-[-0.035em] transition-colors duration-300 sm:text-[1.8rem] ${
-                                    isActive ? "text-[#c69a35]" : "text-[#100025] group-hover:text-[#143b32]"
-                                  }`}
-                                >
-                                  {link.label}
-                                </span>
-                              </div>
+                          <span className="min-w-0">
+                            <span className="block text-[7px] font-extrabold tracking-[0.18em] text-white/25">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="display mt-1 block truncate text-lg font-semibold tracking-[-0.025em] sm:text-2xl">
+                              {link.label}
+                            </span>
+                          </span>
+                          <FaArrowRight
+                            aria-hidden="true"
+                            className="mb-1 ml-2 h-3 w-3 shrink-0 opacity-25 transition duration-300 group-hover:-rotate-45 group-hover:opacity-100"
+                          />
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </nav>
+              </div>
 
-                              <FaArrowRight
-                                style={{ transform: "translateZ(20px)" }}
-                                className={`shrink-0 text-[11px] transition-all duration-300 group-hover:translate-x-1 group-hover:-rotate-45 ${
-                                  isActive ? "text-[#c69a35]" : "text-[#100025]/25 group-hover:text-[#c69a35]"
-                                }`}
-                              />
-                            </Link>
-                          </TiltCard>
-                        </motion.div>
-                      );
-                    })}
-                  </nav>
+              <div className="flex flex-col gap-6 rounded-[1.75rem] border border-white/10 bg-white/[0.055] p-5 backdrop-blur-sm sm:p-6">
+                <div>
+                  <p className="text-[8px] font-extrabold uppercase tracking-[0.25em] text-[#A8CA82]">
+                    Jai Export Enterprises
+                  </p>
+                  <p className="display mt-3 text-xl font-semibold leading-snug text-white sm:text-2xl">
+                    {siteConfig.tagline}
+                  </p>
+                  <p className="mt-3 text-[10px] leading-5 text-white/45">
+                    {siteConfig.address.city}, {siteConfig.address.state} · Since{" "}
+                    {siteConfig.established}
+                  </p>
+                </div>
 
-                  {/* COLLECTIONS */}
-                  {categories.length > 0 && (
-                    <>
-                      <div className="my-6 h-px bg-gradient-to-r from-[#100025]/10 via-[#c69a35]/35 to-transparent" />
-
-                      <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.28em] text-[#c69a35] sm:text-[11px]">
-                        Collections
-                      </p>
-
-                      <div className="flex flex-col gap-1.5 [perspective:1000px]">
-                        {categories.map((category) => (
-                          <TiltCard key={category.id} maxTilt={5} liftZ={10} className="group">
-                            <Link
-                              href={`/products?category=${category.slug}`}
-                              className="flex min-h-[46px] items-center justify-between gap-3 border-b border-[#100025]/10 px-1 py-2.5 transition-[transform,border-color] duration-300 group-hover:translate-x-1 group-hover:border-[#c69a35]/50"
-                            >
-                              <div className="flex min-w-0 items-center gap-3" style={{ transform: "translateZ(10px)" }}>
-                                <span className="h-6 w-px shrink-0 bg-[#c69a35]/40 transition-all duration-300 group-hover:h-7 group-hover:bg-[#c69a35]" />
-                                <span className="block truncate text-[12px] font-semibold text-[#100025]/70 transition-colors duration-300 group-hover:text-[#100025] sm:text-[13px]">
-                                  {category.name}
-                                </span>
-                              </div>
-                              <FaArrowRight className="shrink-0 text-[9px] text-[#100025]/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#c69a35]" />
-                            </Link>
-                          </TiltCard>
-                        ))}
-                      </div>
-                    </>
-                  )}
-
-                  <div className="mt-auto pt-6">
-                    <div className="mb-4 h-px bg-gradient-to-r from-[#100025]/10 via-[#c69a35]/35 to-transparent" />
-
-                    <div className="flex items-end justify-between gap-4">
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-[#c69a35] sm:text-[11px]">
-                          Quick Access
-                        </p>
-                        <p className="mt-1 text-[10px] text-[#100025]/45">
-                          {siteConfig.address.city}, {siteConfig.address.state}
-                        </p>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <TiltCard maxTilt={16} liftZ={12}>
-                          <Link
-                            href="/products"
-                            aria-label="Search products"
-                            className="group grid h-12 w-12 place-items-center rounded-full border border-[#100025]/10 bg-[#faf9f6] text-[17px] text-[#100025]/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c69a35] hover:bg-[#c69a35] hover:text-white hover:shadow-[0_14px_30px_-18px_rgba(198,154,53,0.75)]"
-                          >
-                            <FaSearch />
-                          </Link>
-                        </TiltCard>
-
-                        <TiltCard maxTilt={16} liftZ={12}>
-                          <Link
-                            href="/wishlist"
-                            aria-label={`Wishlist with ${wishlistCount} items`}
-                            className="group relative grid h-12 w-12 place-items-center rounded-full border border-[#100025]/10 bg-[#faf9f6] text-[17px] text-[#100025]/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c69a35] hover:bg-[#c69a35] hover:text-white hover:shadow-[0_14px_30px_-18px_rgba(198,154,53,0.75)]"
-                          >
-                            <FaHeart />
-                            {wishlistCount > 0 && (
-                              <span className="absolute -right-1 -top-1 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-[#c69a35] px-1 text-[8px] font-bold text-white">
-                                {wishlistCount}
-                              </span>
-                            )}
-                          </Link>
-                        </TiltCard>
-
-                        <TiltCard maxTilt={16} liftZ={12}>
-                          <a
-                            href={siteConfig.socials.whatsapp}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="Order on WhatsApp"
-                            className="group grid h-12 w-12 place-items-center rounded-full border border-[#100025]/10 bg-[#faf9f6] text-[17px] text-[#100025]/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c69a35] hover:bg-[#c69a35] hover:text-white hover:shadow-[0_14px_30px_-18px_rgba(198,154,53,0.75)]"
-                          >
-                            <FaWhatsapp />
-                          </a>
-                        </TiltCard>
-                      </div>
+                {categories.length > 0 && (
+                  <div className="border-t border-white/10 pt-5">
+                    <p className="mb-3 text-[8px] font-extrabold uppercase tracking-[0.23em] text-[#FBAA00]">
+                      Shop collections
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.slice(0, 8).map((category) => (
+                        <Link
+                          key={category.id}
+                          href={`/products?category=${encodeURIComponent(category.slug)}`}
+                          className="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[9px] font-bold text-white/65 transition duration-300 hover:-translate-y-0.5 hover:border-[#FBAA00] hover:bg-[#FBAA00] hover:text-[#143B32]"
+                        >
+                          {category.name}
+                        </Link>
+                      ))}
                     </div>
                   </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-2 border-t border-white/10 pt-5">
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-3 text-[8px] font-extrabold uppercase tracking-[0.14em] text-white transition duration-300 hover:border-[#FBAA00] hover:text-[#FBAA00]"
+                  >
+                    <FaSearch aria-hidden="true" />
+                    Products
+                  </Link>
+                  <a
+                    href={siteConfig.socials.whatsapp}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#FBAA00] px-4 py-3 text-[8px] font-extrabold uppercase tracking-[0.14em] text-[#143B32] transition duration-300 hover:bg-white"
+                  >
+                    <FaWhatsapp aria-hidden="true" className="h-3 w-3" />
+                    WhatsApp
+                  </a>
                 </div>
-              </motion.aside>
+              </div>
             </div>
-          </>
+          </motion.aside>
         )}
       </AnimatePresence>
-
-      {/* ===================================================
-          NORMAL NAVBAR
-      =================================================== */}
-
-      <div className="container-x relative z-30 flex h-full items-start justify-between pt-2.5 sm:pt-3">
-        <Link href="/" className="flex items-center gap-3" aria-label={`${siteConfig.name} home`}>
-          {siteConfig.logo && !logoFailed ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={siteConfig.logo}
-              alt={siteConfig.name}
-              onError={() => setLogoFailed(true)}
-              className="h-10 w-10 rounded-xl border border-[#c69a35]/35 bg-white object-contain p-1 shadow-sm sm:h-11 sm:w-11"
-            />
-          ) : (
-            <span className="display grid h-10 w-10 place-items-center rounded-xl border border-[#c69a35] bg-[#143b32] text-lg font-bold text-[#FBAA00] shadow-sm sm:h-11 sm:w-11">
-              {siteConfig.name.charAt(0)}
-            </span>
-          )}
-
-          <span className="hidden text-xs font-bold uppercase tracking-[0.16em] text-[#100025] sm:block">
-            {siteConfig.name}
-          </span>
-        </Link>
-
-        <div className="relative z-50 -mr-1 -mt-1 sm:-mr-2 sm:-mt-1.5">
-          <MenuToggle open={menuOpen} onClick={() => setMenuOpen((open) => !open)} />
-        </div>
-      </div>
     </header>
   );
 }

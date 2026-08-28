@@ -1,16 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaHeart, FaArrowRight, FaTrash } from "react-icons/fa";
 
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
+import { api, type ProductApi } from "@/lib/api";
 import { useWishlist } from "@/store";
-import { products } from "@/data/products";
 
 export default function WishlistPage() {
   const items = useWishlist((s) => s.items);
   const clear = useWishlist((s) => s.clear);
+  const [products, setProducts] = useState<ProductApi[]>([]);
+
+  useEffect(() => {
+    api.publicProducts("limit=100")
+      .then((result) => setProducts(result.data))
+      .catch(() => setProducts([]));
+  }, []);
+
   const saved = products.filter((p) => items.includes(p.id));
 
   return (

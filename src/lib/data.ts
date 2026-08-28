@@ -20,16 +20,6 @@ import type {
   OpeningCardData,
 } from "@/types";
 
-import { categories as staticCategories } from "@/data/categories";
-import { products as staticProducts } from "@/data/products";
-import {
-  heroSlides as staticHero,
-  blogPosts as staticBlogs,
-  testimonials as staticTestimonials,
-  offers as staticOffers,
-  openingCard as staticOpening,
-} from "@/data/content";
-
 const publicApiUrl = process.env.NEXT_PUBLIC_API_URL;
 const API_BASE = publicApiUrl?.startsWith("http")
   ? publicApiUrl
@@ -173,65 +163,59 @@ function mapOpening(api: any): OpeningCardData {
 
 // ----- Public loaders -----
 
-export async function loadCategories(): Promise<CategoryType[]> {
+export async function loadCategories() {
   const res = await tryFetch<any[]>("/categories");
   if (res && res.length > 0) return res.map(mapCategory);
-  return staticCategories;
+  return [];
 }
 
-export async function loadProducts(): Promise<ProductType[]> {
+export async function loadProducts() {
   const res = await tryFetch<ApiPaginated<any>>("/products?limit=100");
   if (res && res.data.length > 0) return res.data.map(mapProduct);
-  return staticProducts;
+  return [];
 }
 
-export async function loadProductBySlug(slug: string): Promise<ProductType | null> {
+export async function loadProductBySlug(slug: string) {
   const res = await tryFetch<any>(`/products/${encodeURIComponent(slug)}`);
   if (res) return mapProduct(res);
-  return staticProducts.find((p) => p.slug === slug) || null;
 }
 
-export async function loadRelatedProducts(slug: string): Promise<ProductType[]> {
+export async function loadRelatedProducts(slug: string){
   const res = await tryFetch<any[]>(`/products/${slug}/related`);
   if (res && res.length > 0) return res.map(mapProduct);
-  // Static fallback
-  const current = staticProducts.find((p) => p.slug === slug);
-  if (!current) return [];
-  return staticProducts.filter((p) => p.slug !== slug && p.category === current.category).slice(0, 4);
+  return [];
 }
 
-export async function loadHeroSlides(): Promise<HeroSlide[]> {
+export async function loadHeroSlides() {
   const res = await tryFetch<any[]>("/banners/hero");
   if (res && res.length > 0) return res.map(mapHero);
-  return staticHero;
 }
 
-export async function loadOpeningCard(): Promise<OpeningCardData> {
+export async function loadOpeningCard() {
   const res = await tryFetch<any[]>("/banners/opening-card");
   if (res && res.length > 0) return mapOpening(res[0]);
-  return staticOpening;
+ 
 }
 
-export async function loadBlogs(): Promise<BlogPost[]> {
+export async function loadBlogs() {
   const res = await tryFetch<ApiPaginated<any>>("/blogs?limit=100");
   if (res && res.data.length > 0) return res.data.map(mapBlog);
-  return staticBlogs;
+  return [];
 }
 
-export async function loadBlogBySlug(slug: string): Promise<BlogPost | null> {
+export async function loadBlogBySlug(slug: string){
   const res = await tryFetch<any>(`/blogs/${slug}`);
   if (res) return mapBlog(res);
-  return staticBlogs.find((b) => b.slug === slug) || null;
 }
 
-export async function loadTestimonials(): Promise<Testimonial[]> {
+export async function loadTestimonials() {
   const res = await tryFetch<any[]>("/testimonials");
-  if (res && res.length > 0) return res.map(mapTestimonial);
-  return staticTestimonials;
+  if (res && res.length > 0) return res.filter(Boolean).map(mapTestimonial);
+  return [];
 }
 
-export async function loadOffers(): Promise<Offer[]> {
+export async function loadOffers() {
   const res = await tryFetch<any[]>("/offers");
   if (res && res.length > 0) return res.map(mapOffer);
-  return staticOffers;
+  return [];
 }

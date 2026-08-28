@@ -5,8 +5,7 @@ import { FaWhatsapp, FaEnvelope, FaQuestionCircle } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import SectionTitle from "@/components/SectionTitle";
 import FAQAccordion from "@/components/FAQAccordion";
-import { faqs } from "@/data/content";
-import { siteConfig } from "@/data/site";
+import { faqs, siteConfig } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "FAQ",
