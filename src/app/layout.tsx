@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DM_Sans, Libre_Baskerville, Montserrat, Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import "@/styles/pages.css";
 
@@ -9,35 +8,6 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import ScrollToTop from "@/components/ScrollToTop";
 import OpeningSpecialCard from "@/components/OpeningSpecialCard";
 import { siteConfig } from "@/data/site";
-
-const display = Libre_Baskerville({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const sans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const publicHeading = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-public-heading",
-  display: "swap",
-});
-
-const publicBody = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-public-body",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.thangaveltextile.in"),
@@ -79,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${publicHeading.variable} ${publicBody.variable}`}>
+    <html lang="en">
       <body className="font-sans bg-cream-50 text-ink">
         <Navbar />
         <main className="public-page min-h-screen">{children}</main>
