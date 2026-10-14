@@ -149,6 +149,11 @@ export const api = {
     request<BannerApi[]>("/banners/about", { auth: false }),
   publicPageBanner: (pageKey: string) =>
     request<BannerApi | null>(`/banners/page/${encodeURIComponent(pageKey)}`, { auth: false }),
+  publicSectionImage: (pageKey: string, slotKey: string) =>
+    request<BannerApi | null>(
+      `/banners/section/${encodeURIComponent(pageKey)}/${encodeURIComponent(slotKey)}`,
+      { auth: false },
+    ),
   publicOpeningCard: () =>
     request<BannerApi[]>("/banners/opening-card", { auth: false }),
   publicCertificates: () =>
@@ -328,8 +333,9 @@ export interface BlogApi {
 
 export interface BannerApi {
   id: string;
-  kind: "hero" | "opening_card" | "about_banner" | "page_banner";
+  kind: "hero" | "opening_card" | "about_banner" | "page_banner" | "section_image";
   pageKey?: string;
+  slotKey?: string;
   title: string;
   highlight?: string;
   subtitle?: string;

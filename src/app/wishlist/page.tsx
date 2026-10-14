@@ -6,6 +6,7 @@ import { FaHeart, FaArrowRight, FaTrash } from "react-icons/fa";
 
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
+import SectionTitle from "@/components/SectionTitle";
 import { api, type ProductApi } from "@/lib/api";
 import { useWishlist } from "@/store";
 
@@ -23,47 +24,42 @@ export default function WishlistPage() {
   const saved = products.filter((p) => items.includes(p.id));
 
   return (
-    <>
+    <div className="lux-page">
       <PageHero
+        pageKey="wishlist"
         eyebrow="Your Edit"
-        title="Wishlist."
+        title={<>Your <span>wishlist.</span></>}
         subtitle="Pieces you've saved for later. Tap any item to order it on WhatsApp."
         bgImage="https://images.unsplash.com/photo-1583846552345-d2ce05fbe1c5?w=1920&auto=format&fit=crop&q=80"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Wishlist" }]}
       />
 
-      <section className="section-y">
-        <div className="container-x">
+      <section id="page-content" className="lux-section">
+        <div className="lux-container">
           {saved.length === 0 ? (
-            <div className="py-10 text-center sm:py-12">
-              <div className="grid h-20 w-20 mx-auto place-items-center rounded-full bg-cream-100 text-gray-800 mb-6">
-                <FaHeart className="h-7 w-7" />
-              </div>
-              <h2 className="display text-3xl font-semibold text-gray-950">
-                Your wishlist is empty
-              </h2>
-              <p className="mt-3 text-ink-muted max-w-md mx-auto">
+            <div className="lux-card lux-card--flat mx-auto max-w-2xl text-center !py-14">
+              <span className="lux-icon mx-auto"><FaHeart /></span>
+              <h2 className="mt-4">Your wishlist is empty</h2>
+              <p className="mx-auto mt-3 max-w-md text-[15px]">
                 Browse our catalogue and tap the heart icon on any product to save it for later.
               </p>
-              <Link href="/products" className="btn-primary mt-7">
-                Browse Products <FaArrowRight className="h-3.5 w-3.5" />
+              <Link href="/products" className="lux-btn mt-8">
+                Browse products <FaArrowRight aria-hidden />
               </Link>
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between mb-8">
-                <p className="text-sm text-ink-muted">
-                  {saved.length} {saved.length === 1 ? "item" : "items"} saved
-                </p>
-                <button
-                  type="button"
-                  onClick={clear}
-                  className="text-xs uppercase tracking-wider-x font-semibold text-gray-800 hover:text-gray-950 flex items-center gap-2"
-                >
-                  <FaTrash className="h-3 w-3" /> Clear all
+              <div className="mb-6 flex flex-col gap-4 md:gap-6 sm:flex-row sm:items-end sm:justify-between">
+                <SectionTitle
+                  eyebrow={`${saved.length} ${saved.length === 1 ? "item" : "items"} saved`}
+                  title={<>Saved for <span>later</span></>}
+                  className="!mb-0"
+                />
+                <button type="button" onClick={clear} className="lux-btn lux-btn--ghost shrink-0">
+                  <FaTrash aria-hidden /> Clear all
                 </button>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7">
+              <div className="grid grid-cols-2 gap-5 md:gap-7 lg:grid-cols-4">
                 {saved.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
@@ -72,6 +68,6 @@ export default function WishlistPage() {
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 }

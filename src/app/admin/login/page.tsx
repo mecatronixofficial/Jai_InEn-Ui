@@ -5,6 +5,7 @@ import { FaLock, FaEnvelope, FaSpinner, FaArrowLeft, FaCheckCircle } from "react
 import { useAdminAuth } from "@/context/AdminAuthContext";
 import { api } from "@/lib/api";
 import { siteConfig } from "@/data/site";
+import CompanyLogo from "@/components/CompanyLogo";
 import Link from "next/link";
 
 type Step = "login" | "forgot" | "otp" | "reset" | "done";
@@ -13,9 +14,9 @@ function BrandLogo({ className }: { className?: string }) {
   return (
     <Link href="/" className={`flex items-center gap-4 group ${className ?? ""}`}>
       {siteConfig.logo ? (
-        <img src={siteConfig.logo} alt={siteConfig.name} className="h-11 w-11 object-cover" />
+        <CompanyLogo className="h-[90px] w-[90px] shrink-0 object-contain transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none" />
       ) : (
-        <div className="grid h-12 w-12 place-items-center rounded-full bg-gold text-gray-950 font-display text-2xl font-bold uppercase">
+        <div className="grid h-[90px] w-[90px] shrink-0 place-items-center text-gold-dark font-display text-xl font-bold uppercase">
           {siteConfig?.name?.charAt(0) || "T"}
         </div>
       )}

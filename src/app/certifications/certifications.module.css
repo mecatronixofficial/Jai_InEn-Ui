@@ -1,0 +1,104 @@
+.certifications {
+  min-width: 0;
+}
+
+/* Content-only scale. The page banner remains fully controlled by shared CSS. */
+.certifications :global(.lux-section) {
+  padding-block: 2rem;
+}
+
+.certifications :global(.lux-head) {
+  margin-bottom: 1rem;
+}
+
+.certifications :global(.lux-title) {
+  margin-top: 0.625rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.certifications :global(.lux-lead) {
+  margin-top: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.certifications :global(.lux-section h3) {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.certifications :global(.lux-section p:not(.lux-eyebrow):not(.lux-kicker)) {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.certifications :global(.lux-card) {
+  padding: 1rem;
+}
+
+.certifications :global(.lux-panel) {
+  padding: 1.25rem;
+}
+
+.certifications :global(.lux-section .lux-btn) {
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+}
+
+.certifications :global(.lux-section .lux-link) {
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+}
+
+.certifications .subheading {
+  font-size: 1.125rem !important;
+}
+
+@media (min-width: 768px) {
+  .certifications :global(.lux-section) {
+    padding-block: 3rem;
+  }
+
+  .certifications :global(.lux-title) {
+    font-size: 1.875rem;
+  }
+
+  .certifications :global(.lux-lead),
+  .certifications :global(.lux-section p:not(.lux-eyebrow):not(.lux-kicker)) {
+    font-size: 1rem;
+  }
+
+  .certifications :global(.lux-section h3) {
+    font-size: 1.125rem;
+  }
+
+  .certifications :global(.lux-card) {
+    padding: 1.25rem;
+  }
+
+  .certifications :global(.lux-panel) {
+    padding: 1.5rem;
+  }
+
+  .certifications :global(.lux-section .lux-btn) {
+    font-size: 0.75rem;
+  }
+
+  .certifications :global(.lux-section .lux-link) {
+    font-size: 0.75rem;
+  }
+
+  .certifications .subheading {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .certifications :global(.lux-container) {
+    width: calc(100% - 2rem);
+  }
+}

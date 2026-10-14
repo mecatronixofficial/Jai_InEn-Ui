@@ -13,7 +13,7 @@ export default function ProductsPage() {
     <Suspense
       fallback={
         <div className="min-h-screen grid place-items-center">
-          <div className="h-12 w-12 rounded-full border-4 border-cream-300 border-t-gray-800 animate-spin" />
+          <div className="h-12 w-12 rounded-full border-2 border-[#EEE8DC] border-t-[#FBAA00] animate-spin" />
         </div>
       }
     >

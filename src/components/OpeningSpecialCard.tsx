@@ -82,18 +82,18 @@ export default function OpeningSpecialCard() {
             </div>
 
             {/* Content */}
-            <div className="p-8 md:p-10 flex flex-col justify-center bg-cream-50 weave-bg relative">
+            <div className="relative flex flex-col justify-center bg-cream-50 p-5 weave-bg md:p-6">
               <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold">
                 {card.title}
               </div>
-              <h2 className="display mt-3 text-3xl font-semibold leading-[1.1] text-gray-900 md:text-4xl">
+              <h2 className="display mt-3 text-[24px] font-semibold leading-tight text-gray-900 md:text-[28px] lg:text-[32px]">
                 {card.subtitle}
               </h2>
-              <p className="mt-4 text-ink-soft leading-relaxed">
+              <p className="mt-3 text-[14px] leading-relaxed text-ink-soft md:text-[15px] lg:text-[16px]">
                 {card.description}
               </p>
 
-              <div className="mt-7 flex flex-col sm:flex-row gap-3">
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href={card.ctaHref}
                   onClick={() => {

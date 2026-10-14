@@ -73,8 +73,8 @@ export default function ProductCard({
       }}
       className={`group relative isolate flex h-full flex-col overflow-hidden border bg-white transition-[transform,border-color,box-shadow] duration-500 motion-reduce:transform-none motion-reduce:transition-none ${
         compact
-          ? "rounded-[1.25rem] border-[#143B32]/10 p-2 shadow-[0_18px_45px_-30px_rgba(20,59,50,0.6)] hover:-translate-y-1.5 hover:border-[#FBAA00]/45 hover:shadow-[0_28px_55px_-30px_rgba(20,59,50,0.65)]"
-          : "rounded-[1.75rem] border-[#143B32]/10 p-2.5 shadow-[0_22px_60px_-38px_rgba(20,59,50,0.65)] hover:-translate-y-2 hover:border-[#FBAA00]/50 hover:shadow-[0_35px_70px_-36px_rgba(20,59,50,0.7)]"
+          ? "rounded-[1.25rem] border-[#2B2B2B]/10 p-2 shadow-[0_18px_45px_-30px_rgba(32,32,32,0.6)] hover:-translate-y-1.5 hover:border-[#FBAA00]/45 hover:shadow-[0_28px_55px_-30px_rgba(32,32,32,0.65)]"
+          : "rounded-[1.75rem] border-[#2B2B2B]/10 p-2.5 shadow-[0_22px_60px_-38px_rgba(32,32,32,0.65)] hover:-translate-y-2 hover:border-[#FBAA00]/50 hover:shadow-[0_35px_70px_-36px_rgba(32,32,32,0.7)]"
       }`}
     >
       <span
@@ -109,7 +109,7 @@ export default function ProductCard({
             className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06] motion-reduce:transform-none motion-reduce:transition-none"
           />
         ) : (
-          <div className="absolute inset-0 grid place-items-center overflow-hidden bg-gradient-to-br from-[#143B32] via-[#315B0D] to-[#579515] px-6 text-center">
+          <div className="absolute inset-0 grid place-items-center overflow-hidden bg-gradient-to-br from-[#2B2B2B] via-[#B57A00] to-[#FFB900] px-6 text-center">
             <span
               aria-hidden="true"
               className="absolute inset-0 bg-weave-dark opacity-60"
@@ -133,7 +133,7 @@ export default function ProductCard({
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0D2B24]/70 via-[#143B32]/[0.03] to-black/10"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#202020]/70 via-[#2B2B2B]/[0.03] to-black/10"
         />
         <div
           aria-hidden="true"
@@ -142,18 +142,18 @@ export default function ProductCard({
 
         <div className="pointer-events-none absolute left-3 top-3 z-20 flex max-w-[calc(100%-4rem)] flex-wrap gap-1.5">
           {product.newArrival && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.17em] text-[#143B32] shadow-sm backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#579515]" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.17em] text-[#2B2B2B] shadow-sm backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#FFB900]" />
               New
             </span>
           )}
           {discount > 0 && (
-            <span className="rounded-full bg-[#FBAA00] px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-[#143B32] shadow-sm">
+            <span className="rounded-full bg-[#FBAA00] px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-[#2B2B2B] shadow-sm">
               Save {discount}%
             </span>
           )}
           {isOutOfStock && (
-            <span className="rounded-full border border-white/20 bg-[#143B32]/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-white backdrop-blur-md">
+            <span className="rounded-full border border-white/20 bg-[#2B2B2B]/90 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-[0.15em] text-white backdrop-blur-md">
               Out of stock
             </span>
           )}
@@ -172,10 +172,10 @@ export default function ProductCard({
             event.stopPropagation();
             toggleWishlist(product.id);
           }}
-          className="absolute right-3 top-3 z-30 grid h-9 w-9 place-items-center rounded-full border border-white/60 bg-white/90 text-[#143B32] shadow-[0_10px_25px_-15px_rgba(20,59,50,0.8)] backdrop-blur-md transition duration-300 hover:scale-105 hover:border-[#FBAA00] hover:bg-[#FBAA00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 motion-reduce:transform-none"
+          className="absolute right-3 top-3 z-30 grid h-9 w-9 place-items-center rounded-full border border-white/60 bg-white/90 text-[#2B2B2B] shadow-[0_10px_25px_-15px_rgba(32,32,32,0.8)] backdrop-blur-md transition duration-300 hover:scale-105 hover:border-[#FBAA00] hover:bg-[#FBAA00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 motion-reduce:transform-none"
         >
           {isSaved ? (
-            <FaHeart aria-hidden="true" className="h-3.5 w-3.5 text-[#315B0D]" />
+            <FaHeart aria-hidden="true" className="h-3.5 w-3.5 text-[#B57A00]" />
           ) : (
             <FaRegHeart aria-hidden="true" className="h-3.5 w-3.5" />
           )}
@@ -188,7 +188,7 @@ export default function ProductCard({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Enquire about ${product.name} on WhatsApp`}
-              className="flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-[#FBAA00] px-3 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#143B32] shadow-[0_12px_30px_-16px_rgba(0,0,0,0.75)] transition-colors duration-300 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#143B32]"
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-[#FBAA00] px-3 py-2.5 text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#2B2B2B] shadow-[0_12px_30px_-16px_rgba(0,0,0,0.75)] transition-colors duration-300 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2B2B2B]"
             >
               <FaWhatsapp aria-hidden="true" className="h-3.5 w-3.5" />
               Enquire on WhatsApp
@@ -205,7 +205,7 @@ export default function ProductCard({
         <div className="flex min-w-0 items-center justify-between gap-3">
           {product.category ? (
             <span
-              className={`truncate font-extrabold uppercase tracking-[0.18em] text-[#579515] ${
+              className={`truncate font-extrabold uppercase tracking-[0.18em] text-[#FFB900] ${
                 compact ? "text-[7px]" : "text-[9px]"
               }`}
             >
@@ -216,7 +216,7 @@ export default function ProductCard({
           )}
 
           {hasRating && (
-            <span className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFF7E5] px-2 py-1 text-[9px] font-bold text-[#143B32]">
+            <span className="flex shrink-0 items-center gap-1 rounded-full bg-[#FFF7E5] px-2 py-1 text-[9px] font-bold text-[#2B2B2B]">
               <FaStar aria-hidden="true" className="h-2.5 w-2.5 text-[#FBAA00]" />
               {product.rating}
               {hasReviews && (
@@ -227,7 +227,7 @@ export default function ProductCard({
         </div>
 
         <h3
-          className={`display line-clamp-2 font-semibold leading-[1.15] text-[#143B32] transition-colors duration-300 group-hover:text-[#D79000] ${
+          className={`display line-clamp-2 font-semibold leading-[1.15] text-[#2B2B2B] transition-colors duration-300 group-hover:text-[#D79000] ${
             compact ? "mt-2 text-[1.05rem]" : "mt-2.5 text-xl"
           }`}
         >
@@ -253,7 +253,7 @@ export default function ProductCard({
             {showPrice && currentPrice > 0 && (
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span
-                  className={`font-extrabold tracking-tight text-[#143B32] ${
+                  className={`font-extrabold tracking-tight text-[#2B2B2B] ${
                     compact ? "text-sm" : "text-lg"
                   }`}
                 >
@@ -283,7 +283,7 @@ export default function ProductCard({
                     key={`${color}-${index}`}
                     title={color}
                     aria-label={color}
-                    className={`${colorSwatch(color)} inline-block h-3 w-3 rounded-full border border-black/10 ring-2 ring-white shadow-[0_0_0_1px_rgba(20,59,50,0.08)]`}
+                    className={`${colorSwatch(color)} inline-block h-3 w-3 rounded-full border border-black/10 ring-2 ring-white shadow-[0_0_0_1px_rgba(32,32,32,0.08)]`}
                   />
                 ))}
                 {colors.length > (compact ? 3 : 4) && (
@@ -295,7 +295,7 @@ export default function ProductCard({
             )}
           </div>
 
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[#143B32]/10 bg-[#F7F3E9] text-[#143B32] transition duration-300 group-hover:rotate-[-8deg] group-hover:border-[#FBAA00] group-hover:bg-[#FBAA00] motion-reduce:transform-none">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[#2B2B2B]/10 bg-[#F7F3E9] text-[#2B2B2B] transition duration-300 group-hover:rotate-[-8deg] group-hover:border-[#FBAA00] group-hover:bg-[#FBAA00] motion-reduce:transform-none">
             <FaArrowRight aria-hidden="true" className="h-3 w-3" />
           </span>
         </div>

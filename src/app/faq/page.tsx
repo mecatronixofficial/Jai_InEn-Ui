@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FaWhatsapp, FaEnvelope, FaQuestionCircle } from "react-icons/fa";
+import { FaArrowRight, FaEnvelope, FaQuestion, FaWhatsapp } from "react-icons/fa";
 
 import PageHero from "@/components/PageHero";
 import SectionTitle from "@/components/SectionTitle";
@@ -15,88 +15,66 @@ export const metadata: Metadata = {
 
 export default function FAQPage() {
   return (
-    <>
+    <div className="lux-page">
       <PageHero
+        pageKey="faq"
         eyebrow="Help Center"
-        title="Frequently Asked Questions."
+        title={<>Frequently asked <span>questions.</span></>}
         subtitle="Quick answers to the most common questions we receive from retail customers and wholesale partners."
         bgImage="https://images.unsplash.com/photo-1583846552345-d2ce05fbe1c5?w=1920&auto=format&fit=crop&q=80"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "FAQ" }]}
       />
 
-      <section className="section-y">
-        <div className="container-x grid lg:grid-cols-12 gap-12">
-          {/* Sidebar */}
+      <section id="page-content" className="lux-section">
+        <div className="lux-container grid gap-4 md:gap-6 lg:grid-cols-12 lg:gap-8">
           <aside className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
               <SectionTitle
                 eyebrow="Got questions?"
-                title="We've got answers."
+                title={<>We&apos;ve got <span>answers.</span></>}
                 description="Browse common questions about ordering, wholesale and our manufacturing."
+                className="!mb-8"
               />
 
-              <div className="space-y-4">
-                <div className="card p-6">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-cream-100 text-gray-800">
-                    <FaQuestionCircle className="h-5 w-5" />
+              <div className="grid gap-6">
+                <div className="lux-card flex items-center gap-5">
+                  <span className="lux-icon"><FaQuestion /></span>
+                  <div>
+                    <div className="lux-stat text-4xl">{faqs.length}</div>
+                    <p className="mt-1 text-sm !leading-6">Answered questions covering wholesale, retail, returns and more.</p>
                   </div>
-                  <h3 className="display mt-4 text-base font-semibold text-gray-950">
-                    {faqs.length} answered
-                  </h3>
-                  <p className="text-sm text-ink-muted mt-1">
-                    Covering wholesale, retail, returns and more.
-                  </p>
                 </div>
 
-                <div className="relative overflow-hidden rounded-2xl border border-[#ECECEC] bg-[#F5F5F5] p-7 text-[#222222] shadow-soft">
-                  <div className="absolute inset-0 bg-weave-light opacity-40" />
-                  <div className="relative">
-                    <div className="text-[11px] uppercase tracking-widest-x text-gold-light font-semibold">
-                      Talk to us
-                    </div>
-                    <h3 className="display mt-2 text-base font-semibold leading-tight">
-                      Still need help?
-                    </h3>
-                    <p className="mt-2 text-sm text-[#666666]">
-                      Reach out via WhatsApp or email for a faster response.
-                    </p>
-                    <div className="mt-5 flex flex-col gap-3">
-                      <a
-                        href={siteConfig.socials.whatsapp}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-gold w-full justify-center"
-                      >
-                        <FaWhatsapp className="h-4 w-4" /> WhatsApp
-                      </a>
-                      <a
-                        href={`mailto:${siteConfig.email}`}
-                        className="btn-outline w-full justify-center"
-                      >
-                        <FaEnvelope className="h-4 w-4" /> Email Us
-                      </a>
-                    </div>
+                <div className="lux-panel !p-8">
+                  <p className="lux-kicker">Talk to us</p>
+                  <h3 className="mt-3 text-2xl">Still need help?</h3>
+                  <p className="mt-2 text-[15px]">Reach out via WhatsApp or email for a faster response.</p>
+                  <div className="mt-6 grid gap-3">
+                    <a href={siteConfig.socials.whatsapp} target="_blank" rel="noreferrer" className="lux-btn lux-btn--block">
+                      <FaWhatsapp aria-hidden /> WhatsApp
+                    </a>
+                    <a href={`mailto:${siteConfig.email}`} className="lux-btn lux-btn--ghost lux-btn--block">
+                      <FaEnvelope aria-hidden /> Email us
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </aside>
 
-          {/* Accordion */}
           <div className="lg:col-span-8">
             <FAQAccordion items={faqs} />
 
-            <div className="mt-12 rounded-2xl border border-dashed border-cream-300 p-8 text-center bg-cream-50">
-              <p className="text-ink-soft">
-                Didn't find what you were looking for?
-              </p>
-              <Link href="/contact" className="btn-primary mt-5 inline-flex">
-                Contact Our Team
-              </Link>
+            <div className="lux-card lux-card--flat mt-6 flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
+              <div>
+                <h3 className="text-xl">Didn&apos;t find what you were looking for?</h3>
+                <p className="mt-1 text-[15px]">Send us a message and our team will get back to you.</p>
+              </div>
+              <Link href="/contact" className="lux-btn shrink-0">Contact our team <FaArrowRight aria-hidden /></Link>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
