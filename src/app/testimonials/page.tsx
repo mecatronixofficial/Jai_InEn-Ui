@@ -17,115 +17,94 @@ export const metadata: Metadata = {
 export default async function TestimonialsPage() {
   const testimonials = await loadTestimonials();
   return (
-    <>
+    <div className="lux-page">
       <PageHero
+        pageKey="testimonials"
         eyebrow="Customer Stories"
-        title="Trade built on real relationships."
+        title={<>Trade built on <span>real relationships.</span></>}
         subtitle="Honest reviews from retailers, boutique owners, hotels and households we've served."
         bgImage="https://images.unsplash.com/photo-1583846552345-d2ce05fbe1c5?w=1920&auto=format&fit=crop&q=80"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Reviews" }]}
       />
 
-      {/* Featured slider */}
-      <section className="section-y bg-cream-100/50">
-        <div className="container-x grid lg:grid-cols-12 gap-12 items-center">
+      <section id="page-content" className="lux-section">
+        <div className="lux-container grid items-center gap-4 md:gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
             <SectionTitle
-              eyebrow="Featured Review"
-              title="Heard around the country"
-              description="Hover through some of our most thoughtful customer notes."
+              eyebrow="Featured review"
+              title={<>Heard around <span>the country</span></>}
+              description="Some of our most thoughtful customer notes."
+              className="!mb-8"
             />
-            <div className="flex items-center gap-1 text-gold">
+            <div className="flex items-center gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
-                <FaStar key={i} className="h-5 w-5" />
+                <FaStar key={i} aria-hidden className="h-5 w-5 text-[#FBAA00]" />
               ))}
-              <span className="ml-2 text-sm text-ink-soft">
-                4.8 avg · {testimonials.length} reviews
-              </span>
+              <span className="ml-3 text-sm text-[#5F5F5F]">4.8 avg · {testimonials.length} reviews</span>
             </div>
           </div>
-          <div className="lg:col-span-8 card p-8 md:p-12">
-            <TestimonialSlider items={testimonials} />
+          <div className="lux-frame lg:col-span-8">
+            <div className="lux-card lux-card--flat !p-8 md:!p-12">
+              <TestimonialSlider items={testimonials} />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Grid */}
-      <section className="section-y">
-        <div className="container-x">
-          <SectionTitle
-            eyebrow="All Reviews"
-            title="What customers say"
-            align="center"
-          />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <div
-                key={t.id}
-                className={cn(
-                  "card p-7 relative",
-                  i % 3 === 1 ? "md:mt-12" : ""
-                )}
-              >
-                <FaQuoteLeft className="absolute -top-3 left-7 h-7 w-7 text-gold bg-cream-50 px-1.5" />
-                <div className="flex items-center gap-1 text-gold mb-4">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <FaStar
-                      key={j}
-                      className={cn(
-                        "h-3.5 w-3.5",
-                        j < Math.floor(t.rating) ? "text-gold" : "text-cream-300"
-                      )}
-                    />
-                  ))}
-                </div>
-                <p className="text-ink-soft leading-relaxed">
-                  &ldquo;{t.review}&rdquo;
-                </p>
-                <div className="mt-6 pt-5 border-t border-cream-200 flex items-center gap-3">
-                  <div className="display grid h-11 w-11 place-items-center rounded-full bg-[#FBAA00] text-lg font-semibold text-white">
-                    {t.name.charAt(0)}
+      {testimonials.length > 0 && (
+        <section className="lux-section">
+          <div className="lux-container">
+            <SectionTitle eyebrow="All reviews" title={<>What customers <span>say</span></>} align="center" ornament />
+            <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((t, i) => (
+                <article key={t.id} className={cn("lux-card flex flex-col", i % 3 === 1 && "lg:mt-6")}>
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="lux-icon lux-icon--sm"><FaQuoteLeft /></span>
+                    {t.productPurchased && <span className="lux-chip">{t.productPurchased}</span>}
                   </div>
-                  <div>
-                    <div className="font-semibold text-ink text-sm">{t.name}</div>
-                    <div className="text-[10px] uppercase tracking-wider-x text-ink-muted">
-                      {t.role}
-                      {t.company ? ` · ${t.company}` : ""}
+                  <div className="mt-6 flex items-center gap-1" aria-label={`${t.rating} out of 5 stars`}>
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <FaStar key={j} aria-hidden className={cn("h-3.5 w-3.5", j < Math.floor(t.rating) ? "text-[#FBAA00]" : "text-[#EEE8DC]")} />
+                    ))}
+                  </div>
+                  <p className="mt-4 flex-1 text-[15px]">&ldquo;{t.review}&rdquo;</p>
+                  <div className="mt-6 flex items-center gap-3 border-t border-[#EEE8DC] pt-5">
+                    {t.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={t.image} alt={t.name} className="h-11 w-11 rounded-full object-cover" />
+                    ) : (
+                      <div className="grid h-11 w-11 place-items-center rounded-full bg-[#FFF4D9] font-[family-name:var(--lux-heading)] text-lg font-semibold text-[#B57A00]">
+                        {t.name.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-[15px]">{t.name}</h3>
+                      <div className="lux-kicker !text-[10px]">
+                        {t.role}
+                        {t.company ? ` · ${t.company}` : ""}
+                      </div>
                     </div>
                   </div>
-                </div>
-                {t.productPurchased && (
-                  <div className="absolute top-5 right-5 rounded-full bg-cream-100 px-2.5 py-1 text-[10px] uppercase tracking-wider-x text-gold-dark font-semibold">
-                    {t.productPurchased}
-                  </div>
-                )}
-              </div>
-            ))}
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-      {/* Write a Review */}
-      <section className="section-y bg-cream-50 weave-bg">
-        <div className="container-x grid lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-4">
+        </section>
+      )}
+
+      <section className="lux-section">
+        <div className="lux-container grid items-start gap-4 md:gap-6 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4 lg:sticky lg:top-28">
             <SectionTitle
-              eyebrow="Your Turn"
-              title="Leave us a review"
+              eyebrow="Your turn"
+              title={<>Leave us a <span>review</span></>}
               description="Bought from us? Share your experience — honest feedback helps other customers and helps us improve."
+              className="!mb-8"
             />
-            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
-              <li className="flex items-start gap-2">
-                <span className="text-gold mt-0.5">★</span>
-                Reviews are verified by our team before publishing.
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-gold mt-0.5">★</span>
-                Usually approved within 1–2 business days.
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-gold mt-0.5">★</span>
-                No account needed — just fill in the form.
-              </li>
+            <ul className="lux-list">
+              <li>Reviews are verified by our team before publishing.</li>
+              <li>Usually approved within 1–2 business days.</li>
+              <li>No account needed — just fill in the form.</li>
             </ul>
           </div>
           <div className="lg:col-span-8">
@@ -133,6 +112,6 @@ export default async function TestimonialsPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

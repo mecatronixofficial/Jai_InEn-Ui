@@ -28,11 +28,11 @@ export default function NewArrivalsSlider({ products }: { products: Product[] })
               </div>
 
               <div className="relative px-2 pb-2 pt-5">
-                <span className={`absolute left-2 top-0 h-0.5 w-10 rounded-full ${green ? "bg-emerald-500" : "bg-[#FBAA00]"}`} />
+                <span className={`absolute left-2 top-0 h-0.5 w-10 rounded-full ${green ? "bg-[#FFB900]" : "bg-[#FBAA00]"}`} />
                 <h3 className="display line-clamp-1 text-base font-semibold text-gray-950 transition group-hover:text-gray-700">
                   {product.name}
                 </h3>
-                <span className={`mt-4 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] ${green ? "text-emerald-600" : "text-[#FBAA00]"}`}>
+                <span className={`mt-4 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] ${green ? "text-[#B57A00]" : "text-[#FBAA00]"}`}>
                   View Product <FaArrowRight className="h-2.5 w-2.5 transition-transform group-hover:translate-x-1" />
                 </span>
               </div>

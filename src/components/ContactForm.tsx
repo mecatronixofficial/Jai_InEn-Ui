@@ -56,11 +56,11 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-12"
       >
-        <FaCheckCircle className="mx-auto h-14 w-14 text-gold" />
-        <h3 className="display mt-5 text-base font-semibold text-gray-950">
+        <span className="lux-icon mx-auto"><FaCheckCircle /></span>
+        <h3 className="mt-7 text-2xl">
           Thank you!
         </h3>
-        <p className="mt-3 text-ink-soft">
+        <p className="mt-3 text-[15px]">
           We've received your enquiry. Our team will reach out within 24 hours.
         </p>
         <button
@@ -69,7 +69,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
             setSent(false);
             setState({ name: "", email: "", phone: "", product: "", message: "" });
           }}
-          className="btn-ghost mt-6"
+          className="lux-btn lux-btn--ghost mt-6"
         >
           Send another message
         </button>
@@ -138,10 +138,10 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
         />
       </div>
 
-      {error && <p className="text-sm text-gray-700">{error}</p>}
+      {error && <p role="alert" className="rounded-[2px] border-l-2 border-[#FBAA00] bg-[#FFFBF2] px-4 py-3 text-sm text-[#1C1C1C]">{error}</p>}
 
-      <button type="submit" disabled={submitting} className="btn-primary disabled:opacity-60">
-        <FaPaperPlane className="h-4 w-4" /> {submitting ? "Sending…" : "Send Enquiry"}
+      <button type="submit" disabled={submitting} className="lux-btn">
+        <FaPaperPlane aria-hidden /> {submitting ? "Sending…" : "Send Enquiry"}
       </button>
     </form>
   );

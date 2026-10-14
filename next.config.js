@@ -3,6 +3,8 @@
 const backendUrl =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
+const { PHASE_DEVELOPMENT_SERVER } = require("next/constants");
+
 const nextConfig = {
   reactStrictMode: true,
 
@@ -25,7 +27,7 @@ const nextConfig = {
 
   env: {
     NEXT_PUBLIC_WHATSAPP_NUMBER:
-      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210",
+      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919843073507",
 
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "",
@@ -44,4 +46,8 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = (phase) => ({
+  ...nextConfig,
+  // Keep production builds from replacing a running dev server's manifests.
+  distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-dev" : ".next",
+});

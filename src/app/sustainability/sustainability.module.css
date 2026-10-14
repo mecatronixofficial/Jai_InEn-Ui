@@ -1,0 +1,92 @@
+.sustainability {
+  min-width: 0;
+}
+
+/* Content-only scale. The shared banner remains outside these selectors. */
+.sustainability :global(.lux-section) {
+  padding-block: 2rem;
+}
+
+.sustainability :global(.lux-head) {
+  margin-bottom: 1rem;
+}
+
+.sustainability :global(.lux-title) {
+  margin-top: 0.625rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.sustainability :global(.lux-lead) {
+  margin-top: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.sustainability :global(.lux-section h3) {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.sustainability :global(.lux-section p:not(.lux-eyebrow):not(.lux-kicker)) {
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.sustainability :global(.lux-card) {
+  padding: 1rem;
+}
+
+.sustainability :global(.lux-panel) {
+  padding: 1.25rem;
+}
+
+.sustainability :global(.lux-section .lux-btn) {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.sustainability .partnershipPanel {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .sustainability :global(.lux-section) {
+    padding-block: 3rem;
+  }
+
+  .sustainability :global(.lux-title) {
+    font-size: 1.875rem;
+  }
+
+  .sustainability :global(.lux-lead),
+  .sustainability :global(.lux-section p:not(.lux-eyebrow):not(.lux-kicker)) {
+    font-size: 1rem;
+  }
+
+  .sustainability :global(.lux-section h3) {
+    font-size: 1.125rem;
+  }
+
+  .sustainability :global(.lux-card) {
+    padding: 1.25rem;
+  }
+
+  .sustainability :global(.lux-panel) {
+    padding: 1.5rem;
+  }
+
+  .sustainability :global(.lux-section .lux-btn) {
+    font-size: 1rem;
+  }
+
+  .sustainability .partnershipPanel {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .sustainability :global(.lux-container) {
+    width: calc(100% - 2rem);
+  }
+}

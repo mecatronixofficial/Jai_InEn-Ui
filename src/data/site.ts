@@ -1,11 +1,11 @@
 export const siteConfig = {
-  logo: "https://jai-india.com/wp-content/uploads/2019/12/jai-export-enterprises-logo-1.png",
+  logo: "https://res.cloudinary.com/ddpfxvydm/image/upload/v1791957927/Jai_Export_Enterprises_Logo_prz084.png",
   name: "Jai Export Enterprises",
   tagline: "Woven in Karur. Worn across India.",
   description:
-    "Jai Export Enterprises — a home textile manufacturer and exporter from Karur, Tamil Nadu, serving international markets with table, kitchen, bed, living and outdoor textile collections.",
+    "JAI EXPORT ENTERPRISES is a leading home textile manufacturer and exporter based in Karur, Tamil Nadu, India. The company serves international markets with a wide range of high-quality home textile products, including table linens, kitchen textiles, bedding, living room furnishings, and outdoor textile collections.",
   ceo: "Jai",
-  established: "2017",
+  established: "1996",
   gstSince: "Jul 2017",
   legalStatus: "Proprietorship",
   natureOfBusiness: "Manufacturer",
@@ -23,20 +23,21 @@ export const siteConfig = {
     pincode: "639003",
   },
   locationlink: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d31344.324759596137!2d78.007774!3d10.884517!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3baa2767bf887187%3A0x356467cc91137d85!2sJai%20Export%20Enterprises!5e0!3m2!1sen!2sin!4v1780039449875!5m2!1sen!2sin",
-  phone: "+91 98765 43210",
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210",
-  email: "info@Jaitextile.in",
-  workingHours: "Mon – Sat: 9:00 AM – 8:00 PM",
+  phone: "9047027507",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919843073507",
+  whatsappDisplay: "9843073507",
+  email: "info@jai-india.com",
+  workingHours: "Mon – Sat: 9.30 AM – 6.00 PM",
   socials: {
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
     youtube: "https://youtube.com",
-    whatsapp: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210"}`,
+    whatsapp: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919843073507"}`,
   },
 };
 
 export const stats = [
-  { value: 8, suffix: "+", label: "Years of Manufacturing" },
+  { value: 30, suffix: "+", label: "Years of Manufacturing" },
   { value: 500, suffix: "+", label: "Wholesale Partners" },
   { value: 50000, suffix: "+", label: "Meters of Fabric Woven Monthly" },
   { value: 7, suffix: "", label: "Core Product Categories" },

@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import type { Crumb } from "@/components/Breadcrumbs";
 import PremiumPageBanner from "@/components/PremiumPageBanner";
 
 interface PageHeroProps {
-  title: string;
+  title: ReactNode;
   subtitle?: string;
   eyebrow?: string;
   bgImage?: string;
@@ -18,7 +19,7 @@ export default function PageHero({
   breadcrumbs,
   pageKey,
 }: PageHeroProps) {
-  const current = breadcrumbs?.[breadcrumbs.length - 1]?.label || title;
+  const current = breadcrumbs?.[breadcrumbs.length - 1]?.label || (typeof title === "string" ? title : "");
   const parentCrumb = breadcrumbs && breadcrumbs.length > 2 ? breadcrumbs[breadcrumbs.length - 2] : undefined;
   return <PremiumPageBanner eyebrow={eyebrow || "Jai Export Enterprises"} title={title} description={subtitle} current={current} parent={parentCrumb?.href ? { label: parentCrumb.label, href: parentCrumb.href } : undefined} bgImage={bgImage} pageKey={pageKey} />;
 }

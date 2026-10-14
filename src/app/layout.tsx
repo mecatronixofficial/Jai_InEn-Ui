@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { DM_Sans, Libre_Baskerville } from "next/font/google";
+import { DM_Sans, Libre_Baskerville, Montserrat, Poppins } from "next/font/google";
 import "@/styles/globals.css";
+import "@/styles/pages.css";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -21,6 +22,20 @@ const sans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const publicHeading = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-public-heading",
+  display: "swap",
+});
+
+const publicBody = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-public-body",
   display: "swap",
 });
 
@@ -64,10 +79,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable}`}>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${publicHeading.variable} ${publicBody.variable}`}>
       <body className="font-sans bg-cream-50 text-ink">
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="public-page min-h-screen">{children}</main>
         <Footer />
         <FloatingWhatsApp />
         <ScrollToTop />

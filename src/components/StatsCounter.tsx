@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 
 interface Stat {
   value: number;
@@ -9,45 +8,18 @@ interface Stat {
   label: string;
 }
 
-export default function StatsCounter({
-  items,
-  light = false,
-  colorful = false,
-  compact = false,
-}: {
-  items: Stat[];
-  light?: boolean;
-  colorful?: boolean;
-  compact?: boolean;
-}) {
+/** Row of count-up statistics in framed cells. */
+export default function StatsCounter({ items }: { items: Stat[] }) {
   return (
-    <div
-      className={
-        colorful
-          ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-          : `grid grid-cols-2 gap-3 md:grid-cols-4 ${compact ? "" : "gap-px overflow-hidden rounded-2xl border border-gold/20 bg-gold/20"}`
-      }
-    >
+    <div className="grid gap-px overflow-hidden rounded-[4px] border border-[#EEE8DC] bg-[#EEE8DC] sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item, i) => (
-        <StatTile key={i} item={item} light={light} colorful={colorful} compact={compact} index={i} />
+        <StatTile key={item.label} item={item} index={i} />
       ))}
     </div>
   );
 }
 
-function StatTile({
-  item,
-  light,
-  colorful,
-  compact,
-  index,
-}: {
-  item: Stat;
-  light: boolean;
-  colorful: boolean;
-  compact: boolean;
-  index: number;
-}) {
+function StatTile({ item, index }: { item: Stat; index: number }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [n, setN] = useState(0);
   const [started, setStarted] = useState(false);
@@ -56,16 +28,20 @@ function StatTile({
     if (!ref.current) return;
     const obs = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting && !started) setStarted(true);
+        if (e.isIntersecting) setStarted(true);
       },
       { threshold: 0.4 }
     );
     obs.observe(ref.current);
     return () => obs.disconnect();
-  }, [started]);
+  }, []);
 
   useEffect(() => {
     if (!started) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setN(item.value);
+      return;
+    }
     const dur = 1600;
     const start = performance.now();
     let raf = 0;
@@ -79,73 +55,18 @@ function StatTile({
     return () => cancelAnimationFrame(raf);
   }, [started, item.value]);
 
-  const colorfulAccents = [
-    "bg-[#174D2A]",
-    "bg-[#FBAA00]",
-    "bg-[#579515]",
-    "bg-[#2D2D2D]",
-  ];
-  const colorfulSurfaces = [
-    "bg-[#F3F8F1]",
-    "bg-[#FFF8E8]",
-    "bg-[#F7FAF3]",
-    "bg-[#F5F5F5]",
-  ];
-  const colorfulNumbers = [
-    "text-[#174D2A]",
-    "text-[#C98200]",
-    "text-[#579515]",
-    "text-[#2D2D2D]",
-  ];
-
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      className={
-        colorful
-          ? `relative flex min-h-[140px] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-200 px-5 py-6 text-center shadow-[0_12px_28px_-22px_rgba(23,77,42,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#FBAA00]/60 ${colorfulSurfaces[index % colorfulSurfaces.length]}`
-          : compact
-            ? "rounded-lg border border-[#143B32]/20 bg-white px-3 py-4 text-center shadow-[0_8px_20px_rgba(20,59,50,0.07)]"
-            : "bg-white p-7 text-center"
-      }
+      className="lux-hover group relative bg-white px-5 py-6 transition-colors duration-500 hover:bg-[#FFFBF2]"
     >
-      {colorful && (
-        <>
-          <span
-            className={`absolute inset-y-0 left-0 w-1.5 ${colorfulAccents[index % colorfulAccents.length]}`}
-          />
-          <span className="pointer-events-none absolute right-3 top-1 font-sans text-5xl font-bold text-gray-900/[0.05]">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-        </>
-      )}
-
-      <div
-        className={`display font-semibold leading-none ${
-          colorful ? `relative text-xl ${colorfulNumbers[index % colorfulNumbers.length]}` : compact ? `text-xl md:text-2xl ${
-            light ? "text-[#FBAA00]" : "text-[#222222]"
-          }` : `text-5xl md:text-6xl ${
-            light ? "text-[#FBAA00]" : "text-[#222222]"
-          }`
-        }`}
-      >
+      <span className="lux-num absolute right-4 top-4 !text-[20px]">{String(index + 1).padStart(2, "0")}</span>
+      <div className="lux-stat text-[34px] md:text-[38px]">
         {n.toLocaleString("en-IN")}
         {item.suffix}
       </div>
-      <div
-        className={`uppercase font-semibold tracking-wider-x ${
-          colorful ? "relative mt-3 max-w-[14rem] text-[10px] leading-4 text-gray-600" : compact ? `mt-2 text-[9px] leading-4 ${
-            light ? "text-[#666666]" : "text-ink-muted"
-          }` : `mt-3 text-xs ${
-            light ? "text-[#666666]" : "text-ink-muted"
-          }`
-        }`}
-      >
-        {item.label}
-      </div>
-    </motion.div>
+      <div className="lux-kicker mt-2 max-w-[14rem] !leading-5">{item.label}</div>
+      <span className="absolute inset-x-5 bottom-0 h-[2px] origin-left scale-x-0 bg-[#FBAA00] transition-transform duration-500 group-hover:scale-x-100" />
+    </div>
   );
 }

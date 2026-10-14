@@ -8,6 +8,14 @@ import { useWishlist } from "@/store";
 import { buildWhatsAppOrderUrl } from "@/lib/whatsapp";
 import { cn } from "@/utils";
 
+const optionClass = (selected: boolean) =>
+  cn(
+    "min-w-[64px] rounded-[2px] border px-4 py-2.5 text-[13px] font-medium transition duration-300",
+    selected
+      ? "border-[#FBAA00] bg-[#FBAA00] text-[#1C1C1C] shadow-[0_10px_20px_-12px_rgba(251,170,0,0.9)]"
+      : "border-[#EEE8DC] text-[#5F5F5F] hover:-translate-y-0.5 hover:border-[#FBAA00] hover:text-[#B57A00]"
+  );
+
 export default function ProductActions({ product }: { product: Product }) {
   const [color, setColor] = useState(product.colors[0] || "");
   const [size, setSize] = useState(product.sizes[0] || "");
@@ -42,110 +50,47 @@ export default function ProductActions({ product }: { product: Product }) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Colors */}
+    <div className="grid gap-7">
       {product.colors.length > 0 && (
         <div>
-          <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold mb-3">
-            Color · <span className="text-ink-soft normal-case">{color}</span>
-          </div>
+          <div className="lux-label">Colour · <span className="normal-case tracking-normal text-[#5F5F5F]">{color}</span></div>
           <div className="flex flex-wrap gap-2">
             {product.colors.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setColor(c)}
-                className={cn(
-                  "rounded-full border px-4 py-2 text-xs transition",
-                  c === color
-                    ? "border-[#579515] bg-[#579515] text-white"
-                    : "border-cream-300 text-ink-soft hover:border-gray-800"
-                )}
-              >
-                {c}
-              </button>
+              <button key={c} type="button" onClick={() => setColor(c)} aria-pressed={c === color} className={optionClass(c === color)}>{c}</button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Sizes */}
       {product.sizes.length > 0 && (
         <div>
-          <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold mb-3">
-            Size · <span className="text-ink-soft normal-case">{size}</span>
-          </div>
+          <div className="lux-label">Size · <span className="normal-case tracking-normal text-[#5F5F5F]">{size}</span></div>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => setSize(s)}
-                className={cn(
-                  "rounded-full border px-4 py-2 text-xs transition min-w-[60px]",
-                  s === size
-                    ? "border-[#579515] bg-[#579515] text-white"
-                    : "border-cream-300 text-ink-soft hover:border-gray-800"
-                )}
-              >
-                {s}
-              </button>
+              <button key={s} type="button" onClick={() => setSize(s)} aria-pressed={s === size} className={optionClass(s === size)}>{s}</button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Quantity */}
       <div>
-        <div className="text-[11px] uppercase tracking-widest-x text-gold-dark font-semibold mb-3">
-          Quantity
-        </div>
-        <div className="inline-flex items-center rounded-full border border-cream-300 bg-white">
-          <button
-            type="button"
-            onClick={() => setQty(Math.max(1, qty - 1))}
-            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-gray-800"
-            aria-label="Decrease"
-          >
-            −
-          </button>
-          <span className="px-5 font-semibold text-ink">{qty}</span>
-          <button
-            type="button"
-            onClick={() => setQty(qty + 1)}
-            className="h-11 w-11 grid place-items-center text-ink-soft hover:text-gray-800"
-            aria-label="Increase"
-          >
-            +
-          </button>
+        <div className="lux-label">Quantity</div>
+        <div className="inline-flex items-center rounded-[2px] border border-[#EEE8DC] bg-white transition hover:border-[#FBAA00]">
+          <button type="button" onClick={() => setQty(Math.max(1, qty - 1))} className="grid h-12 w-12 place-items-center text-lg text-[#5F5F5F] transition hover:bg-[#FFF4D9] hover:text-[#B57A00]" aria-label="Decrease quantity">−</button>
+          <span className="min-w-[3rem] text-center font-[family-name:var(--lux-heading)] font-semibold text-[#1C1C1C]">{qty}</span>
+          <button type="button" onClick={() => setQty(qty + 1)} className="grid h-12 w-12 place-items-center text-lg text-[#5F5F5F] transition hover:bg-[#FFF4D9] hover:text-[#B57A00]" aria-label="Increase quantity">+</button>
         </div>
       </div>
 
-      {/* CTAs */}
-      <div className="flex flex-wrap gap-3 pt-2">
-        <a
-          href={whatsapp}
-          target="_blank"
-          rel="noreferrer"
-          className="btn-primary flex-1 min-w-[200px]"
-        >
-          <FaWhatsapp className="h-4 w-4" /> Order on WhatsApp
+      <div className="flex flex-wrap gap-3 border-t border-[#EEE8DC] pt-7">
+        <a href={whatsapp} target="_blank" rel="noreferrer" className="lux-btn min-w-[220px] flex-1">
+          <FaWhatsapp aria-hidden /> Order on WhatsApp
         </a>
-        <button
-          type="button"
-          onClick={() => toggle(product.id)}
-          className="btn-outline !px-4"
-          aria-label="Wishlist"
-        >
-          {has ? <FaHeart className="h-4 w-4" /> : <FaRegHeart className="h-4 w-4" />}
+        <button type="button" onClick={() => toggle(product.id)} className="lux-btn lux-btn--ghost lux-btn--icon" aria-label={has ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={has}>
+          {has ? <FaHeart aria-hidden className="text-[#B57A00]" /> : <FaRegHeart aria-hidden />}
         </button>
-        <button
-          type="button"
-          onClick={share}
-          className="btn-outline !px-4"
-          aria-label="Share"
-        >
-          <FaShareAlt className="h-4 w-4" />
+        <button type="button" onClick={share} className="lux-btn lux-btn--ghost lux-btn--icon" aria-label="Share">
+          <FaShareAlt aria-hidden />
         </button>
       </div>
     </div>

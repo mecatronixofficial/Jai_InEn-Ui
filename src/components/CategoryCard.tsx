@@ -41,7 +41,7 @@ export default function CategoryCard({
       {compact && (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 translate-x-2 translate-y-2 rounded-xl bg-gradient-to-br from-[#FBAA00]/45 to-[#579515]/25 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1 motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-0 translate-x-2 translate-y-2 rounded-xl bg-gradient-to-br from-[#FBAA00]/45 to-[#FFB900]/25 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1 motion-reduce:transition-none"
         />
       )}
 
@@ -51,7 +51,7 @@ export default function CategoryCard({
         aria-label={`View ${category.name} products`}
         className={`relative block h-full overflow-hidden bg-cream-100 outline-none transition duration-300 focus-visible:ring-2 focus-visible:ring-[#FBAA00] focus-visible:ring-offset-2 motion-reduce:transform-none motion-reduce:transition-none ${
           compact
-            ? "rounded-xl border border-[#143B32]/25 bg-white p-2 shadow-[0_12px_28px_rgba(20,59,50,0.14)] hover:-translate-y-1 hover:rotate-[0.35deg] hover:border-[#FBAA00]/55 hover:shadow-[0_18px_36px_rgba(20,59,50,0.18)]"
+            ? "rounded-xl border border-[#2B2B2B]/25 bg-white p-2 shadow-[0_12px_28px_rgba(32,32,32,0.14)] hover:-translate-y-1 hover:rotate-[0.35deg] hover:border-[#FBAA00]/55 hover:shadow-[0_18px_36px_rgba(32,32,32,0.18)]"
             : "rounded-2xl shadow-soft hover:-translate-y-1"
         }`}
       >
@@ -72,13 +72,13 @@ export default function CategoryCard({
           ) : (
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-br from-[#143B32] via-[#315B0D] to-[#579515]"
+              className="absolute inset-0 bg-gradient-to-br from-[#2B2B2B] via-[#B57A00] to-[#FFB900]"
             />
           )}
 
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-[#143B32]/95 via-[#143B32]/25 to-transparent"
+            className="absolute inset-0 bg-gradient-to-t from-[#2B2B2B]/95 via-[#2B2B2B]/25 to-transparent"
           />
           <div
             aria-hidden="true"
@@ -86,7 +86,7 @@ export default function CategoryCard({
           />
 
           <div
-            className={`absolute inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/90 font-bold uppercase tracking-widest-x text-[#143B32] shadow-sm backdrop-blur-sm ${
+            className={`absolute inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/90 font-bold uppercase tracking-widest-x text-[#2B2B2B] shadow-sm backdrop-blur-sm ${
               compact
                 ? "left-3 top-3 px-2.5 py-1 text-[7px]"
                 : "left-5 top-5 px-3 py-1.5 text-[10px]"

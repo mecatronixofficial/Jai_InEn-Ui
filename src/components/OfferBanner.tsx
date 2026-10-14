@@ -36,7 +36,11 @@ export default function OfferBanner({ offer }: { offer: Offer }) {
       <div className="pointer-events-none absolute inset-0 bg-weave-light opacity-50" />
       <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-gold/15 blur-2xl" />
 
-      <div className="relative grid items-center gap-4 md:grid-cols-[1fr_auto]">
+      <div className={`relative grid items-center gap-4 ${offer.image ? "md:grid-cols-[96px_1fr_auto]" : "md:grid-cols-[1fr_auto]"}`}>
+        {offer.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={offer.image} alt="" className="h-24 w-full rounded-lg object-cover md:w-24" />
+        )}
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-gold text-gray-950 px-3 py-1 text-[10px] uppercase tracking-widest-x font-bold">
             <FaTag className="h-2.5 w-2.5" /> Limited Time
