@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-sans: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-public-heading: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-public-body: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --home-heading: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --home-body: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --brand-gold: #FBAA00;
   --brand-gold-hover: #E89D00;
   --brand-green: #FFB900;

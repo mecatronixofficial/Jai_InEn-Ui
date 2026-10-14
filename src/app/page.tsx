@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Montserrat, Poppins } from "next/font/google";
 import styles from "./home.module.css";
 import moment from "moment";
 import { FaArrowRight, FaWhatsapp, FaIndustry, FaLeaf, FaHandshake, FaShippingFast, FaTshirt, FaWeight, FaGlobeAsia, FaRecycle, FaCheckCircle } from "react-icons/fa";
@@ -22,9 +21,6 @@ import {
   loadOffers,
 } from "@/lib/data";
 import { siteConfig, stats, whyChooseUs, manufacturingProcess } from "@/data/site";
-
-const heading = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--home-heading", display: "swap" });
-const body = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--home-body", display: "swap" });
 
 const iconMap = {
   FaIndustry,
@@ -167,7 +163,7 @@ export default async function HomePage() {
     }));
 
   return (
-    <div className={`${styles.home} ${heading.variable} ${body.variable}`}>
+    <div className={styles.home}>
       <HeroSlider products={heroProducts} />
       <section className={`${styles.section} ${styles.welcomeSection}`} aria-labelledby="welcome-title">
         <div className={`${styles.container} ${styles.split} ${styles.welcomeGrid}`}>
