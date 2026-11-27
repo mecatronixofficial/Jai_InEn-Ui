@@ -289,7 +289,7 @@ export default async function AboutPage() {
       <PremiumTeamwork />
 
       {/* Facilities */}
-      <section className="lux-section">
+      <section id="facilities" className="lux-section scroll-mt-28">
         <div className="lux-container">
           <SectionTitle
             eyebrow="Integrated manufacturing"
