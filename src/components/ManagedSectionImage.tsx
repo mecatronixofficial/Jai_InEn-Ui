@@ -10,6 +10,8 @@ type ManagedSectionImageProps = {
   alt: string;
   className?: string;
   ariaHidden?: boolean;
+  /** Optional native loading hint, e.g. "lazy" for below-the-fold images. */
+  loading?: "lazy" | "eager";
 };
 
 export default function ManagedSectionImage({
@@ -19,6 +21,7 @@ export default function ManagedSectionImage({
   alt,
   className,
   ariaHidden,
+  loading,
 }: ManagedSectionImageProps) {
   const [src, setSrc] = useState(fallbackImage);
 
@@ -39,6 +42,8 @@ export default function ManagedSectionImage({
       alt={ariaHidden ? "" : alt}
       aria-hidden={ariaHidden || undefined}
       className={className}
+      loading={loading}
+      decoding={loading === "lazy" ? "async" : undefined}
       onError={() => setSrc(fallbackImage)}
     />
   );

@@ -1,35 +1,47 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./home.module.css";
-import moment from "moment";
-import { FaArrowRight, FaWhatsapp, FaIndustry, FaLeaf, FaHandshake, FaShippingFast, FaTshirt, FaWeight, FaGlobeAsia, FaRecycle, FaCheckCircle } from "react-icons/fa";
+import { FaArrowRight, FaCheckCircle, FaGlobeAsia, FaIndustry, FaPencilRuler, FaRecycle, FaShieldAlt } from "react-icons/fa";
 
 import HeroSlider from "@/components/HeroSlider";
 import HomeCertificates from "@/components/HomeCertificates";
+import ManagedSectionImage from "@/components/ManagedSectionImage";
+import { loadCategories, loadProducts } from "@/lib/data";
+import { siteConfig } from "@/data/site";
+import styles from "./home.module.css";
 
-
-
-
-
-import OfferBanner from "@/components/OfferBanner";
-
-import {
-  loadCategories,
-  loadProducts,
-  loadBlogs,
-
-  loadOffers,
-} from "@/lib/data";
-import { siteConfig, stats, whyChooseUs, manufacturingProcess } from "@/data/site";
-
-const iconMap = {
-  FaIndustry,
-  FaTshirt,
-  FaWeight,
-  FaHandshake,
-  FaShippingFast,
-  FaLeaf,
+export const metadata: Metadata = {
+  title: { absolute: `${siteConfig.name} — Home Textile Manufacturer & Exporter, Karur, India` },
+  description: siteConfig.description,
+  keywords: [
+    "home textile manufacturer India",
+    "home textile exporter",
+    "table linen manufacturer",
+    "kitchen linen exporter",
+    "bed linen manufacturer",
+    "Karur home textiles",
+  ],
+  openGraph: {
+    title: `${siteConfig.name} — Home Textile Manufacturer & Exporter`,
+    description: siteConfig.description,
+    type: "website",
+    siteName: siteConfig.name,
+  },
 };
+
+/** Request-a-quote target: the enquiry form section on the contact page. */
+const QUOTE_HREF = "/contact#enquiry";
+
+/** Hosts allowed by `images.remotePatterns` in next.config.js can be optimised by next/image. */
+const OPTIMISABLE_HOSTS = new Set(["res.cloudinary.com", "images.unsplash.com", "plus.unsplash.com"]);
+function canOptimise(src: string) {
+  if (src.startsWith("/")) return true;
+  try {
+    return OPTIMISABLE_HOSTS.has(new URL(src).hostname);
+  } catch {
+    return false;
+  }
+}
 
 const evolutionHighlights = [
   {
@@ -79,121 +91,122 @@ const corePortfolio = [
   },
 ];
 
-const productionAdvantages = [
-  {
-    Icon: FaIndustry,
-    number: "01",
-    title: "Fabric Processing & Finishing",
-    description:
-      "Equipped with modern sewing machinery, advanced processing facilities and specialized quality-control checks at every stage of production.",
-  },
-  {
-    Icon: FaTshirt,
-    number: "02",
-    title: "Precision Cutting & Stitching",
-    description:
-      "A high-capacity stitching floor with modern heavy-duty sewing machines, automated cutting tables and specialized folding equipment.",
-  },
-  {
-    Icon: FaCheckCircle,
-    number: "03",
-    title: "Stringent Quality Control (QC)",
-    description:
-      "A multi-tiered inspection protocol is applied at every stage—from raw fabric inspection to dispatch—minimizing defects and ensuring absolute batch consistency.",
-  },
-  {
-    Icon: FaShippingFast,
-    number: "04",
-    title: "Final Inspection & Safe Packing",
-    description:
-      "Finished products are checked for appearance, dimensions, stitching and buyer specifications before secure packing, accurate labelling and dispatch.",
-  },
+const partnerFeatures = [
+  { Icon: FaIndustry, title: "Manufacturing Strength", description: "Modern infrastructure and skilled craftsmanship." },
+  { Icon: FaShieldAlt, title: "Quality Assurance", description: "Consistent quality checks throughout production." },
+  { Icon: FaPencilRuler, title: "Customized Solutions", description: "Textile collections tailored to buyer requirements." },
+  { Icon: FaGlobeAsia, title: "Global Export Capabilities", description: "Reliable manufacturing and export coordination." },
 ];
 
-const businessTerms = [
-  {
-    term: "L/C at sight",
-    description: "Payment guaranteed by the buyer's bank upon document verification.",
-  },
-  {
-    term: "CAD at sight",
-    description: "Payment made upon receipt of documents.",
-  },
-  {
-    term: "T/T against documents",
-    description: "Payment via electronic transfer upon document receipt.",
-  },
-];
-
-const testingStandards = [
-  { name: "AZO Free", detail: "No harmful azo dyes." },
-  { name: "REACH", detail: "Compliant with EU chemical safety regulations." },
-  { name: "OEKO-TEX", detail: "Certified free from harmful substances." },
-];
-
-const pillarSummaries = [
-  "Modern production supported by careful checks.",
-  "Home textiles across key living categories.",
-  "Consistent standards from material to inspection.",
-  "Reliable coordination for every delivery.",
-];
+/**
+ * Testing/inspection standards already stated in the company's existing content
+ * (certificate logos themselves come from the CMS via HomeCertificates).
+ */
+const qualityStandards = ["REACH compliant", "AZO free", "AQL 2.5 / 4.0 inspection"];
 
 export default async function HomePage() {
-  const [categoryData, productData, blogData, offerData] = await Promise.all([
-    loadCategories(),
-    loadProducts(),
-    loadBlogs(),
+  const [categoryData, productData] = await Promise.all([loadCategories(), loadProducts()]);
 
-    loadOffers(),
-  ]);
-
-  const categories = categoryData ?? [];
-  const products = productData ?? [];
-  const blogPosts = blogData ?? [];
-
-  const offers = offerData ?? [];
-  const heroProducts = products
+  const categories = (categoryData ?? []).filter((category) => category?.name && category?.slug);
+  const heroProducts = (productData ?? [])
     .filter((product) => Boolean(product.images?.[0]))
     .slice(0, 8)
-    .map((product) => ({
-      id: product.id,
-      name: product.name,
-      slug: product.slug,
-      image: product.images[0],
-    }));
+    .map((product) => ({ id: product.id, name: product.name, slug: product.slug, image: product.images[0] }));
+
+  // Only verified figures from the company profile; the category count is shown
+  // only when the catalogue has actually loaded.
+  const established = Number(siteConfig.established);
+  const years = Number.isFinite(established) ? new Date().getFullYear() - established : 0;
+  const keyStats = [
+    years > 0 && { value: `${years}+`, label: "Years of experience" },
+    { value: "Europe & Japan", label: "Export markets" },
+    categories.length > 0
+      ? { value: String(categories.length), label: "Product categories" }
+      : { value: "133,689 sq. ft.", label: "Manufacturing infrastructure" },
+    { value: "375,000 m", label: "Monthly production capacity" },
+  ].filter((stat): stat is { value: string; label: string } => Boolean(stat));
 
   return (
     <div className={styles.home}>
       <HeroSlider products={heroProducts} />
-      <section className={`${styles.section} ${styles.welcomeSection}`} aria-labelledby="welcome-title">
-        <div className={`${styles.container} ${styles.split} ${styles.welcomeGrid}`}>
-          <div className={`${styles.copy} ${styles.welcomePanel}`}>
-            <p className={styles.label}>Welcome to our company</p>
-            <h2 id="welcome-title">Crafting Home Textiles for <span>Modern Living</span></h2>
-            <p>Based in Karur, {siteConfig.name} creates thoughtfully crafted home textiles for global retailers, brands, wholesalers and importers. We combine skilled craftsmanship, modern production and responsible material choices in every collection.</p>
-            <div className={styles.inlineActions}><Link href="/about" className={styles.primary}>About Our Company <FaArrowRight aria-hidden /></Link><Link href="/products" className={styles.secondary}>Explore Collections <FaArrowRight aria-hidden /></Link></div>
+
+      {/* 2. About & key statistics */}
+      <section className={styles.section} aria-labelledby="about-title">
+        <div className={`${styles.container} ${styles.about}`}>
+          <div>
+            <p className={styles.label}>About our company</p>
+            <h2 id="about-title">Three Decades of <span>Textile Excellence</span></h2>
           </div>
-          <div className={styles.welcomePanel}>
-            <p className={styles.label}>What drives us</p>
-            <h3 className={styles.panelTitle}>Key Organizational Pillars</h3>
-            <div className={styles.pillars}>{whyChooseUs.map((item, index) => {
-              const Icon = iconMap[item.icon as keyof typeof iconMap];
-              return <article key={item.title} className={styles.featureCard}><div className={styles.featureTop}><span className={styles.iconChip}>{Icon && <Icon aria-hidden />}</span><span className={styles.featureNumber}>0{index + 1}</span></div><h3>{item.title}</h3><p>{pillarSummaries[index] || item.description}</p></article>;
-            })}</div>
+          <div className={styles.aboutCopy}>
+            <p>
+              Based in Karur, India, {siteConfig.name} manufactures and exports quality home textiles for international
+              markets. Combining traditional craftsmanship, modern manufacturing and responsible production, we deliver
+              reliable textile solutions tailored to global buyer requirements.
+            </p>
+            <Link href="/about" className={styles.secondary}>About Our Company <FaArrowRight aria-hidden /></Link>
           </div>
         </div>
-        <div className={`${styles.container} ${styles.stats}`}>{stats.map((stat) => <div key={stat.label}><strong>{stat.value.toLocaleString("en-IN")}{stat.suffix}</strong><p>{stat.label}</p></div>)}</div>
+        <dl className={`${styles.container} ${styles.stats}`}>
+          {keyStats.map((stat) => (
+            <div key={stat.label}>
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
- {categories.length > 0 && <section className={styles.section} aria-labelledby="collections-title"><div className={styles.container}>
-        <div className={styles.sectionHeader}><div><p className={styles.label}>Our range · {categories.length} collections</p><h2 id="collections-title">Find the right textile for<br /><span>every space and purpose.</span></h2></div><Link href="/categories" className={styles.secondary}>View all categories <FaArrowRight aria-hidden /></Link></div>
-        <p className={styles.intro}>Browse every category currently available in our product catalogue.</p>
-        <div className={styles.collectionGrid}>{categories.map((category) => <Link key={category.id} href={`/products?category=${encodeURIComponent(category.slug)}`} className={styles.rangeCard} aria-label={`${category.name} — view products`}>
-          {category.image ? <Image src={category.image} alt="" fill sizes="(max-width: 599px) 100vw, (max-width: 1023px) 50vw, 33vw" className={styles.photo} unoptimized /> : <span className={styles.imagePlaceholder} aria-hidden>{category.name}</span>}
-          <span className={styles.rangeButton} aria-hidden>View products <FaArrowRight /></span>
-        </Link>)}</div>
-      </div></section>}
 
+      {/* 3. Product collections */}
+      <section className={styles.section} aria-labelledby="collections-title">
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <p className={styles.label}>Our collections</p>
+              <h2 id="collections-title">Explore Our <span>Product Collections</span></h2>
+              <p className={styles.subtitle}>Thoughtfully crafted home textiles for every space.</p>
+            </div>
+            <Link href="/products" className={styles.secondary}>View All Products <FaArrowRight aria-hidden /></Link>
+          </div>
+          {categories.length > 0 ? (
+            <div className={styles.collectionGrid}>
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/products?category=${encodeURIComponent(category.slug)}`}
+                  className={styles.collectionCard}
+                  aria-label={`Explore the ${category.name} collection`}
+                >
+                  <span className={styles.collectionMedia}>
+                    {category.image ? (
+                      <Image
+                        src={category.image}
+                        alt=""
+                        fill
+                        sizes="(max-width: 599px) 100vw, (max-width: 1023px) 50vw, 400px"
+                        className={styles.photo}
+                        unoptimized={!canOptimise(category.image)}
+                      />
+                    ) : (
+                      <span className={styles.imagePlaceholder} aria-hidden>{category.name}</span>
+                    )}
+                  </span>
+                  <span className={styles.collectionCaption}>
+                    <span className={styles.collectionName}>{category.name}</span>
+                    <span className={styles.collectionLink} aria-hidden><span className={styles.collectionLinkText}>Explore Collection</span> <FaArrowRight /></span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.emptyState}>
+              Our collections are being updated. <Link href="/products">Browse all products</Link> or{" "}
+              <Link href={QUOTE_HREF}>request our latest catalogue</Link>.
+            </p>
+          )}
+        </div>
+      </section>
 
+      {/* History & evolution */}
       <section className={styles.section} aria-labelledby="history-title">
         <div className={styles.container}>
           <div className={styles.sectionHeader}><div><p className={styles.label}>History &amp; Evolution</p><h2 id="history-title">Three decades of textile excellence,<br /><span>woven one milestone at a time.</span></h2></div></div>
@@ -208,38 +221,90 @@ export default async function HomePage() {
           <div className={styles.portfolio}><div><p className={styles.label}>Core portfolio</p><h3>Made for every room.</h3></div><div className={styles.portfolioGrid}>{corePortfolio.map((item, index) => <article key={item.title} className={styles.portfolioItem}><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.products}</p></div><FaArrowRight aria-hidden /></article>)}</div></div>
         </div>
       </section>
-      
-      <section className={styles.section} aria-labelledby="advantages-title">
+
+      {/* 4. Why choose us */}
+      <section className={styles.section} aria-labelledby="partner-title">
         <div className={styles.container}>
-          <div className={styles.sectionHeader}><div><p className={styles.label}>Production confidence</p><h2 id="advantages-title">Why <span>Choose Us?</span></h2></div><p className={styles.headerDescription}>Integrated processing, precision manufacturing and layered quality control give every buyer programme a dependable path from fabric to dispatch.</p></div>
-          <p className={styles.intro}>Our manufacturing systems combine skilled teams with modern equipment, clear commercial terms and internationally recognized product-safety requirements.</p>
-          <div className={styles.advantages}>{productionAdvantages.map(({ Icon, number, title, description }) => <article key={title} className={styles.featureCard}><div className={styles.featureTop}><span className={styles.iconChip}><Icon aria-hidden /></span><span className={styles.featureNumber}>{number}</span></div><p className={styles.smallLabel}>Manufacturing advantage</p><h3>{title}</h3><p>{description}</p></article>)}</div>
-          <div className={styles.businessLayout}>
-            <div><p className={styles.label}>Terms of Business</p><div className={styles.terms}>{businessTerms.map((item, index) => <article key={item.term}><span className={styles.marker}>0{index + 1}</span><div><h3>{item.term}</h3><p>{item.description}</p></div></article>)}</div></div>
-            <div><p className={styles.label}>Product Testing Standards</p><div className={styles.testing}>{testingStandards.map((item) => <article key={item.name}><FaCheckCircle aria-hidden /><div><h3>{item.name}</h3><p>{item.detail}</p></div></article>)}</div><Link href="/certifications" className={styles.textLink}>View certification documents <FaArrowRight aria-hidden /></Link></div>
+          <div className={styles.sectionHeader}>
+            <div>
+              <p className={styles.label}>Why choose us</p>
+              <h2 id="partner-title">Why Partner <span>With Us?</span></h2>
+            </div>
+          </div>
+          <ul className={styles.features}>
+            {partnerFeatures.map(({ Icon, title, description }) => (
+              <li key={title}>
+                <span className={styles.iconChip}><Icon aria-hidden /></span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 5. Manufacturing & sustainability */}
+      <section className={styles.section} aria-labelledby="manufacturing-title">
+        <div className={`${styles.container} ${styles.manufacturing}`}>
+          <div className={styles.manufacturingMedia}>
+            <ManagedSectionImage
+              pageKey="about"
+              slotKey="story-primary"
+              fallbackImage="https://res.cloudinary.com/ddpfxvydm/image/upload/v1787643040/About_img_1_vwqrzs.png"
+              alt="Textile production at the Jai Export Enterprises facility"
+              className={styles.photo}
+              loading="lazy"
+            />
+          </div>
+          <div className={styles.manufacturingCopy}>
+            <p className={styles.label}>Manufacturing &amp; sustainability</p>
+            <h2 id="manufacturing-title">Manufactured with Care. <span>Built for Tomorrow.</span></h2>
+            <p>
+              Combining efficient manufacturing, responsible resource management and quality-focused production to create
+              lasting home textile collections.
+            </p>
+            <div className={styles.inlineActions}>
+              <Link href="/about#facilities" className={styles.primary}>Explore Manufacturing <FaArrowRight aria-hidden /></Link>
+              <Link href="/sustainability" className={styles.secondary}>Our Sustainability Approach <FaArrowRight aria-hidden /></Link>
+            </div>
           </div>
         </div>
       </section>
-     
-      {offers.length > 0 && <section className={styles.section} aria-label="Current offer"><div className={`${styles.container} ${styles.offer}`}><OfferBanner offer={offers[0]} /></div></section>}
-      <section className={`${styles.section} ${styles.processSection}`} aria-labelledby="manufacturing-title"><div className={styles.container}>
-        <div className={styles.sectionHeader}><div><p className={styles.label}>From yarn to your hands</p><h2 id="manufacturing-title">The making of <span>our cloth.</span></h2></div><div className={styles.stageCount}><strong>{String(manufacturingProcess.length).padStart(2, "0")}</strong><p>Refined stages behind every finished textile.</p></div></div>
-        <ol className={styles.process}>{manufacturingProcess.map((step) => <li key={step.step}><span>{step.step}</span><h3>{step.title}</h3><p>{step.description}</p></li>)}</ol>
-      </div></section>
-      <section className={`${styles.section} ${styles.certificationSection}`} aria-labelledby="home-certifications-title"><div className={styles.container}>
-        <div className={styles.sectionHeader}><div><p className={styles.label}>Certified confidence</p><h2 id="home-certifications-title">Documents that support <span>our standards.</span></h2></div><Link href="/certifications" className={styles.secondary}>View all certifications <FaArrowRight aria-hidden /></Link></div>
-        <HomeCertificates />
-      </div></section>
-      {blogPosts.length > 0 && <section className={styles.section} aria-labelledby="journal-title"><div className={styles.container}>
-        <div className={styles.sectionHeader}><div><p className={styles.label}>From the journal · {blogPosts.length} articles</p><h2 id="journal-title">Stories, guidance and<br /><span>notes from our looms.</span></h2></div><Link href="/blog" className={styles.secondary}>View all articles <FaArrowRight aria-hidden /></Link></div><p className={styles.intro}>Explore our latest textile insights, product stories and care advice.</p>
-        <div className={styles.journal}>{blogPosts.slice(0, 3).map((blog, index) => <Link key={blog.id} href={`/blog/${blog.slug}`} className={`${styles.collection} ${index === 0 ? styles.featuredStory : ""}`}>
-          <div className={styles.storyImage}>{blog.coverImage ? <Image src={blog.coverImage} alt={blog.title} fill sizes="(max-width: 767px) 100vw, 50vw" className={styles.photo} unoptimized /> : <span className={styles.imagePlaceholder}>Journal · {String(index + 1).padStart(2, "0")}</span>}</div>
-          <p className={styles.storyMeta}>{blog.category}{blog.publishedAt && ` · ${moment(blog.publishedAt).format("MMM D, YYYY")}`}{blog.readTime > 0 && ` · ${blog.readTime} min read`}</p><h3>{blog.title}</h3><p>{blog.excerpt}</p><span className={styles.textLink}>{index === 0 ? "Read featured story" : "Read article"} <FaArrowRight aria-hidden /></span>
-        </Link>)}</div>
-      </div></section>}
-      <section className={`${styles.section} ${styles.partnership}`} aria-labelledby="enquiry-title"><div className={styles.container}>
-        <div className={styles.enquiryCopy}><p className={styles.label}>Get in touch</p><h2 id="enquiry-title">Ready to discuss <span>your next order?</span></h2><p>Share your requirements for a fast response from our team.</p></div><div className={styles.actions}><a href={siteConfig.socials.whatsapp} target="_blank" rel="noopener noreferrer" className={styles.primary}><FaWhatsapp aria-hidden />WhatsApp <FaArrowRight aria-hidden /></a><Link href="/contact" className={styles.secondary}>Send Enquiry <FaArrowRight aria-hidden /></Link></div>
-      </div></section>
+
+      {/* 6. Quality & certifications */}
+      <section className={styles.section} aria-labelledby="quality-title">
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <p className={styles.label}>Quality &amp; certifications</p>
+              <h2 id="quality-title">Committed to International <span>Quality Standards</span></h2>
+            </div>
+            <Link href="/certifications" className={styles.secondary}>View Certifications <FaArrowRight aria-hidden /></Link>
+          </div>
+          <ul className={styles.standards} aria-label="Applicable quality standards">
+            {qualityStandards.map((standard) => (
+              <li key={standard}><FaCheckCircle aria-hidden />{standard}</li>
+            ))}
+          </ul>
+          <HomeCertificates />
+        </div>
+      </section>
+
+      {/* 7. Business enquiry */}
+      <section className={`${styles.section} ${styles.enquiry}`} aria-labelledby="enquiry-title">
+        <div className={styles.container}>
+          <div className={styles.enquiryPanel}>
+            <div>
+              <h2 id="enquiry-title">Your Trusted <span>Home Textile Partner</span></h2>
+              <p>Connect with us to discuss your home textile sourcing requirements, customized collections and bulk orders.</p>
+            </div>
+            <div className={styles.actions}>
+              <Link href={QUOTE_HREF} className={styles.primary}>Request a Quote <FaArrowRight aria-hidden /></Link>
+              <Link href="/contact" className={styles.secondary}>Contact Us <FaArrowRight aria-hidden /></Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

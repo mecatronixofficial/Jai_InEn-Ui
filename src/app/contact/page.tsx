@@ -64,7 +64,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="lux-section">
+      <section id="enquiry" className="lux-section scroll-mt-28">
         <div className="lux-container grid gap-4 md:gap-6 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">
             <SectionTitle eyebrow="Send a message" title={<>Tell us about <span>your project</span></>} description="Share your requirement and we'll respond. For urgent enquiries, call or WhatsApp." className="!mb-6" />
